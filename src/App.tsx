@@ -130,7 +130,7 @@ function BottomBar({ onPractice, onMore }: { onPractice: () => void; onMore: () 
     <nav aria-label="Quick" className="glass safe-bottom fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-line lg:hidden">
       {tab('/', 'Home', 'home')}{tab('/path', 'Path', 'path')}
       <NavLink to="/daily" className="flex flex-col items-center" aria-label="Today's session">{({ isActive }) => <><span className={cx('-mt-4 grid h-14 w-14 place-items-center rounded-full bg-accent text-accent-ink shadow-[var(--shadow-lg)] ring-4 ring-bg transition active:scale-95', isActive && 'brightness-110')}><Icon name="bolt" size={26} /></span><span className={cx('mt-0.5 text-[11px] font-medium', isActive ? 'text-accent' : 'text-muted')}>Today</span></>}</NavLink>
-      {btn('Skills', 'grid', SKILL_PATHS.includes(pathname), onPractice, due)}{btn('More', 'more', MORE.some((m) => m.to === pathname), onMore)}
+      {btn('Skills', 'grid', SKILL_PATHS.includes(pathname), onPractice, due)}{btn('Menu', 'more', MORE.some((m) => m.to === pathname), onMore)}
     </nav>
   );
 }
@@ -182,8 +182,20 @@ function Shell({ sheet, setSheet, toasts }: { sheet: null | 'practice' | 'more';
         {GROUPS.slice(1, 3).map((g) => <div key={g.label} className="mb-3"><p className="mb-1.5 px-0.5 text-[11px] font-bold uppercase tracking-wider text-muted">{g.label}</p><div className="grid grid-cols-3 gap-2.5">{g.items.map(tile)}</div></div>)}
         <p className="mt-1 text-center text-xs text-muted">Not sure where to start? Tap <b>Today</b> and I'll pick for you.</p>
       </Sheet>
-      <Sheet open={sheet === 'more'} onClose={() => setSheet(null)} title="More">
-        <div className="space-y-1">{MORE.map((n) => <NavItem key={n.to} n={n} onClick={() => setSheet(null)} />)}</div>
+      <Sheet open={sheet === 'more'} onClose={() => setSheet(null)} title="Menu">
+        <Link to="/settings" onClick={() => setSheet(null)} className="mb-3 flex items-center gap-3 rounded-2xl bg-surface2 p-3">
+          <Avatar cfg={store.profile!.avatar} size={44} tier={store.stats?.tier.index ?? 0} />
+          <div className="min-w-0 flex-1"><p className="truncate font-semibold leading-tight">{store.profile!.username}</p><p className="truncate text-xs text-muted">{store.state?.xp ?? 0} XP · {store.state?.streak.current ?? 0}-day streak</p></div>
+          <Icon name="sliders" size={18} className="text-muted" />
+        </Link>
+        <div className="space-y-3">
+          {GROUPS.map((g) => (
+            <div key={g.label}><p className="mb-1 px-3 text-[11px] font-bold uppercase tracking-wider text-muted/80">{g.label}</p>
+              <div>{g.items.map((n) => <NavItem key={n.to} n={n} onClick={() => setSheet(null)} badge={n.to === '/vocabulary' ? due : undefined} />)}</div></div>
+          ))}
+          <div><p className="mb-1 px-3 text-[11px] font-bold uppercase tracking-wider text-muted/80">Account</p>
+            <div><NavItem n={I('/languages', 'My Languages', 'globe')} onClick={() => setSheet(null)} /><NavItem n={I('/settings', 'Profile & Settings', 'sliders')} onClick={() => setSheet(null)} /></div></div>
+        </div>
       </Sheet>
       <div className="pointer-events-none fixed inset-x-0 top-16 z-[60] flex flex-col items-center gap-2 px-4" aria-live="polite">
         {toasts.map((t) => <button key={t.id} onClick={() => store.dismissToast(t.id)} className="pointer-events-auto pop flex w-full max-w-sm items-start gap-3 rounded-2xl border border-accent/40 bg-surface p-3 text-left shadow-[var(--shadow-lg)]"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-accent/15 text-accent"><Icon name="trophy" size={19} /></span><span><p className="font-semibold leading-snug">{t.title}</p>{t.body && <p className="text-sm text-muted">{t.body}</p>}</span></button>)}
