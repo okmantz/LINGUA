@@ -51,7 +51,7 @@ export default function Onboarding() {
           </div>
         )}
         {step === 1 && (
-          <div className="rise"><Say mood="happy">Nice to meet you, {name.trim()}! Pick a character to learn with. Two more unlock as you progress.</Say>
+          <div className="rise"><Say mood="happy">Nice to meet you, {name.trim()}! Pick a character to learn with. Three more unlock as you progress.</Say>
             <CharacterPicker value={avatar.char} onChange={(char) => setAvatar({ char })} ctx={{ tier: 0, ach: {} }} />
             <Footer><Btn variant="ghost" onClick={() => setStep(0)}>Back</Btn><Btn size="lg" className="flex-1" onClick={() => setStep(2)}>Continue</Btn></Footer></div>
         )}

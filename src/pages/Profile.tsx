@@ -32,7 +32,7 @@ export default function ProfilePage() {
       {tab === 'you' && <div className="space-y-4">
         <Card><h2 className="mb-3 text-lg font-bold">Your character</h2>
           <CharacterPicker value={p.avatar.char} onChange={(char) => store.patchProfile((x) => ({ ...x, avatar: { char } }))} ctx={{ tier, ach: p.achievements }} />
-          <p className="mt-3 text-xs text-muted">The ring around your picture shows your mastery tier. Finn and Bolt unlock as you progress, based on demonstrated mastery rather than time spent.</p></Card>
+          <p className="mt-3 text-xs text-muted">The ring around your picture shows your mastery tier. Finn, Bolt and Milo unlock as you progress, based on demonstrated mastery rather than time spent.</p></Card>
         <Card><h2 className="mb-3 text-lg font-bold">Name</h2><label className="sr-only" htmlFor="un">Username</label>
           <input id="un" value={name} maxLength={24} onChange={(e) => setName(e.target.value)} onBlur={() => name.trim().length >= 2 && store.patchProfile((x) => ({ ...x, username: name.trim() }))} className="h-12 w-full rounded-xl border border-line bg-surface px-3.5 outline-none focus:border-accent" /></Card>
         <Card><div className="mb-3 flex items-center gap-3"><TeacherAvatar size={48} className="rounded-full" /><div><h2 className="text-lg font-bold">{TEACHER.name}</h2><p className="text-sm text-muted">Pops up with tips, reminders and advice.</p></div></div>

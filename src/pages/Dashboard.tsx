@@ -4,7 +4,7 @@ import { dailyMinutes } from '../core/analytics';
 import { PROGRAM, PROGRAM_LENGTH } from '../core/program';
 import { programActive } from '../core/guide';
 import { LANGUAGES } from '../content/registry';
-import { Avatar } from '../components/Avatar';
+import { Avatar, TeacherAvatar } from '../components/Avatar';
 import { BarChart } from '../components/Charts';
 import { Icon, type IconName } from '../components/Icon';
 import { TeacherNote } from '../components/Teacher';
@@ -28,6 +28,10 @@ export default function Dashboard() {
           <Avatar cfg={p.avatar} size={52} tier={stats.tier.index} />
           <div className="min-w-0 flex-1"><p className="text-sm muted">{greet()}, {p.username}</p><p className="truncate text-xs muted">{cfg.endonym} · {stats.tier.name}</p></div>
           <Chip className="!bg-white/15 !text-white"><Icon name="flame" size={13} />{state.streak.current} day{state.streak.current === 1 ? '' : 's'}</Chip>
+        </div>
+        <div className="pointer-events-none absolute bottom-4 right-4 z-10 hidden items-end gap-2 sm:flex" aria-hidden>
+          <span className="mb-10 rounded-2xl rounded-br-sm bg-white/15 px-3 py-1.5 text-sm font-semibold backdrop-blur">{({ es: '¡Hola!', fr: 'Bonjour !', de: 'Hallo!' } as Record<string, string>)[cfg.code] ?? 'Hello!'}</span>
+          <TeacherAvatar size={96} mood="wave" className="rounded-full ring-4 ring-white/20" />
         </div>
         <div className="relative z-10 mt-5">
           <p className="text-[11px] font-bold uppercase tracking-[.14em] muted">{next.kind === 'rest' || next.kind === 'extra' ? 'Nice work' : 'Your next step'}</p>
