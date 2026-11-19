@@ -12,15 +12,15 @@ export function CharacterPicker({ value, onChange, ctx }: { value: string; onCha
         <Avatar cfg={{ char: cur.id }} size={76} tier={ctx.tier} />
         <div className="min-w-0"><p className="text-lg font-bold leading-tight">{cur.name}</p><p className="text-sm text-muted">{cur.blurb}</p></div>
       </div>
-      <div className="grid grid-cols-4 gap-2.5" role="radiogroup" aria-label="Choose your character">
+      <div className="grid grid-cols-5 gap-1.5 sm:gap-2.5" role="radiogroup" aria-label="Choose your character">
         {CHARACTERS.map((c) => {
           const ok = isUnlocked(c, ctx); const on = value === c.id;
           return (
             <button key={c.id} role="radio" aria-checked={on} disabled={!ok} onClick={() => onChange(c.id)} title={ok ? c.name : `Locked: ${c.unlock?.label}`}
               className={cx('relative flex flex-col items-center gap-1 rounded-2xl border-2 p-1.5 pb-2 transition', on ? 'border-accent bg-accent/10' : 'border-transparent hover:bg-surface2', !ok && 'opacity-60')}>
-              <span className="relative"><Avatar cfg={{ char: c.id }} size={64} className={cx(!ok && 'grayscale')} />{!ok && <span className="absolute inset-0 grid place-items-center rounded-full bg-black/35 text-white"><Icon name="lock" size={20} /></span>}</span>
-              <span className="text-xs font-semibold">{c.name}</span>
-              {!ok && <span className="text-[10px] leading-tight text-muted">{c.unlock?.label}</span>}
+              <span className="relative"><Avatar cfg={{ char: c.id }} size={52} className={cx(!ok && 'grayscale')} />{!ok && <span className="absolute inset-0 grid place-items-center rounded-full bg-black/35 text-white"><Icon name="lock" size={20} /></span>}</span>
+              <span className="text-[11px] font-semibold sm:text-xs">{c.name}</span>
+              {!ok && <span className="text-[9px] leading-tight text-muted">{c.unlock?.label}</span>}
               {on && <span className="absolute right-1 top-1 grid h-5 w-5 place-items-center rounded-full bg-accent text-accent-ink"><Icon name="check" size={13} strokeWidth={3} /></span>}
             </button>
           );

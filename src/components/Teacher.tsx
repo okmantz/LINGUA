@@ -60,16 +60,16 @@ export function TeacherDock() {
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-[calc(4.9rem+env(safe-area-inset-bottom))] z-40 flex flex-col items-end gap-2 px-3 lg:bottom-6 lg:right-6 lg:left-auto lg:px-0 lg:pr-0">
       {open && (
-        <div role="dialog" aria-label={`${TEACHER.name} tip`} onPointerDown={() => setAuto(false)} className="pointer-events-auto pop w-full max-w-sm rounded-2xl border border-line bg-surface p-3.5 shadow-[var(--shadow-lg)] sm:w-80 sm:p-4">
+        <div role="dialog" aria-label={`${TEACHER.name} tip`} onPointerDown={() => setAuto(false)} className="pointer-events-auto pop w-[min(20rem,calc(100vw-1.5rem))] rounded-2xl border border-line bg-surface p-3.5 shadow-[var(--shadow-lg)] sm:p-4">
           <div className="flex items-start gap-3">
-            <TeacherAvatar size={44} mood={isTour ? 'wave' : tip.mood} className="rounded-full ring-2 ring-accent/30" />
+            <TeacherAvatar size={46} mood={isTour ? 'wave' : tip.mood} className="rounded-full ring-2 ring-accent/30" />
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between gap-2"><p className="text-xs font-semibold text-accent">{TEACHER.name}</p><button onClick={close} aria-label="Close tip" className="-mr-1 grid h-8 w-8 place-items-center rounded-full text-muted hover:bg-surface2"><Icon name="x" size={16} /></button></div>
-              <p className="font-semibold leading-snug">{step ? step.title : tip.title ?? 'A quick tip'}</p>
-              <p className="mt-0.5 text-[0.9rem] leading-relaxed text-muted">{step ? step.text : tip.text}</p>
+              {(step || tip.title) && <p className="font-semibold leading-snug">{step ? step.title : tip.title}</p>}
+              <p className="mt-0.5 text-[0.88rem] leading-relaxed text-muted">{step ? step.text : tip.text}</p>
             </div>
           </div>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
+          {!(auto && !isTour && !tip.action) && <><div className="mt-3 flex flex-wrap items-center gap-2">
             {isTour ? <>
               <div className="mr-auto flex gap-1" aria-label={`Step ${tour + 1} of ${TOUR.length}`}>{TOUR.map((_, i) => <span key={i} className={cx('h-1.5 w-5 rounded-full', i === tour ? 'bg-accent' : 'bg-surface2')} />)}</div>
               {tour > 0 && <Btn size="sm" variant="ghost" onClick={() => setTour(tour - 1)}>Back</Btn>}
@@ -79,12 +79,12 @@ export function TeacherDock() {
               {tips.length > 1 && <Btn size="sm" variant="ghost" onClick={() => setIdx((idx + 1) % tips.length)}>Another tip ({Math.min(idx, tips.length - 1) + 1}/{tips.length})</Btn>}
             </>}
           </div>
-          <button onClick={() => { store.setTeacherOff(true); setOpen(false); }} className="mt-2.5 text-xs text-muted underline">Hide Teacher (turn back on in Settings)</button>
+          <button onClick={() => { store.setTeacherOff(true); setOpen(false); }} className="mt-2.5 text-xs text-muted underline">Hide Teacher (turn back on in Settings)</button></>}
         </div>
       )}
       <button onClick={() => { setOpen((o) => !o); if (!open && unseen[0]) setIdx(tips.indexOf(unseen[0])); }} aria-expanded={open} aria-label={open ? 'Close Teacher' : 'Ask your Teacher'}
         className="pointer-events-auto relative rounded-full shadow-[var(--shadow-lg)] ring-2 ring-surface transition active:scale-95">
-        <TeacherAvatar size={56} mood={tip.mood} className={cx('rounded-full', !open && unseen.length > 0 && 'bob')} />
+        <TeacherAvatar size={52} mood={tip.mood} className={cx('rounded-full', !open && unseen.length > 0 && 'bob')} />
         {!open && unseen.length > 0 && <><span className="ping-soft absolute right-0 top-0 h-3.5 w-3.5 rounded-full bg-accent" /><span className="absolute right-0 top-0 h-3.5 w-3.5 rounded-full border-2 border-surface bg-accent" /></>}
       </button>
     </div>
