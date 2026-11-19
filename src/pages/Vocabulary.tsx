@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useCtx } from '../state/hooks';
+import { useCtx, useFocusMode } from '../state/hooks';
 import { VOCAB_CATEGORIES } from '../core/categories';
 import { stageOf, STAGE_LABEL, STAGE_RULE, STAGES, type Stage } from '../core/mastery';
 import { fold } from '../core/text';
@@ -10,8 +10,9 @@ import { Btn, Card, Chip, Empty, H1, Note, Tabs } from '../components/ui';
 const TONE: Record<Stage, 'plain' | 'accent' | 'good' | 'warn'> = { unseen: 'plain', encountered: 'plain', recognized: 'accent', recalled: 'accent', retained: 'good', mastered: 'good' };
 
 export default function Vocabulary() {
-  const { store, content, rate, state } = useCtx(); const [tab, setTab] = useState<'browse' | 'review' | 'stages'>('browse');
+  const { store, content, rate, state } = useCtx(); const [tab, setTab] = useState<'browse' | 'review' | 'stages'>(() => (store.cards.some((c) => c.kind === 'vocab' && c.due <= Date.now()) ? 'review' : 'browse'));
   const [q, setQ] = useState(''); const [cat, setCat] = useState('all'); const [stage, setStage] = useState<'all' | Stage>('all'); const [open, setOpen] = useState<string | null>(null); const [rev, setRev] = useState<string[] | null>(null);
+  useFocusMode(!!rev);
   const now = Date.now(); const stats = store.stats!;
   const due = store.cards.filter((c) => c.kind === 'vocab' && c.due <= now).sort((a, b) => a.due - b.due);
   const rows = useMemo(() => content.vocab.filter((v) => (cat === 'all' || v.cat === cat) && (!q || fold(`${v.t} ${v.n}`).includes(fold(q))) && (stage === 'all' || stageOf(store.cardMap.get(`${state.code}:${v.id}`), now) === stage)), [content, q, cat, stage, store.cardMap]); // eslint-disable-line
@@ -30,7 +31,7 @@ export default function Vocabulary() {
         <p className="mb-2 text-sm text-muted">{rows.length} words</p>
         <div className="space-y-2">{rows.slice(0, 150).map((v) => { const c = store.cardMap.get(`${state.code}:${v.id}`); const sg = stageOf(c, now); return (
           <Card key={v.id} className="!p-3"><button className="flex w-full items-center gap-3 text-left" onClick={() => setOpen(open === v.id ? null : v.id)} aria-expanded={open === v.id}>
-            <div className="flex-1"><span className="text-lg font-semibold">{v.t}</span> <span className="text-muted">— {v.n}</span></div><Chip tone={TONE[sg]}>{STAGE_LABEL[sg].split(' ')[0]}</Chip></button>
+            <div className="flex-1"><span className="text-lg font-semibold">{v.t}</span> <span className="text-muted">— {v.n}</span></div><Chip tone={TONE[sg]}>{sg === 'unseen' ? 'New' : STAGE_LABEL[sg]}</Chip></button>
             {open === v.id && <div className="mt-3"><WordCard e={v} rate={rate} />{c && c.reps > 0 && <p className="mt-2 text-xs text-muted">{c.reps} reviews · {c.lapses} lapses · memory stability ≈ {c.stability.toFixed(1)} days · next due {new Date(c.due).toLocaleDateString()}</p>}</div>}</Card>); })}
           {rows.length > 150 && <p className="text-sm text-muted">Showing the first 150 — refine your search.</p>}{!rows.length && <Empty>No words match.</Empty>}</div>
       </>}
