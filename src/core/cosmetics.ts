@@ -5,24 +5,29 @@ export interface Unlock { tier?: number; ach?: string; label: string }
 export interface Part { id: number; name: string; unlock?: Unlock }
 
 export interface Character { id: string; name: string; kind: 'person' | 'mascot'; blurb: string; unlock?: Unlock }
-/** A short, curated cast instead of a full avatar builder: six are free, two are earned. */
+/** A short, curated cast instead of a full avatar builder: seven are free, three are earned through mastery. */
 export const CHARACTERS: Character[] = [
   { id: 'alex', name: 'Alex', kind: 'person', blurb: 'Curious and always on the move' },
   { id: 'camille', name: 'Camille', kind: 'person', blurb: 'Café conversations, any language' },
+  { id: 'leo', name: 'Leo', kind: 'person', blurb: 'Sun, sand and speaking up' },
   { id: 'mei', name: 'Mei', kind: 'person', blurb: 'Learns best with headphones on' },
-  { id: 'omar', name: 'Omar', kind: 'person', blurb: 'Thoughtful, patient, well read' },
+  { id: 'marco', name: 'Marco', kind: 'person', blurb: 'Thoughtful, patient, well read' },
   { id: 'ollie', name: 'Ollie', kind: 'mascot', blurb: 'The wise owl of vocabulary' },
   { id: 'pip', name: 'Pip', kind: 'mascot', blurb: 'Calm panda, steady progress' },
   { id: 'finn', name: 'Finn', kind: 'mascot', blurb: 'Quick fox, quick learner', unlock: { tier: 1, label: 'Reach Novice' } },
   { id: 'bolt', name: 'Bolt', kind: 'mascot', blurb: 'Friendly robot, zero downtime', unlock: { tier: 2, label: 'Reach Apprentice' } },
+  { id: 'milo', name: 'Milo', kind: 'mascot', blurb: 'Too cool to forget a word', unlock: { tier: 3, label: 'Reach Practitioner' } },
 ];
 export const DEFAULT_CHARACTER = 'alex';
 
 /** Old saves stored a custom face. Map it to the closest character so nobody lands on a stranger. */
 export function normalizeAvatar(a: Partial<AvatarConfig> | null | undefined): AvatarConfig {
-  if (a && typeof a.char === 'string' && CHARACTERS.some((c) => c.id === a.char)) return a as AvatarConfig;
+  if (a && typeof a.char === 'string') {
+    if (CHARACTERS.some((c) => c.id === a.char)) return a as AvatarConfig;
+    if (a.char === 'omar') return { char: 'marco' }; // earlier build's character, replaced by Marco
+  }
   const old = a ?? {};
-  const char = old.hair === 3 ? 'camille' : old.accessory === 2 ? 'mei' : old.accessory === 1 || old.accessory === 6 ? 'omar' : DEFAULT_CHARACTER;
+  const char = old.hair === 3 ? 'camille' : old.accessory === 2 ? 'mei' : old.accessory === 1 || old.accessory === 6 ? 'marco' : DEFAULT_CHARACTER;
   return { char };
 }
 

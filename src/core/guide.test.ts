@@ -85,8 +85,8 @@ describe('characters', () => {
     const m = migrateProfile({ schema: 1, id: 'x', username: 'Owen', avatar: { skin: 1, hair: 3, hairColor: 1, eyes: 0, mouth: 0, accessory: 0, outfit: 0, bg: 0 }, languages: {}, achievements: { a: 1 }, unlockedCosmetics: [], settings: {} });
     expect(m.avatar.char).toBe('camille'); expect(m.achievements).toEqual({ a: 1 });
   });
-  it('two characters are earned, six are free', () => {
-    expect(CHARACTERS.filter((c) => !isUnlocked(c, { tier: 0, ach: {} })).map((c) => c.id)).toEqual(['finn', 'bolt']);
+  it('three characters are earned, seven are free', () => {
+    expect(CHARACTERS.filter((c) => !isUnlocked(c, { tier: 0, ach: {} })).map((c) => c.id)).toEqual(['finn', 'bolt', 'milo']);
     expect(CHARACTERS.every((c) => isUnlocked(c, { tier: 6, ach: {} }))).toBe(true);
   });
   it('picks readable text colours for accents', () => { expect(inkFor('#f59e0b')).toBe('#06201c'); expect(inkFor('#6366f1')).toBe('#ffffff'); });
