@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => {
                   { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
                 ],
               },
-              workbox: { globPatterns: ['**/*.{js,css,html,svg,png,json,woff2}'], navigateFallback: 'index.html' },
+              workbox: { globPatterns: ['**/*.{js,css,html,svg,png,webp,json,woff2}'], navigateFallback: 'index.html', skipWaiting: true, clientsClaim: true, cleanupOutdatedCaches: true },
             }),
           ]),
     ],
