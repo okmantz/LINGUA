@@ -1,0 +1,22 @@
+export const VOCAB_CATEGORIES: { id: string; label: string; icon: string }[] = [
+  { id: 'greetings', label: 'Greetings & courtesy', icon: '👋' },
+  { id: 'pronouns', label: 'Pronouns & basics', icon: '🧩' },
+  { id: 'numbers', label: 'Numbers', icon: '🔢' },
+  { id: 'time', label: 'Time & calendar', icon: '🕒' },
+  { id: 'questions', label: 'Question words', icon: '❓' },
+  { id: 'food', label: 'Food & drink', icon: '🍽️' },
+  { id: 'family', label: 'Family & people', icon: '👪' },
+  { id: 'places', label: 'Places & directions', icon: '📍' },
+  { id: 'travel', label: 'Travel & transport', icon: '🚆' },
+  { id: 'shopping', label: 'Shopping & money', icon: '🛍️' },
+  { id: 'work', label: 'Work & study', icon: '💼' },
+  { id: 'health', label: 'Health & body', icon: '🩺' },
+  { id: 'emotions', label: 'Emotions & opinions', icon: '🙂' },
+  { id: 'nature', label: 'Nature & weather', icon: '🌿' },
+  { id: 'hobbies', label: 'Hobbies & leisure', icon: '🎨' },
+  { id: 'objects', label: 'Everyday objects & home', icon: '🏠' },
+  { id: 'verbs', label: 'Essential verbs', icon: '⚙️' },
+  { id: 'adjectives', label: 'Adjectives & adverbs', icon: '🎚️' },
+  { id: 'connectors', label: 'Connectors & phrases', icon: '🔗' },
+];
+export const catLabel = (id: string) => VOCAB_CATEGORIES.find((c) => c.id === id)?.label ?? id;
