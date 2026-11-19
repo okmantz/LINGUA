@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
+    "build:pages": "node scripts/build-pages.mjs",
     "build:offline": "tsc --noEmit && vite build --mode offline"
   },
   "dependencies": {

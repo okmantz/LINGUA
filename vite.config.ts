@@ -6,7 +6,7 @@ import { viteSingleFile } from 'vite-plugin-singlefile';
 import { fileURLToPath } from 'node:url';
 
 // Two builds:
-//  - default  : GitHub Pages site (relative base + HashRouter => works on any path), with PWA.
+//  - default  : GitHub Pages site (run `npm run build:pages` -> commits into /docs) (relative base + HashRouter => works on any path), with PWA.
 //  - --mode offline : ONE self-contained file (dist-offline/index.html) that works when
 //    double-clicked from disk (file://), where browsers block separate module scripts.
 export default defineConfig(({ mode }) => {
@@ -30,9 +30,16 @@ export default defineConfig(({ mode }) => {
                 display: 'standalone',
                 start_url: './',
                 scope: './',
-                icons: [{ src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any maskable' }],
+                id: './',
+                categories: ['education'],
+                icons: [
+                  { src: 'icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+                  { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+                  { src: 'icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+                  { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
+                ],
               },
-              workbox: { globPatterns: ['**/*.{js,css,html,svg,json,woff2}'] },
+              workbox: { globPatterns: ['**/*.{js,css,html,svg,png,json,woff2}'], navigateFallback: 'index.html' },
             }),
           ]),
     ],

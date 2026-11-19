@@ -40,11 +40,11 @@ npm run build      # tsc + vite build + PWA service worker
 
 ## Deploy to GitHub Pages
 
-The build uses `base: './'` and a **HashRouter**, so it works at any repo path with no configuration.
+The built site is committed in `docs/`, so Pages serves it directly, no Actions needed.
 
-1. Push to a repo's `main` branch.
-2. Repo → **Settings → Pages → Source: GitHub Actions**.
-3. `.github/workflows/deploy.yml` runs the tests, builds, and publishes `dist/`.
+1. Repo -> **Settings -> Pages -> Source: Deploy from a branch -> `main` / `/docs`**.
+2. After changing code, run `npm run build:pages` and commit the updated `docs/` folder.
+3. Open `https://<user>.github.io/LINGUA/` on your phone and use *Add to Home Screen* / *Install app*.
 
 ## Project layout
 
@@ -67,5 +67,5 @@ docs/ADDING_CONTENT.md   how to add a language or more material
 
 ## Opening it
 
-- **Hosted:** repo *Settings → Pages → Source: GitHub Actions*, then run the *Deploy to GitHub Pages* workflow. The site is `https://<user>.github.io/LINGUA/`.
+- **Hosted:** repo *Settings → Pages → Deploy from a branch → main → /docs*, The site is `https://<user>.github.io/LINGUA/`.
 - **Offline, no server:** `npm run build:offline` creates `dist-offline/index.html`, one self-contained file you can double-click (browsers block the normal build's module scripts on `file://`). The deployed site also serves it at `/lingua.html` for download.
