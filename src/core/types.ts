@@ -94,9 +94,14 @@ export interface LanguageConfig {
 }
 
 // ── User data ──
+/** A profile picture is one of a small set of designed characters (see core/cosmetics.ts).
+ *  The numeric fields are from the old custom-avatar editor; they are kept optional so old saves and backups still load. */
 export interface AvatarConfig {
-  skin: number; hair: number; hairColor: number; eyes: number; mouth: number; accessory: number; outfit: number; bg: number;
+  char: string;
+  skin?: number; hair?: number; hairColor?: number; eyes?: number; mouth?: number; accessory?: number; outfit?: number; bg?: number;
 }
+/** Teacher settings + which tips have already been shown (so she never repeats herself). */
+export interface TeacherPrefs { off?: boolean; seen: Record<string, number> }
 export type ThemeMode = 'system' | 'light' | 'dark';
 export interface PlacementResult {
   takenAt: number; overall: Cefr; bySkill: Partial<Record<Skill, Cefr>>; weaknesses: Skill[];
@@ -127,6 +132,7 @@ export interface Profile {
   activeLang: LangCode | null; languages: Record<LangCode, LangState>;
   achievements: Record<string, number>; settings: Settings; unlockedCosmetics: string[];
   lastBackup?: number;
+  teacher?: TeacherPrefs;
 }
 
 // ── Cards (spaced repetition) ──

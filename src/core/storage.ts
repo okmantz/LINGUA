@@ -1,6 +1,7 @@
 // Local-first persistence: IndexedDB (profile, cards, events) with versioned schema + JSON backup.
 import { openDB, type IDBPDatabase } from 'idb';
 import type { Card, EventRec, Profile } from './types';
+import { normalizeAvatar } from './cosmetics';
 
 export const SCHEMA_VERSION = 1;
 const DB_NAME = 'lingua';
@@ -38,6 +39,8 @@ export function migrateProfile(p: any): Profile {
   }
   // if (v < 2) { ...future migration... }
   if (cur.schema > SCHEMA_VERSION) throw new Error(`Backup is from a newer LINGUA (schema ${cur.schema}). Update the app first.`);
+  // Characters replaced the old custom avatar editor; map old faces to the closest character (no schema bump needed).
+  cur = { ...cur, avatar: normalizeAvatar(cur.avatar) };
   return cur as Profile;
 }
 
