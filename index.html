@@ -9,6 +9,18 @@
 </head>
 <body>
   <div id="root"></div>
+  <!-- Load-failure guard: plain script (runs even when the app bundle cannot load). -->
+  <script>
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && r.childElementCount === 0) {
+        var m = location.protocol === 'file:'
+          ? 'This page was opened from a file, and browsers block the app\'s scripts that way. Open <b>lingua.html</b> (the single-file build) instead, or run <code>npm run preview</code>.'
+          : 'The app failed to load. If this is GitHub Pages: Settings → Pages → Source must be <b>GitHub Actions</b> (not "Deploy from a branch"), then re-run the Deploy workflow. Otherwise hard-refresh (Ctrl/Cmd+Shift+R).';
+        r.innerHTML = '<div style="font:16px system-ui;max-width:34rem;margin:15vh auto;padding:1rem;color:#e2e8f0;background:#0f172a;border-radius:12px">' + m + '</div>';
+      }
+    }, 4000);
+  </script>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>

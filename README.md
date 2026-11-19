@@ -64,3 +64,8 @@ docs/ADDING_CONTENT.md   how to add a language or more material
 - **Comprehensible input:** graded reading/listening with translation support that fades with the immersion level.
 - **Grammar through use:** each lesson shows the pattern, real examples and common mistakes, then immediately tests production.
 - **Desirable difficulty:** the exercise mode gets harder as a card's stability grows.
+
+## Opening it
+
+- **Hosted:** repo *Settings → Pages → Source: GitHub Actions*, then run the *Deploy to GitHub Pages* workflow. The site is `https://<user>.github.io/LINGUA/`.
+- **Offline, no server:** `npm run build:offline` creates `dist-offline/index.html`, one self-contained file you can double-click (browsers block the normal build's module scripts on `file://`). The deployed site also serves it at `/lingua.html` for download.
