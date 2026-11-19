@@ -15,7 +15,9 @@ A free, local-first, offline-capable web app for learning **Spanish, French and 
 | Daily engine | Builds a session to your time budget (5–60 min): due reviews first, then new words, conversation, grammar, listening, reading, pronunciation, writing. |
 | Academies | Vocabulary, Grammar, Conversations (guided → semi-open → open), Listening, Reading, Writing, Pronunciation, searchable Cheat Sheets. |
 | Progress | Skill radar, mastery stages, memory-strength buckets, weekly accuracy, study time, weekly review, level *estimate* with confidence, mastery tiers (Beginner → Master). |
-| Profile | Username, SVG avatar with mastery-gated unlocks, light/dark themes, accent colours, immersion levels 0–5 (auto or manual). |
+| Guidance | A **Next up** card on Home and in the sidebar always names the single best next step. **Your Path** shows the whole 30-day plan (or the level pathway afterwards). Every practice library marks a *Recommended next* lesson and ends with a *What next?* screen. |
+| Teacher | **Teacher Lina** pops up once per page with tips, reminders (due reviews, streak at risk, goal reached) and advice, comments on session and lesson results, and runs a short welcome tour. Can be hidden in Settings. Wording lives in `src/core/teacher.ts`. |
+| Profile | Username, a small cast of designed characters (two are earned through mastery) with a tier ring, light/dark themes, accent colours, immersion levels 0–5 (auto or manual). |
 | Data | IndexedDB, versioned schema with migrations, JSON export/import, per-language independence. |
 
 ## Honest limits (read this)
@@ -49,10 +51,10 @@ The built site is committed in `docs/`, so Pages serves it directly, no Actions 
 ## Project layout
 
 ```
-src/core/      pure logic: fsrs, mastery, session planner, placement, analytics, progression, storage
+src/core/      pure logic: fsrs, mastery, session planner, guide (next step), teacher (tips), placement, analytics, progression, storage
 src/content/   per-language content (es, fr, de) + dsl.ts authoring parsers + registry.ts + validation tests
 src/state/     React store (IndexedDB persistence), hooks (immersion flags, study clock)
-src/components blocks (review, vocab, grammar, reading, listening, conversation, pronunciation, writing), exercise runner, charts, avatar
+src/components blocks (review, vocab, grammar, reading, listening, conversation, pronunciation, writing), exercise runner, charts, avatar + Teacher, icons, logo
 src/pages/     route pages
 docs/ADDING_CONTENT.md   how to add a language or more material
 ```
