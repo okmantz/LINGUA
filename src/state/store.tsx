@@ -10,7 +10,7 @@ import { applyCompletion } from '../core/progression';
 import { PROGRAM_LENGTH } from '../core/program';
 
 export const DEFAULT_SETTINGS: Settings = { mode: 'system', accent: 'teal', ttsRate: 0.9, reminders: false, reminderTime: '19:00', showRomanization: true, reducedMotion: false, largeText: false };
-export const DEFAULT_AVATAR: AvatarConfig = { skin: 1, hair: 0, hairColor: 1, eyes: 0, mouth: 0, accessory: 0, outfit: 0, bg: 0 };
+export const DEFAULT_AVATAR: AvatarConfig = { char: 'alex' };
 
 export const newLangState = (code: LangCode, dailyMinutes: number, placement?: PlacementResult): LangState => ({
   code, startedAt: Date.now(), dailyMinutes, placement,
@@ -45,6 +45,10 @@ export interface Store {
   dismissToast: (id: number) => void;
   doExport: () => Promise<void>; doImport: (text: string) => Promise<void>; doWipe: () => Promise<void>;
   refreshAchievementsFor: () => void;
+  /** Teacher: remember a tip was shown / turn her off / show tips again. */
+  markTipSeen: (id: string) => void; setTeacherOff: (off: boolean) => void; resetTips: () => void;
+  /** Focus mode hides the Teacher and bottom bar while the learner is inside a lesson. */
+  focus: boolean; setFocus: (f: boolean) => void;
 }
 const Ctx = createContext<Store | null>(null);
 export const useStore = () => { const s = useContext(Ctx); if (!s) throw new Error('Store missing'); return s; };
@@ -57,6 +61,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [contents, setContents] = useState<Record<string, LanguageContent>>({});
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [persisted, setPersisted] = useState(false);
+  const [focus, setFocus] = useState(false);
   const profRef = useRef<Profile | null>(null); profRef.current = profile;
   const cardsRef = useRef<Card[]>([]); cardsRef.current = cards;
   const eventsRef = useRef<EventRec[]>([]); eventsRef.current = events;
@@ -94,7 +99,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const s = profile?.settings ?? DEFAULT_SETTINGS; const root = document.documentElement;
     const apply = () => { const dark = s.mode === 'dark' || (s.mode === 'system' && matchMedia('(prefers-color-scheme: dark)').matches); root.dataset.theme = dark ? 'dark' : 'light'; };
     apply(); root.dataset.large = s.largeText ? '1' : '0'; root.dataset.motion = s.reducedMotion ? '0' : '1';
-    import('../core/cosmetics').then(({ ACCENTS }) => { const a = ACCENTS.find((x) => x.id === s.accent) ?? ACCENTS[0]; root.style.setProperty('--accent', a.hex); });
+    import('../core/cosmetics').then(({ ACCENTS, inkFor }) => { const a = ACCENTS.find((x) => x.id === s.accent) ?? ACCENTS[0]; root.style.setProperty('--accent', a.hex); root.style.setProperty('--accent-ink', inkFor(a.hex)); });
     const mq = matchMedia('(prefers-color-scheme: dark)'); mq.addEventListener('change', apply); return () => mq.removeEventListener('change', apply);
   }, [profile?.settings]);
 
@@ -180,6 +185,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setTimeout(evaluate, 50);
   }, [patchLang, evaluate, toast]);
 
+  const markTipSeen = useCallback((id: string) => patchProfile((p) => (p.teacher?.seen[id] ? p : { ...p, teacher: { ...p.teacher, seen: { ...p.teacher?.seen, [id]: Date.now() } } })), [patchProfile]);
+  const setTeacherOff = useCallback((off: boolean) => patchProfile((p) => ({ ...p, teacher: { seen: {}, ...p.teacher, off } })), [patchProfile]);
+  const resetTips = useCallback(() => patchProfile((p) => ({ ...p, teacher: { ...p.teacher, seen: {} } })), [patchProfile]);
+
   const dismissToast = useCallback((id: number) => setToasts((t) => t.filter((x) => x.id !== id)), []);
 
   const doExport = useCallback(async () => {
@@ -196,7 +205,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const value: Store = {
     ready, profile, lang, state, content, contents, cards: langCards, cardMap, events: langEvents, stats, toasts, persisted,
     createProfile, addLanguage, setActiveLang, patchLang, patchProfile, updateSettings, reviewCard, logEvent, recordStudy, completeBlock, evaluate, dismissToast,
-    doExport, doImport, doWipe, refreshAchievementsFor: evaluate,
+    doExport, doImport, doWipe, refreshAchievementsFor: evaluate, markTipSeen, setTeacherOff, resetTips, focus, setFocus,
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
