@@ -17,7 +17,7 @@ A free, local-first, offline-capable web app for learning **Spanish, French and 
 | Progress | Skill radar, mastery stages, memory-strength buckets, weekly accuracy, study time, weekly review, level *estimate* with confidence, mastery tiers (Beginner → Master). |
 | Guidance | A **Next up** card on Home and in the sidebar always names the single best next step. **Your Path** shows the whole 30-day plan (or the level pathway afterwards). Every practice library marks a *Recommended next* lesson and ends with a *What next?* screen. |
 | Teacher | **Teacher Lina** pops up once per page with tips, reminders (due reviews, streak at risk, goal reached) and advice, comments on session and lesson results, and runs a short welcome tour. Can be hidden in Settings. Wording lives in `src/core/teacher.ts`. |
-| Profile | Username, a small cast of designed characters (two are earned through mastery) with a tier ring, light/dark themes, accent colours, immersion levels 0–5 (auto or manual). |
+| Profile | Username, a small cast of designed characters (three are earned through mastery; art in `src/assets/characters`) with a tier ring, light/dark themes, accent colours, immersion levels 0–5 (auto or manual). |
 | Data | IndexedDB, versioned schema with migrations, JSON export/import, per-language independence. |
 
 ## Honest limits (read this)
