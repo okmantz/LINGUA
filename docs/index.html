@@ -22,12 +22,38 @@
   <script>
     setTimeout(function () {
       var r = document.getElementById('root');
-      if (r && r.childElementCount === 0) {
-        var m = location.protocol === 'file:'
-          ? 'This page was opened from a file, and browsers block the app\'s scripts that way. Open <b>lingua.html</b> (the single-file build) instead, or run <code>npm run preview</code>.'
-          : 'The app failed to load. If this is GitHub Pages: Settings → Pages → Source must be <b>Deploy from a branch</b> → <b>main</b> → <b>/docs</b>. Otherwise hard-refresh (Ctrl/Cmd+Shift+R).';
-        r.innerHTML = '<div style="font:16px system-ui;max-width:34rem;margin:15vh auto;padding:1rem;color:#e2e8f0;background:#0f172a;border-radius:12px">' + m + '</div>';
+      if (!r || r.childElementCount !== 0) return;
+      // Name any files that 404'd (a partial upload of /docs is the usual cause).
+      var missing = [];
+      try {
+        performance.getEntriesByType('resource').forEach(function (e) {
+          if (e.responseStatus >= 400) missing.push(e.name.split('?')[0].split('/').slice(-2).join('/'));
+        });
+      } catch (_) {}
+      var box = document.createElement('div');
+      box.style.cssText = 'font:16px/1.5 system-ui;max-width:34rem;margin:15vh auto;padding:1rem;color:#e2e8f0;background:#0f172a;border-radius:12px';
+      var msg = document.createElement('div');
+      if (location.protocol === 'file:') {
+        msg.innerHTML = 'This page was opened from a file, and browsers block the app\'s scripts that way. Open <b>lingua.html</b> (the single-file build) instead, or run <code>npm run preview</code>.';
+      } else if (missing.length) {
+        msg.innerHTML = 'The app failed to load because some of its files are missing from the site. Re-upload the <b>entire</b> <code>docs/</code> folder, including every file in <code>docs/assets/</code>.';
+      } else {
+        msg.innerHTML = 'The app failed to load. If this is GitHub Pages: Settings → Pages → Source must be <b>Deploy from a branch</b> → <b>main</b> → <b>/docs</b>. Otherwise hard-refresh (Ctrl/Cmd+Shift+R).';
       }
+      box.appendChild(msg);
+      if (missing.length) {
+        var pre = document.createElement('pre');
+        pre.style.cssText = 'margin:.75rem 0 0;font-size:12px;white-space:pre-wrap;color:#fca5a5';
+        pre.textContent = 'Missing: ' + missing.slice(0, 8).join(', ');
+        box.appendChild(pre);
+      }
+      if (location.protocol !== 'file:') {
+        var a = document.createElement('a');
+        a.href = './lingua.html'; a.textContent = 'Open the single-file version instead';
+        a.style.cssText = 'display:inline-block;margin-top:.75rem;color:#93c5fd';
+        box.appendChild(a);
+      }
+      r.appendChild(box);
     }, 4000);
   </script>
 </body>
