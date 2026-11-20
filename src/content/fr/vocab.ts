@@ -285,4 +285,67 @@ connectors|donc|so / therefore|conj|dohnk|Je suis fatigué, donc je dors.|I'm ti
 connectors|par exemple|for example|phr|par ehg-ZAHMPL|J'aime le sport, par exemple, le tennis.|I like sports, for example tennis.|A2
 connectors|oui|yes|adv|wee|Oui, je veux bien.|Yes, I'd love to.
 connectors|non|no|adv|nohn|Non, merci.|No, thank you.
+food|le dessert|the dessert|n.m|luh deh-SEHR|Comme dessert, je veux une glace.|For dessert I want ice cream.
+food|le sel|the salt|n.m|luh SEHL|Il manque du sel dans la soupe.|The soup needs salt.
+food|le sucre|the sugar|n.m|luh SOO-kruh|Je ne veux pas de sucre dans mon café.|I don't want sugar in my coffee.
+food|la salade|the salad|n.f|lah sah-LAHD|Je veux une salade.|I want a salad.
+food|la glace|the ice cream|n.f|lah GLAHSS|La glace est au chocolat.|The ice cream is chocolate.
+objects|le salon|the living room|n.m|luh sah-LOHN|Le salon est grand.|The living room is big.
+objects|la chambre|the bedroom|n.f|lah SHAHN-bruh|Ma chambre est petite.|My bedroom is small.
+objects|la salle de bain|the bathroom|n.f|lah sahl duh BAN|Où est la salle de bain ?|Where is the bathroom?
+objects|la cuisine|the kitchen|n.f|lah kwee-ZEEN|La cuisine est propre.|The kitchen is clean.
+objects|le jardin|the garden|n.m|luh zhahr-DAN|Le jardin a des fleurs.|The garden has flowers.
+objects|le loyer|the rent|n.m|luh lwah-YAY|Le loyer est cher.|The rent is expensive.
+objects|le voisin|the neighbour|n.m|luh vwah-ZAN|Mon voisin est sympa.|My neighbour is nice.
+work|le salaire|the salary|n.m|luh sah-LEHR|Le salaire est bon.|The salary is good.
+work|le contrat|the contract|n.m|luh kohn-TRAH|Je signe le contrat aujourd'hui.|I sign the contract today.
+work|l'entretien|the interview|n.m|lahn-truh-TYAN|J'ai un entretien demain.|I have an interview tomorrow.
+work|l'horaire|the schedule|n.m|loh-REHR|Mon horaire est flexible.|My schedule is flexible.
+travel|les bagages|the luggage|n.m|lay bah-GAHZH|Les bagages sont lourds.|The luggage is heavy.
+travel|l'arrivée|the arrival|n.f|lah-ree-VAY|L'arrivée est à dix heures.|The arrival is at ten.
+travel|la sortie|the exit|n.f|lah sor-TEE|La sortie est à droite.|The exit is on the right.
+travel|le retard|the delay|n.m|luh ruh-TAHR|Le train a du retard.|The train is delayed.
+travel|la frontière|the border|n.f|lah frohn-TYEHR|Nous passons la frontière.|We cross the border.
+travel|le séjour|the stay|n.m|luh say-ZHOOR|Notre séjour est agréable.|Our stay is pleasant.
+health|la gorge|the throat|n.f|lah GORZH|J'ai mal à la gorge.|My throat hurts.
+health|la toux|the cough|n.f|lah TOO|J'ai de la toux depuis hier.|I've had a cough since yesterday.
+health|l'ordonnance|the prescription|n.f|lor-doh-NAHNS|J'ai besoin d'une ordonnance.|I need a prescription.
+health|se reposer|to rest|v|suh ruh-poh-ZAY|Je dois me reposer.|I need to rest.
+verbs|commencer|to start|v|koh-mahn-SAY|Le cours va commencer.|The class is going to start.
+verbs|finir|to finish|v|fee-NEER|Je vais finir le travail.|I'm going to finish the work.
+verbs|attendre|to wait|v|ah-TAHN-druh|Je vais attendre le bus.|I'm going to wait for the bus.
+verbs|chercher|to look for|v|shehr-SHAY|Je vais chercher mes clés.|I'm going to look for my keys.
+verbs|trouver|to find|v|troo-VAY|Je veux trouver un appartement.|I want to find a flat.
+verbs|aider|to help|v|eh-DAY|Tu peux aider mon ami ?|Can you help my friend?
+verbs|se souvenir|to remember|v|suh soov-NEER|Je veux me souvenir de ton nom.|I want to remember your name.
+verbs|oublier|to forget|v|oo-blee-YAY|Je ne veux rien oublier.|I don't want to forget anything.
+verbs|demander|to ask|v|duh-mahn-DAY|Je vais demander le prix.|I'm going to ask the price.
+verbs|répondre|to answer|v|ray-POHN-druh|Je vais répondre au courriel.|I'm going to answer the email.
+verbs|connaître|to know (a person/place)|v|koh-NEH-truh|Je veux connaître Paris.|I want to get to know Paris.
+verbs|changer|to change|v|shahn-ZHAY|Je veux changer de travail.|I want to change jobs.
+emotions|inquiet|worried|adj|an-KYEH|Je suis inquiet pour toi.|I'm worried about you.
+emotions|fier|proud|adj|FYEHR|Je suis fier de toi.|I'm proud of you.
+emotions|surpris|surprised|adj|soor-PREE|Je suis très surpris.|I'm very surprised.
+emotions|fâché|angry|adj|fah-SHAY|Mon frère est fâché.|My brother is angry.
+adjectives|important|important|adj|an-pohr-TAHN|C'est très important.|It's very important.
+adjectives|dangereux|dangerous|adj|dahn-zhuh-RUH|C'est dangereux ici.|It's dangerous here.
+adjectives|sûr|safe / sure|adj|SOOR|Je suis sûr.|I'm sure.
+adjectives|occupé|busy|adj|oh-koo-PAY|Je suis occupé aujourd'hui.|I'm busy today.
+adjectives|libre|free|adj|LEE-bruh|Tu es libre demain ?|Are you free tomorrow?
+adjectives|différent|different|adj|dee-fay-RAHN|C'est très différent.|It's very different.
+adjectives|nécessaire|necessary|adj|nay-seh-SEHR|Il est nécessaire de se reposer.|It's necessary to rest.
+adjectives|possible|possible|adj|poh-SEE-bluh|Il est possible d'arriver en retard.|It's possible to arrive late.
+connectors|pourtant|however|adv|poor-TAHN|C'est cher, pourtant j'aime ça.|It's expensive, yet I like it.|B1
+connectors|d'ailleurs|besides|adv|dah-YUHR|D'ailleurs, c'est très bon marché.|Besides, it's very cheap.|B1
+connectors|bien que|although|conj|byan kuh|Je sors bien que il pleuve.|I'm going out although it's raining.|B1
+connectors|pendant que|while|conj|pahn-DAHN kuh|Je lis pendant que je mange.|I read while I eat.|B1
+connectors|c'est pourquoi|that's why|phr|seh poor-KWAH|Je suis fatigué, c'est pourquoi je pars.|I'm tired, that's why I'm leaving.|B1
+connectors|soudain|suddenly|adv|soo-DAN|Soudain, il a commencé à pleuvoir.|Suddenly it started to rain.|B1
+nature|la rivière|the river|n.f|lah ree-VYEHR|La rivière est longue.|The river is long.
+nature|le ciel|the sky|n.m|luh SYEHL|Le ciel est bleu.|The sky is blue.
+nature|le nuage|the cloud|n.m|luh noo-AHZH|Il y a un gros nuage.|There is a big cloud.
+places|le gouvernement|the government|n.m|luh goo-vehr-nuh-MAHN|Le gouvernement change la loi.|The government changes the law.
+places|le village|the village|n.m|luh vee-LAHZH|Mon village est petit.|My village is small.
+places|la nouvelle|the news item|n.f|lah noo-VEHL|C'est une bonne nouvelle.|It's good news.
+places|l'économie|the economy|n.f|lay-koh-noh-MEE|L'économie grandit.|The economy grows.
 `;

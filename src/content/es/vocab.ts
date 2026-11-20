@@ -288,4 +288,66 @@ connectors|por eso|that's why|phr|pohr EH-soh|Estoy cansado, por eso duermo.|I'm
 connectors|por ejemplo|for example|phr|pohr eh-HEHM-ploh|Me gusta el deporte, por ejemplo, el tenis.|I like sports, for example tennis.|A2
 connectors|sí|yes|adv|see|Sí, quiero.|Yes, I want to.
 connectors|no|no / not|adv|noh|No, gracias.|No, thank you.
+food|el postre|the dessert|n.m|ehl POHS-treh|De postre quiero helado.|For dessert I want ice cream.
+food|la sal|the salt|n.f|lah sahl|Falta sal en la sopa.|The soup needs salt.
+food|el azúcar|the sugar|n.m|ehl ah-SOO-kahr|No quiero azúcar en el café.|I don't want sugar in my coffee.
+food|el aceite|the oil|n.m|ehl ah-SAY-teh|Uso aceite de oliva.|I use olive oil.
+food|la ensalada|the salad|n.f|lah ehn-sah-LAH-dah|Quiero una ensalada.|I want a salad.
+food|el helado|the ice cream|n.m|ehl eh-LAH-doh|El helado es de chocolate.|The ice cream is chocolate.
+objects|el salón|the living room|n.m|ehl sah-LOHN|El salón es grande.|The living room is big.
+objects|el dormitorio|the bedroom|n.m|ehl dohr-mee-TOH-ryoh|Mi dormitorio es pequeño.|My bedroom is small.
+objects|el baño|the bathroom|n.m|ehl BAH-nyoh|¿Dónde está el baño?|Where is the bathroom?
+objects|la cocina|the kitchen|n.f|lah koh-SEE-nah|La cocina está limpia.|The kitchen is clean.
+objects|el jardín|the garden|n.m|ehl hahr-DEEN|El jardín tiene flores.|The garden has flowers.
+objects|el alquiler|the rent|n.m|ehl ahl-kee-LEHR|El alquiler es caro.|The rent is expensive.
+objects|el vecino|the neighbour|n.m|ehl veh-SEE-noh|Mi vecino es simpático.|My neighbour is nice.
+work|el sueldo|the salary|n.m|ehl SWEHL-doh|El sueldo es bueno.|The salary is good.
+work|el contrato|the contract|n.m|ehl kohn-TRAH-toh|Firmo el contrato hoy.|I sign the contract today.
+work|la entrevista|the interview|n.f|lah ehn-treh-VEES-tah|Mañana tengo una entrevista.|Tomorrow I have an interview.
+work|el horario|the schedule|n.m|ehl oh-RAH-ryoh|Mi horario es flexible.|My schedule is flexible.
+travel|el equipaje|the luggage|n.m|ehl eh-kee-PAH-heh|El equipaje es pesado.|The luggage is heavy.
+travel|la llegada|the arrival|n.f|lah yeh-GAH-dah|La llegada es a las diez.|The arrival is at ten.
+travel|la salida|the departure / exit|n.f|lah sah-LEE-dah|La salida está a la derecha.|The exit is on the right.
+travel|el retraso|the delay|n.m|ehl rreh-TRAH-soh|El tren lleva retraso.|The train is delayed.
+travel|la frontera|the border|n.f|lah frohn-TEH-rah|Cruzamos la frontera.|We cross the border.
+travel|la habitación|the room|n.f|lah ah-bee-tah-SYOHN|La habitación es limpia.|The room is clean.
+health|la garganta|the throat|n.f|lah gahr-GAHN-tah|Me duele la garganta.|My throat hurts.
+health|la tos|the cough|n.f|lah tohs|Tengo tos desde ayer.|I've had a cough since yesterday.
+health|la receta|the prescription|n.f|lah rreh-SEH-tah|Necesito una receta.|I need a prescription.
+health|descansar|to rest|v|dehs-kahn-SAHR|Necesito descansar.|I need to rest.
+verbs|empezar|to start|v|ehm-peh-SAHR|La clase va a empezar.|The class is going to start.
+verbs|terminar|to finish|v|tehr-mee-NAHR|Voy a terminar el trabajo.|I'm going to finish the work.
+verbs|esperar|to wait / hope|v|ehs-peh-RAHR|Voy a esperar el autobús.|I'm going to wait for the bus.
+verbs|buscar|to look for|v|boos-KAHR|Voy a buscar mis llaves.|I'm going to look for my keys.
+verbs|encontrar|to find|v|ehn-kohn-TRAHR|Quiero encontrar un piso.|I want to find a flat.
+verbs|ayudar|to help|v|ah-yoo-DAHR|¿Puedes ayudar a mi amigo?|Can you help my friend?
+verbs|recordar|to remember|v|rreh-kohr-DAHR|Quiero recordar tu nombre.|I want to remember your name.
+verbs|olvidar|to forget|v|ohl-vee-DAHR|No quiero olvidar nada.|I don't want to forget anything.
+verbs|preguntar|to ask|v|preh-goon-TAHR|Voy a preguntar el precio.|I'm going to ask the price.
+verbs|responder|to answer|v|rrehs-pohn-DEHR|Voy a responder el correo.|I'm going to answer the email.
+verbs|conocer|to know (a person/place)|v|koh-noh-SEHR|Quiero conocer Madrid.|I want to get to know Madrid.
+verbs|cambiar|to change|v|kahm-BYAHR|Quiero cambiar de trabajo.|I want to change jobs.
+emotions|preocupado|worried|adj|preh-oh-koo-PAH-doh|Estoy preocupado por ti.|I'm worried about you.
+emotions|orgulloso|proud|adj|ohr-goo-YOH-soh|Estoy orgulloso de ti.|I'm proud of you.
+emotions|sorprendido|surprised|adj|sohr-prehn-DEE-doh|Estoy muy sorprendido.|I'm very surprised.
+adjectives|importante|important|adj|eem-pohr-TAHN-teh|Es muy importante.|It's very important.
+adjectives|peligroso|dangerous|adj|peh-lee-GROH-soh|Es peligroso aquí.|It's dangerous here.
+adjectives|seguro|safe / sure|adj|seh-GOO-roh|Estoy seguro.|I'm sure.
+adjectives|ocupado|busy|adj|oh-koo-PAH-doh|Estoy ocupado hoy.|I'm busy today.
+adjectives|libre|free|adj|LEE-breh|¿Estás libre mañana?|Are you free tomorrow?
+adjectives|diferente|different|adj|dee-feh-REHN-teh|Es muy diferente.|It's very different.
+adjectives|necesario|necessary|adj|neh-seh-SAH-ryoh|Es necesario descansar.|It's necessary to rest.
+adjectives|posible|possible|adj|poh-SEE-bleh|Es posible llegar tarde.|It's possible to arrive late.
+connectors|sin embargo|however|phr|seen ehm-BAHR-goh|Es caro; sin embargo, me gusta.|It's expensive; however, I like it.|B1
+connectors|además|besides|adv|ah-deh-MAHS|Además, es muy barato.|Besides, it's very cheap.|B1
+connectors|aunque|although|conj|AHWN-keh|Voy aunque llueva.|I'm going even if it rains.|B1
+connectors|mientras|while|conj|MYEHN-trahs|Leo mientras como.|I read while I eat.|B1
+connectors|de repente|suddenly|phr|deh rreh-PEHN-teh|De repente empezó a llover.|Suddenly it started to rain.|B1
+nature|el río|the river|n.m|ehl RREE-oh|El río es largo.|The river is long.
+nature|el cielo|the sky|n.m|ehl SYEH-loh|El cielo está azul.|The sky is blue.
+nature|la nube|the cloud|n.f|lah NOO-beh|Hay una nube grande.|There is a big cloud.
+places|el gobierno|the government|n.m|ehl goh-BYEHR-noh|El gobierno cambia la ley.|The government changes the law.
+places|el pueblo|the village|n.m|ehl PWEH-bloh|Mi pueblo es pequeño.|My village is small.
+places|la noticia|the news item|n.f|lah noh-TEE-syah|Es una buena noticia.|It's good news.
+places|la economía|the economy|n.f|lah eh-koh-noh-MEE-ah|La economía crece.|The economy grows.
 `;

@@ -10,8 +10,8 @@ import { Logo } from '../components/Logo';
 import { Icon, type IconName } from '../components/Icon';
 import { Btn, Card, Chip, Note, cx } from '../components/ui';
 
-const MINUTES: [number, string][] = [[5, 'Quick'], [10, 'Light'], [15, 'Steady'], [20, 'Sweet spot'], [30, 'Focused'], [45, 'Serious'], [60, 'Intense']];
-const HELLO: Record<string, string> = { es: '¡Hola!', fr: 'Bonjour !', de: 'Hallo!' };
+const MINUTES: [number, string][] = [[5, 'Quick'], [10, 'Light'], [15, 'Steady'], [20, 'Sweet spot'], [30, 'Focused'], [45, 'Serious'], [60, 'Intense'], [90, '30-day sprint'], [120, 'Full sprint']];
+const HELLO: Record<string, string> = { es: '¡Hola!', fr: 'Bonjour !', de: 'Hallo!', it: 'Ciao!', pl: 'Cześć!', ru: 'Привет!', ko: '안녕!', ja: 'やあ', zh: '你好', ar: 'مرحبا' };
 
 function Say({ children, mood = 'wave' }: { children: ReactNode; mood?: 'wave' | 'happy' | 'think' | 'cheer' }) {
   return (
@@ -40,13 +40,13 @@ export default function Onboarding() {
 
         {step === 0 && (
           <div className="rise">
-            <div className="hero mb-6 p-6 sm:p-8"><div className="relative z-10"><p className="text-sm font-semibold muted">Learn. <span className="text-accent">Speak.</span> Belong.</p><h1 className="mt-2 text-4xl font-extrabold leading-[1.1] tracking-tight">Learn Spanish, French or German the way memory actually works.</h1>
-              <div className="mt-5 flex gap-2">{['¡Hola!', 'Bonjour!', 'Hallo!'].map((h) => <span key={h} className="rounded-full bg-white/15 px-3 py-1 text-sm font-semibold">{h}</span>)}</div></div></div>
+            <div className="hero mb-6 p-6 sm:p-8"><div className="relative z-10"><p className="text-sm font-semibold muted">Learn. <span className="text-accent">Speak.</span> Belong.</p><h1 className="mt-2 text-4xl font-extrabold leading-[1.1] tracking-tight">Learn a language the way memory actually works.</h1>
+              <div className="mt-5 flex gap-2">{['¡Hola!', 'Ciao!', '你好', 'Привет!', '안녕!'].map((h) => <span key={h} className="rounded-full bg-white/15 px-3 py-1 text-sm font-semibold">{h}</span>)}</div></div></div>
             <Say>Hi, I'm your Teacher. I'll guide you step by step, so you always know what to do next. First, what should I call you?</Say>
             <label className="block text-sm font-semibold" htmlFor="uname">Your name</label>
             <input id="uname" value={name} onChange={(e) => setName(e.target.value)} maxLength={24} placeholder="e.g. Owen" autoComplete="given-name" className="mt-2 h-14 w-full rounded-2xl border border-line bg-surface px-4 text-lg outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/15" />
             <div className="mt-6 space-y-3">{VALUE.map(([ic, t, d]) => <div key={t} className="flex items-start gap-3"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent/15 text-accent"><Icon name={ic} size={20} /></span><div><p className="font-semibold leading-tight">{t}</p><p className="text-sm text-muted">{d}</p></div></div>)}</div>
-            <Note>Realistic goal: 30 days builds a solid beginner foundation for simple conversations. It doesn't make you fluent.</Note>
+            <Note>Realistic goal: 30 days of focused work builds a working foundation: real conversations on everyday topics. Nobody becomes fluent in 30 days, and LINGUA will tell you honestly where you stand.</Note>
             <Footer><Btn size="lg" className="w-full" disabled={name.trim().length < 2} onClick={() => setStep(1)}>Continue<Icon name="arrow" size={18} /></Btn></Footer>
           </div>
         )}
@@ -60,14 +60,14 @@ export default function Onboarding() {
             <div className="grid gap-3">{LANGUAGES.map((l) => { const on = langs.includes(l.code); return (
               <button key={l.code} onClick={() => setLangs((x) => (on ? x.filter((c) => c !== l.code) : [...x, l.code]))} aria-pressed={on} className={cx('flex items-center gap-4 rounded-2xl border-2 p-4 text-left transition active:scale-[.99]', on ? 'border-accent bg-accent/10' : 'border-line bg-surface hover:bg-surface2')}>
                 <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-surface2 text-lg font-bold">{HELLO[l.code] ?? l.endonym.slice(0, 2)}</span>
-                <div className="min-w-0 flex-1"><div className="flex items-baseline gap-2"><span className="text-xl font-extrabold">{l.endonym}</span><span className="text-muted">{l.name}</span></div><p className="mt-0.5 text-sm text-muted">{l.blurb}</p></div>
+                <div className="min-w-0 flex-1"><div className="flex items-baseline gap-2"><span className="text-xl font-extrabold">{l.endonym}</span><span className="text-muted">{l.name}</span></div><p className="mt-0.5 text-sm text-muted">{l.blurb}</p>{l.fsi && <p className="mt-1 text-xs text-muted">Difficulty for English speakers: {['', 'Easier', 'Moderate', 'Hard', 'Hardest'][l.fsi.category]} · about {l.fsi.hours} class hours to professional level</p>}</div>
                 <span className={cx('grid h-7 w-7 shrink-0 place-items-center rounded-full border-2', on ? 'border-accent bg-accent text-accent-ink' : 'border-line')}>{on && <Icon name="check" size={15} strokeWidth={3} />}</span></button>); })}</div>
             <Footer><Btn variant="ghost" onClick={() => setStep(1)}>Back</Btn><Btn size="lg" className="flex-1" disabled={!langs.length} onClick={() => setStep(3)}>Continue</Btn></Footer></div>
         )}
         {step === 3 && (
           <div className="rise"><Say>How much time can you give each day? Short and daily beats long and rare, and I'll build every session to fit.</Say>
             <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{MINUTES.map(([m, label]) => <button key={m} onClick={() => setMinutes(m)} aria-pressed={minutes === m} className={cx('rounded-2xl border-2 px-4 py-3.5 text-left transition active:scale-[.98]', minutes === m ? 'border-accent bg-accent/10' : 'border-line bg-surface hover:bg-surface2')}><span className="block text-2xl font-extrabold leading-none">{m}<span className="text-sm font-semibold text-muted"> min</span></span><span className="text-xs font-medium text-muted">{label}{m === 20 ? '' : ''}</span></button>)}</div>
-            <p className="mt-3 text-sm text-muted">{minutes <= 10 ? 'A solid minimum: reviews plus a little new material.' : minutes <= 20 ? 'The sweet spot for most learners.' : 'Great for faster progress. Sessions mix in listening, reading and writing.'}</p>
+            <p className="mt-3 text-sm text-muted">{minutes <= 10 ? 'A solid minimum: reviews plus a little new material.' : minutes <= 20 ? 'The sweet spot for most learners.' : minutes < 90 ? 'Great for faster progress. Sessions mix in listening, reading and writing.' : 'Sprint mode adds extra words, spaced replays of earlier days and extra retrieval practice. Split it into two or three sittings: spreading study out beats cramming. Even so, 30 days gives a working base, not fluency.'}</p>
             <Footer><Btn variant="ghost" onClick={() => setStep(2)}>Back</Btn><Btn size="lg" className="flex-1" onClick={() => { setStep(4); setLi(0); setTesting(false); }}>Continue</Btn></Footer></div>
         )}
         {step === 4 && (() => {

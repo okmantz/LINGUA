@@ -12,7 +12,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export function ReviewBlock({ ids, onDone }: { ids: string[]; onDone: (score: number) => void }) {
   const { store, cfg, content, ui, rate, rnd, flags } = useCtx(); const stop = useStudyClock();
-  const [queue, setQueue] = useState<CardExercise[]>(() => ids.map((id) => content.vocab.find((v) => v.id === id)).filter(Boolean).map((v) => makeExercise(v as VocabEntry, pickMode(store.cardMap.get(`${cfg.code}:${v!.id}`), rnd), content.vocab, rnd)));
+  const [queue, setQueue] = useState<CardExercise[]>(() => ids.map((id) => content.vocab.find((v) => v.id === id)).filter(Boolean).map((v) => makeExercise(v as VocabEntry, pickMode(store.cardMap.get(`${cfg.code}:${v!.id}`), rnd, hasTTS() && hasVoiceFor(cfg.tts)), content.vocab, rnd)));
   const [i, setI] = useState(0); const [first, setFirst] = useState<Record<string, boolean>>({});
   const total = ids.length;
   const cur = queue[i];
@@ -26,7 +26,7 @@ export function ReviewBlock({ ids, onDone }: { ids: string[]; onDone: (score: nu
   return (
     <div>
       <Progress value={i / Math.max(total, queue.length)} className="mb-5" label="Block progress" />
-      <ExerciseView key={i} ex={cur.ex} cfg={cfg} ui={ui} speakText={cur.speak} autoSpeak={cur.mode === 'listen'} rate={rate} onDone={done} immersive={flags.hideHints}
+      <ExerciseView key={i} ex={cur.ex} cfg={cfg} ui={ui} speakText={cur.speak} autoSpeak={cur.mode === 'listen' || cur.mode === 'dictate'} rate={rate} onDone={done} immersive={flags.hideHints}
         answerLabel={`${cur.entry.t} = ${cur.entry.n}${cur.entry.note ? ' · ' + cur.entry.note : ''}`} />
     </div>
   );
@@ -37,7 +37,7 @@ export function WordCard({ e, rate, showRoman = true }: { e: VocabEntry; rate: n
   return (
     <Card className="text-center">
       <div className="flex items-center justify-center gap-3"><h2 className="text-3xl font-bold sm:text-4xl">{e.t}</h2>{hasTTS() && <Speak onClick={() => void speak(e.t, cfg.tts, rate)} />}</div>
-      {showRoman && <p className="mt-1 text-muted">/{e.pron}/ · {e.pos}{e.gender ? `.${e.gender}` : ''}</p>}
+      {showRoman && <p className="mt-1 text-muted">{cfg.romanLabel ? <><span className="text-xs uppercase tracking-wide">{cfg.romanLabel}</span> <b className="font-semibold text-ink">{e.pron}</b></> : <>/{e.pron}/</>} · {e.pos}{e.gender ? `.${e.gender}` : ''}</p>}
       <p className="mt-3 text-xl">{e.n}</p>
       <div className="mt-4 rounded-xl bg-surface2 p-3 text-left"><p>{e.ex}</p><p className="text-sm text-muted">{e.exn}</p></div>
       {e.note && <p className="mt-3 text-sm text-muted">{e.note}</p>}

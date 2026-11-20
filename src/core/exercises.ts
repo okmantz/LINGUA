@@ -8,13 +8,14 @@ export interface CardExercise {
 }
 
 /** Choose a retrieval mode that gets harder as the memory gets stronger (desirable difficulty). */
-export function pickMode(card: Card | undefined, rnd: () => number): Mode {
+export function pickMode(card: Card | undefined, rnd: () => number, canDictate = true): Mode {
   if (!card || card.state === 0) return 'recog';
   const s = card.stability;
+  // 'dictate' (hear a whole sentence, type it) joins once a word is reasonably stable: sentence-level listening + spelling, the hardest retrieval.
   const pool: Mode[] = card.state === 1 || card.state === 3 ? ['recog', 'rev', 'listen']
     : s < 3 ? ['rev', 'listen', 'recog']
-    : s < 14 ? ['listen', 'cloze', 'rev', 'produce']
-    : ['produce', 'cloze', 'listen'];
+    : s < 14 ? ['listen', 'cloze', 'rev', 'produce', ...(canDictate ? ['dictate' as Mode] : [])]
+    : ['produce', 'cloze', 'listen', ...(canDictate ? ['dictate' as Mode] : [])];
   // prefer the least practised mode among the pool (interleaving)
   const counts = pool.map((m) => (card.modes[m]?.ok ?? 0) + (card.modes[m]?.fail ?? 0) + rnd() * 0.9);
   return pool[counts.indexOf(Math.min(...counts))];
@@ -32,14 +33,31 @@ function distractors(e: VocabEntry, pool: VocabEntry[], n: number, rnd: () => nu
   return out;
 }
 
+const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+/** Which sides of a word must be a word boundary. Chinese/Japanese have no spaces; Korean and Arabic attach particles/prefixes. */
+const boundaries = (core: string): { lead: boolean; trail: boolean } =>
+  /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff]/.test(core) ? { lead: false, trail: false }
+  : /[\uac00-\ud7af]/.test(core) ? { lead: true, trail: false }
+  : /[\u0600-\u06ff]/.test(core) ? { lead: false, trail: false }
+  : { lead: true, trail: true };
+
 export function clozeOf(e: VocabEntry): { prompt: string; answer: string } | null {
   const core = coreWord(e.t);
   if (!core || core.includes(' ')) return null;
-  const re = new RegExp(`(^|[^\\p{L}])(${core.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})(?=$|[^\\p{L}])`, 'iu');
+  const b = boundaries(core);
+  const re = new RegExp(`${b.lead ? '(^|[^\\p{L}])' : '()'}(${esc(core)})${b.trail ? '(?=$|[^\\p{L}])' : ''}`, 'iu');
   const m = re.exec(e.ex);
   if (!m) return null;
   return { prompt: e.ex.replace(re, `$1_____`), answer: m[2] };
 }
+
+const isLatinish = (s: string) => !/[^\u0000-\u024f\u1e00-\u1eff\u0400-\u04ff]/.test(s);
+/** In Chinese/Japanese/Korean/Arabic a learner may not have the right keyboard, so the romanisation (pinyin, rōmaji, RR…) is accepted too. */
+const romanAlts = (e: VocabEntry): string[] => {
+  if (isLatinish(e.t) || !e.pron) return [];
+  const p = e.pron.replace(/·/g, '');
+  return [p, p.replace(/-/g, ''), p.replace(/-/g, ' ')];
+};
 
 export function makeExercise(e: VocabEntry, mode: Mode, pool: VocabEntry[], rnd: () => number): CardExercise {
   const mcq = (prompt: string, right: string, wrong: string[], extra: Partial<CardExercise> = {}): CardExercise => {
@@ -55,8 +73,13 @@ export function makeExercise(e: VocabEntry, mode: Mode, pool: VocabEntry[], rnd:
       if (c) return { mode, entry: e, ex: { kind: 'fill', prompt: c.prompt, answers: [c.answer], hint: `${e.exn} · ${e.n}`, skill: 'vocabulary' }, answerLabel: `${e.t} = ${e.n}`, speak: e.ex };
       return makeExercise(e, 'produce', pool, rnd);
     }
+    case 'dictate': {
+      // Hear the whole example sentence and type it: trains sound→spelling and sentence-level listening.
+      if (!isLatinish(e.ex) || e.ex.split(/\s+/).length < 2) return makeExercise(e, 'produce', pool, rnd);
+      return { mode, entry: e, ex: { kind: 'type', prompt: '🔊 ' + 'Type what you hear', answers: [e.ex], skill: 'listening' }, speak: e.ex, answerLabel: `${e.ex} = ${e.exn}` };
+    }
     case 'produce': default:
-      return { mode: 'produce', entry: e, ex: { kind: 'type', prompt: e.n, answers: [e.t, coreWord(e.t)], skill: 'vocabulary' }, answerLabel: `${e.t} = ${e.n}` };
+      return { mode: 'produce', entry: e, ex: { kind: 'type', prompt: e.n, answers: [e.t, coreWord(e.t), ...romanAlts(e)], skill: 'vocabulary' }, answerLabel: `${e.t}${isLatinish(e.t) ? '' : ` (${e.pron})`} = ${e.n}` };
   }
 }
 export const sameWord = (a: string, b: string) => fold(a) === fold(b);

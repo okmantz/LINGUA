@@ -28,9 +28,9 @@ export default function Languages() {
           <div className="mt-3 flex flex-wrap gap-2">{!active && <Btn size="sm" onClick={() => store.setActiveLang(l.code)}>Switch to {l.name}</Btn>}<Btn size="sm" variant="ghost" onClick={() => setTest({ code: l.code, add: false })}>Retake placement</Btn></div>
         </Card>); })}</div>
       {rest.length > 0 && <><h2 className="mb-3 mt-8 text-lg font-semibold">Add a language</h2><div className="grid gap-3">{rest.map((l) => (
-        <Card key={l.code}><div className="flex flex-wrap items-baseline gap-2"><h3 className="text-lg font-bold">{l.endonym}</h3><span className="text-muted">{l.name}</span></div><p className="mt-1 text-sm text-muted">{l.blurb}</p>
+        <Card key={l.code}><div className="flex flex-wrap items-baseline gap-2"><h3 className="text-lg font-bold">{l.endonym}</h3><span className="text-muted">{l.name}</span></div><p className="mt-1 text-sm text-muted">{l.blurb}</p>{l.fsi && <p className="mt-1 text-xs text-muted">{['', 'Easier', 'Moderate', 'Hard', 'Hardest'][l.fsi.category]} for English speakers (about {l.fsi.hours} class hours to professional level). {l.outcome}</p>}
           <div className="mt-3 flex flex-wrap gap-2"><Btn size="sm" onClick={() => { void store.addLanguage(l.code, p.languages[p.activeLang!]?.dailyMinutes ?? 15); nav('/'); }}>Start from zero</Btn><Btn size="sm" variant="ghost" onClick={() => setTest({ code: l.code, add: true })}>Take placement test</Btn></div></Card>))}</div></>}
-      <div className="mt-6"><Note>Adding more languages to the app itself is a content task: drop a folder into <code>src/content</code> and register it — see docs/ADDING_CONTENT.md.</Note></div>
+      <div className="mt-6"><Note>Adding more languages to the app itself is a content task: drop a folder into <code>src/content</code> and register it — see docs/ADDING_CONTENT.md. Content for newer languages is machine-drafted and should be reviewed by a speaker.</Note></div>
     </div>
   );
 }

@@ -27,7 +27,7 @@ for (const lang of LANGUAGES) {
         expect(ids.has(v.id), `dup ${v.id}`).toBe(false); ids.add(v.id);
         expect(cats.has(v.cat), `${v.id} bad cat ${v.cat}`).toBe(true);
         expect(v.t && v.n && v.pron && v.ex && v.exn, `${v.id} incomplete`).toBeTruthy();
-        if (v.pos === 'noun') expect(v.gender, `${v.id} noun needs gender`).toBeTruthy();
+        if (v.pos === 'noun' && !lang.noGender) expect(v.gender, `${v.id} noun needs gender`).toBeTruthy();
       }
       expect(c.vocab.length).toBeGreaterThan(200);
       const cloze = c.vocab.filter((v) => clozeOf(v)).length / c.vocab.length;

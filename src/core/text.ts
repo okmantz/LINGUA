@@ -1,11 +1,17 @@
 // Answer checking and text utilities (language-agnostic, accent-aware).
-export const norm = (s: string) =>
-  s.toLowerCase().replace(/[’`´]/g, "'").replace(/[¡¿!?.,;:"“”«»()…]/g, ' ').replace(/\s+/g, ' ').trim();
+const CJK = /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff]/;
+export const hasCJK = (s: string) => CJK.test(s);
+export const norm = (s: string) => {
+  const out = s.toLowerCase().replace(/[’`´]/g, "'").replace(/[¡¿!?.,;:"“”«»()…。、！？「」『』・，：；（）～؟،؛—–]/g, ' ').replace(/\s+/g, ' ').trim();
+  // Chinese/Japanese are written without spaces: ignore spacing entirely so "私 は 学生 です" equals "私は学生です".
+  return CJK.test(out) ? out.replace(/\s+/g, '') : out;
+};
 
 /** Fold diacritics and German digraphs so "schoen"/"schön"/"schon-ish" comparisons are explicit. */
 export const fold = (s: string) =>
-  norm(s).replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
-    .normalize('NFD').replace(/[̀-ͯ]/g, '');
+  norm(s).replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss').replace(/ł/g, 'l').replace(/ё/g, 'е')
+    .replace(/[أإآٱ]/g, 'ا').replace(/ـ/g, '').replace(/ة/g, 'ه').replace(/ى/g, 'ي')
+    .normalize('NFD').replace(/[̀-ͯ\u064b-\u0652\u0670]/g, '');
 
 export function lev(a: string, b: string): number {
   const m = a.length, n = b.length;
@@ -28,11 +34,13 @@ export function checkAnswer(input: string, answers: string[]): Verdict {
   if (answers.some((a) => norm(a) === n)) return 'exact';
   const f = fold(input);
   if (answers.some((a) => fold(a) === f)) return 'accent';
-  if (f.length >= 5 && answers.some((a) => lev(fold(a), f) <= 1)) return 'close';
+  // A one-letter slip is forgiven in alphabetic scripts; in Chinese/Japanese/Korean/Arabic one character often IS the word, so no leniency.
+  const strict = hasCJK(f) || /[\u1100-\u11ff\u3130-\u318f\uac00-\ud7af\u0600-\u06ff]/.test(f);
+  if (!strict && f.length >= 5 && answers.some((a) => lev(fold(a), f) <= 1)) return 'close';
   return 'wrong';
 }
 
-const ARTICLES = /^(?:(?:el|la|los|las|un|una|unos|unas|le|les|une|des|der|die|das|ein|eine|einen|dem|den)\s+|l')/i;
+const ARTICLES = /^(?:(?:el|la|los|las|un|una|unos|unas|le|les|une|des|der|die|das|ein|eine|einen|dem|den|il|lo|gli|uno)\s+|l'|un')/i;
 /** Strip a leading article: "la casa" → "casa", "l'eau" → "eau". */
 export const coreWord = (t: string) => t.replace(ARTICLES, '').trim();
 
@@ -51,7 +59,8 @@ export const mulberry32 = (seed: number) => () => {
 
 /** Word-level similarity (0..1) between a target sentence and a transcript. */
 export function sentenceSimilarity(target: string, heard: string): number {
-  const a = fold(target).split(' ').filter(Boolean), b = fold(heard).split(' ').filter(Boolean);
+  const toks = (s: string) => { const f = fold(s); return hasCJK(f) ? [...f] : f.split(' ').filter(Boolean); }; // character-level for Chinese/Japanese
+  const a = toks(target), b = toks(heard);
   if (!a.length || !b.length) return 0;
   const dp = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
   for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++)
@@ -59,5 +68,10 @@ export function sentenceSimilarity(target: string, heard: string): number {
   return dp[a.length][b.length] / Math.max(a.length, b.length);
 }
 
-export const countWords = (s: string) => (s.trim().match(/[\p{L}\p{N}']+/gu) ?? []).length;
+/** Words for spaced scripts; for Chinese/Japanese each character counts as one unit (minWords is then a character target). */
+export const countWords = (s: string) => {
+  const cjk = (s.match(/[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff]/g) ?? []).length;
+  const rest = s.replace(/[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff]/g, ' ');
+  return cjk + (rest.trim().match(/[\p{L}\p{N}']+/gu) ?? []).length;
+};
 export const hashStr = (s: string) => { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };

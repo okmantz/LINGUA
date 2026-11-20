@@ -2,7 +2,7 @@
 import type { Card, LangState, LanguageContent, Skill, EventRec, Cefr } from './types';
 import { cefrIndex } from './types';
 import { PROGRAM_LENGTH } from './program';
-import { resolveProgram, pathwayItems } from './curriculum';
+import { resolveProgram, pathwayItems, dayWords } from './curriculum';
 import { skillScores } from './analytics';
 
 export type BlockType = 'review' | 'newvocab' | 'grammar' | 'conversation' | 'reading' | 'listening' | 'pronunciation' | 'writing' | 'recap';
@@ -50,7 +50,12 @@ export function planSession(inp: PlanInput): SessionPlan {
   if (today) {
     const d = today.def;
     // 2) New words for today's theme (only the ones not yet introduced)
-    const fresh = today.words.filter((w) => !vocabCards.has(w.id));
+    // Words from earlier days that a short session never reached come first, so nothing in the plan is silently skipped.
+    const carry = days.slice(0, state.programDay - 1).flatMap((x) => x.words).filter((w) => !vocabCards.has(w.id)).slice(0, 12);
+    // Sprint (≥45 min): add extra high-frequency words from today's themes, beyond the standard daily quota.
+    const claimedAll = new Set(days.flatMap((x) => x.words.map((w) => w.id)));
+    const bonus = inp.minutes >= 45 ? dayWords({ ...d, newWords: Math.min(20, Math.floor(inp.minutes / 6)) }, content, claimedAll) : [];
+    const fresh = [...new Map([...carry, ...today.words, ...bonus].filter((w) => !vocabCards.has(w.id)).map((w) => [w.id, w])).values()];
     if (fresh.length && left() > 90) {
       const n = Math.max(3, Math.min(fresh.length, Math.floor((left() * 0.3) / SEC.newWord)));
       push({ key: `d${d.day}-words-${fresh[0].id}`, type: 'newvocab', title: `${n} new words: ${d.title}`, why: `Day ${d.day} theme words, tested right after introduction`, ids: fresh.slice(0, n).map((w) => w.id), minutes: 0, skill: 'vocabulary', programDay: d.day, required: true }, n * SEC.newWord);
@@ -68,6 +73,21 @@ export function planSession(inp: PlanInput): SessionPlan {
     for (const [, sec, make] of wants) {
       const b = make(); if (!b) continue;
       if (left() >= sec * 0.85 || (blocks.length === 0 && inp.minutes >= 5)) push(b, Math.min(sec, Math.max(left(), sec * 0.85)));
+    }
+    // 3b) Sprint mode (≥40 min): lesson-level spaced repetition. Days finished 1, 3, 7 and 14 lessons ago are revisited —
+    //     conversations to produce again, listening and reading to re-process — because re-exposure at expanding gaps is what fixes input in memory.
+    if (inp.minutes >= 40) {
+      const replayDone = (k: string) => (state.lessons[k]?.best ?? 0) >= 0.6;
+      for (const gap of [1, 3, 7, 14]) {
+        const past = days[state.programDay - 1 - gap]; if (!past) continue;
+        const why = `Spaced re-visit of day ${past.def.day} — expanding gaps fix lessons in memory`;
+        const reps: [number, Block | null][] = [
+          [SEC.conversation, past.conv ? { key: `replay:conv:${past.conv.id}:${d.day}`, type: 'conversation', title: `Replay: ${past.conv.title}`, why, ids: [past.conv.id], minutes: 0, skill: 'conversation' } : null],
+          [SEC.listening, past.listening ? { key: `replay:listening:${past.listening.id}:${d.day}`, type: 'listening', title: `Re-listen: ${past.listening.title}`, why, ids: [past.listening.id], minutes: 0, skill: 'listening' } : null],
+          [SEC.reading, past.reading ? { key: `replay:reading:${past.reading.id}:${d.day}`, type: 'reading', title: `Re-read: ${past.reading.title}`, why, ids: [past.reading.id], minutes: 0, skill: 'reading' } : null],
+        ];
+        for (const [sec, b] of reps) if (b && !replayDone(b.key) && left() >= sec * 0.85) push(b, sec);
+      }
     }
   } else {
     // Post-programme / skipped: weakness-driven pathway at the learner's level.
@@ -95,6 +115,12 @@ export function planSession(inp: PlanInput): SessionPlan {
   if (left() >= 60 && due.length > nReview) {
     const extra = Math.min(due.length - nReview, Math.floor(left() / SEC.review));
     if (extra > 0) push({ key: 'review2', type: 'review', title: `${extra} more due word${extra > 1 ? 's' : ''}`, why: 'Using the rest of your time on due reviews', ids: due.slice(nReview, nReview + extra).map((c) => c.itemId), minutes: 0, skill: 'vocabulary' }, extra * SEC.review);
+  }
+  // Sprint: spend spare minutes on extra retrieval of the words closest to being forgotten (reviewing slightly early still strengthens memory).
+  if (inp.minutes >= 40 && left() >= 120) {
+    const taken = new Set(blocks.filter((b) => b.type === 'review').flatMap((b) => b.ids));
+    const early = cards.filter((c) => c.kind === 'vocab' && !taken.has(c.itemId)).sort((a, b) => a.due - b.due).slice(0, Math.min(40, Math.floor(left() / SEC.review)));
+    if (early.length >= 5) push({ key: 'review-extra', type: 'review', title: `Extra retrieval: ${early.length} words`, why: 'Sprint mode: more retrieval practice on the words nearest to being forgotten', ids: early.map((c) => c.itemId), minutes: 0, skill: 'vocabulary' }, early.length * SEC.review);
   }
   if (!blocks.length) { // nothing due, nothing planned: guarantee something useful
     const learned = [...vocabCards.values()].sort((a, b) => a.due - b.due).slice(0, Math.max(5, Math.floor(budget / SEC.review)));

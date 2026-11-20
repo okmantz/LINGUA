@@ -21,7 +21,7 @@ const successes = (c: Card) => (Object.keys(c.modes) as Mode[]).reduce((n, m) =>
 export function stageOf(c: Card | undefined, now = Date.now()): Stage {
   if (!c) return 'unseen';
   if (successes(c) === 0) return 'encountered';
-  const recalled = ok(c, 'rev', 'cloze', 'produce') > 0;
+  const recalled = ok(c, 'rev', 'cloze', 'produce', 'dictate') > 0;
   if (!recalled) return 'recognized';
   const retained = c.state === 2 && c.reps >= 3 && c.days.length >= 2 && c.stability >= 7 && currentRecall(c, now) >= 0.7;
   if (!retained) return 'recalled';

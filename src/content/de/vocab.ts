@@ -284,4 +284,66 @@ connectors|deshalb|therefore|adv|DES-hahlp|Ich bin müde, deshalb schlafe ich.|I
 connectors|zum Beispiel|for example|phr|tsoom BY-shpeel|Ich mag Sport, zum Beispiel Tennis.|I like sports, for example tennis.|A2
 connectors|ja|yes|adv|yah|Ja, gern.|Yes, gladly.
 connectors|nein|no|adv|nine|Nein, danke.|No, thank you.
+food|der Nachtisch|the dessert|n.m|dayr NAHKH-tish|Zum Nachtisch möchte ich Eis.|For dessert I'd like ice cream.|A1
+food|das Salz|the salt|n.n|dahss ZAHLTS|In der Suppe fehlt Salz.|The soup needs salt.|A1
+food|der Zucker|the sugar|n.m|dayr TSOO-ker|Ich möchte keinen Zucker im Kaffee.|I don't want sugar in my coffee.|A1
+food|der Salat|the salad|n.m|dayr zah-LAHT|Ich möchte einen Salat.|I'd like a salad.|A1|Plural: die Salate
+food|das Eis|the ice cream|n.n|dahss ICE|Das Eis ist Schokolade.|The ice cream is chocolate.|A1
+objects|das Wohnzimmer|the living room|n.n|dahss VOHN-tsim-er|Das Wohnzimmer ist groß.|The living room is big.|A1
+objects|das Schlafzimmer|the bedroom|n.n|dahss SHLAHF-tsim-er|Mein Schlafzimmer ist klein.|My bedroom is small.|A1
+objects|das Badezimmer|the bathroom|n.n|dahss BAH-deh-tsim-er|Wo ist das Badezimmer?|Where is the bathroom?|A1
+objects|die Küche|the kitchen|n.f|dee KUE-kheh|Die Küche ist sauber.|The kitchen is clean.|A1|Plural: die Küchen
+objects|der Garten|the garden|n.m|dayr GAHR-ten|Der Garten hat Blumen.|The garden has flowers.|A1|Plural: die Gärten
+objects|die Miete|the rent|n.f|dee MEE-teh|Die Miete ist teuer.|The rent is expensive.|A1
+objects|der Nachbar|the neighbour|n.m|dayr NAHKH-bahr|Mein Nachbar ist nett.|My neighbour is nice.|A1|Plural: die Nachbarn
+work|die Besprechung|the meeting|n.f|dee beh-SHPRECH-oong|Die Besprechung ist um drei.|The meeting is at three.|A1
+work|das Gehalt|the salary|n.n|dahss geh-HAHLT|Das Gehalt ist gut.|The salary is good.|A1
+work|der Vertrag|the contract|n.m|dayr fer-TRAHK|Ich unterschreibe den Vertrag heute.|I sign the contract today.|A1|Plural: die Verträge
+work|das Vorstellungsgespräch|the interview|n.n|dahss FOR-shtel-oongs-geh-shpraych|Morgen habe ich ein Vorstellungsgespräch.|Tomorrow I have an interview.|A2
+work|der Stundenplan|the schedule|n.m|dayr SHTOON-den-plahn|Mein Stundenplan ist flexibel.|My schedule is flexible.|A2
+travel|das Gepäck|the luggage|n.n|dahss geh-PECK|Das Gepäck ist schwer.|The luggage is heavy.|A1
+travel|die Ankunft|the arrival|n.f|dee AHN-koonft|Die Ankunft ist um zehn.|The arrival is at ten.|A2
+travel|der Ausgang|the exit|n.m|dayr OWS-gahng|Der Ausgang ist rechts.|The exit is on the right.|A1
+travel|die Verspätung|the delay|n.f|dee fer-SHPAY-toong|Der Zug hat Verspätung.|The train is delayed.|A2
+travel|die Grenze|the border|n.f|dee GREN-tseh|Wir überqueren die Grenze.|We cross the border.|A2
+travel|das Zimmer|the room|n.n|dahss TSIM-er|Das Zimmer ist sauber.|The room is clean.|A1
+health|der Hals|the throat / neck|n.m|dayr HAHLS|Mein Hals tut weh.|My throat hurts.|A1
+health|der Husten|the cough|n.m|dayr HOO-sten|Ich habe Husten seit gestern.|I've had a cough since yesterday.|A1
+health|das Rezept|the prescription|n.n|dahss reh-TSEPT|Ich brauche ein Rezept.|I need a prescription.|A1
+health|sich ausruhen|to rest|v|zich OWS-roo-en|Ich muss mich ausruhen.|I need to rest.|A2
+verbs|anfangen|to start|v|AHN-fahng-en|Der Kurs wird gleich anfangen.|The class is about to start.
+verbs|beenden|to finish|v|beh-EN-den|Ich möchte die Arbeit beenden.|I'd like to finish the work.
+verbs|warten|to wait|v|VAHR-ten|Ich möchte auf den Bus warten.|I'd like to wait for the bus.
+verbs|suchen|to look for|v|ZOO-khen|Ich möchte meine Schlüssel suchen.|I'd like to look for my keys.
+verbs|finden|to find|v|FIN-den|Ich möchte eine Wohnung finden.|I'd like to find a flat.
+verbs|helfen|to help|v|HEL-fen|Kannst du meinem Freund helfen?|Can you help my friend?
+verbs|vergessen|to forget|v|fer-GES-en|Ich möchte nichts vergessen.|I don't want to forget anything.
+verbs|fragen|to ask|v|FRAH-gen|Ich möchte nach dem Preis fragen.|I'd like to ask the price.
+verbs|antworten|to answer|v|AHNT-vor-ten|Ich möchte auf die E-Mail antworten.|I'd like to answer the email.
+verbs|kennen|to know (a person/place)|v|KEN-en|Ich möchte Berlin kennen.|I'd like to know Berlin.
+verbs|ändern|to change|v|EN-dern|Ich möchte den Job ändern.|I'd like to change the job.
+verbs|bevorzugen|to prefer|v|beh-FOR-tsoo-gen|Ich möchte Tee bevorzugen.|I'd prefer tea.
+emotions|besorgt|worried|adj|beh-ZORGT|Ich bin besorgt um dich.|I'm worried about you.
+emotions|stolz|proud|adj|SHTOLTS|Ich bin stolz auf dich.|I'm proud of you.
+emotions|überrascht|surprised|adj|ue-ber-RAHSHT|Ich bin sehr überrascht.|I'm very surprised.
+adjectives|wichtig|important|adj|VICH-tich|Das ist sehr wichtig.|That is very important.
+adjectives|gefährlich|dangerous|adj|geh-FAIR-lich|Hier ist es gefährlich.|It's dangerous here.
+adjectives|sicher|safe / sure|adj|ZI-kher|Ich bin sicher.|I'm sure.
+adjectives|beschäftigt|busy|adj|beh-SHEFF-tikht|Ich bin heute beschäftigt.|I'm busy today.
+adjectives|frei|free|adj|FRY|Bist du morgen frei?|Are you free tomorrow?
+adjectives|anders|different|adj|AHN-ders|Das ist ganz anders.|That is quite different.
+adjectives|nötig|necessary|adj|NOE-tich|Es ist nötig, sich auszuruhen.|It's necessary to rest.
+adjectives|möglich|possible|adj|MOEG-lich|Es ist möglich, spät zu kommen.|It's possible to arrive late.
+connectors|trotzdem|nevertheless|adv|TROTS-daym|Es ist teuer, trotzdem gefällt es mir.|It's expensive, nevertheless I like it.|B1
+connectors|außerdem|besides|adv|OW-ser-daym|Außerdem ist es sehr billig.|Besides, it's very cheap.|B1
+connectors|obwohl|although|conj|op-VOHL|Ich gehe, obwohl es regnet.|I'm going although it's raining.|B1
+connectors|während|while|conj|VAIR-rent|Ich lese, während ich esse.|I read while I eat.|B1
+connectors|plötzlich|suddenly|adv|PLOETS-lich|Plötzlich fing es an zu regnen.|Suddenly it started to rain.|B1
+nature|der Fluss|the river|n.m|dayr FLOOS|Der Fluss ist lang.|The river is long.|A1|Plural: die Flüsse
+nature|der Himmel|the sky|n.m|dayr HIM-el|Der Himmel ist blau.|The sky is blue.|A1
+nature|die Wolke|the cloud|n.f|dee VOL-keh|Da ist eine große Wolke.|There is a big cloud.|A1|Plural: die Wolken
+places|die Regierung|the government|n.f|dee reh-GEE-roong|Die Regierung ändert das Gesetz.|The government changes the law.|A2
+places|das Dorf|the village|n.n|dahss DORF|Mein Dorf ist klein.|My village is small.|A1|Plural: die Dörfer
+places|die Nachricht|the news item|n.f|dee NAHKH-richt|Das ist eine gute Nachricht.|It's good news.|A2
+places|die Wirtschaft|the economy|n.f|dee VIRT-shahft|Die Wirtschaft wächst.|The economy grows.|A2
 `;

@@ -37,3 +37,13 @@ The structure already supports it: set the item's `level` to `B1`, `B2`… and i
 - Content authored by a speaker beats content from memory — have a native or advanced speaker review new material.
 - Keep example sentences short and natural; every word of an A1 sentence should be known or glossed.
 - Provide at least two plausible-but-wrong options in conversations, and give a `why` for the tempting ones.
+
+## Non-Latin and special-case languages
+
+Registry fields: `script` (`cyrillic`, `han`, `kana`, `hangul`, `arabic`), `rtl`, `noGender` (skips the gender check on nouns), `romanLabel` (e.g. Pinyin, Rōmaji), `fsi` (`{category, hours}`) and `outcome` (honest 30-day expectation text).
+
+- Put real romanisation in the vocab `pron` column. Give verbs in the form learners should type (e.g. polite forms for Korean/Japanese) and make sure the example sentence contains the exact target.
+- Add a `script` vocab category (letters or characters) and use `pace` in `index.ts` to spend days 1–3 on it, e.g. `pace: { 1: { cats: ['script','greetings'], newWords: 18 }, ... }`.
+- The `dictate` exercise mode (sentence dictation) is used automatically for languages with a listening-friendly script.
+- Vocab ids for non-Latin words are generated from Unicode letters when the ASCII slug would be empty.
+- Run `npx vitest run src/content` after every file: it checks ids, `*` marks on multiple-choice answers, duplicate choices and minimum content sizes.

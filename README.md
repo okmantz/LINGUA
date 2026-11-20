@@ -1,6 +1,6 @@
 # LINGUA — science-based language learning
 
-A free, local-first, offline-capable web app for learning **Spanish, French and German**, built on what memory research supports rather than on gamified streak-farming. Hosted on GitHub Pages; there is no backend, no account and no paid API.
+A free, local-first, offline-capable web app for learning **ten languages**: Spanish, French, German, Italian, Polish, Russian, Mandarin Chinese, Japanese, Korean and Arabic, built on what memory research supports rather than on gamified streak-farming. Hosted on GitHub Pages; there is no backend, no account and no paid API.
 
 **Stack:** React 19 · TypeScript · Vite · Tailwind v4 · IndexedDB (`idb`) · PWA (service worker) · Vitest.
 
@@ -26,7 +26,7 @@ A free, local-first, offline-capable web app for learning **Spanish, French and 
 - **Speech recognition** (pronunciation) uses your browser's engine where available. In Chrome it sends audio to Google. It is a rough match score, not a pronunciation expert. Recording + playback for self-comparison always works where `MediaRecorder` exists.
 - **Writing and open conversation are keyword/checklist checks**, not AI grading. They cannot tell whether a sentence is grammatical; the UI says so and shows a model answer.
 - **Placement measures A1–B2.** C1/C2 need a human examiner; a top score is reported as "B2 or above". The dashboard level is an *estimate* from retained vocabulary and accuracy.
-- **Content is a focused starter core** (~285 words, 28 grammar lessons, 26 conversations, 9 readings, 12 listenings per language). Levels without material (B1+ in most modules) are labelled "No material yet" rather than faked.
+- **Content is a solid starter core per language** (roughly 330–365 words, 22 grammar lessons, 26 conversations, 9 readings, 12 listenings, 5 writing prompts and 2 pronunciation lessons each). It is machine-drafted and should be reviewed by native speakers before you rely on it. Levels without material (B1+ in most modules) are labelled "No material yet" rather than faked.
 - **No cloud sync.** Data lives in one browser. Use Export/Import to move devices. The schema is versioned so sync could be added later; it is not implemented and not pretended.
 - **Reminders** are browser notifications that only fire while the app is open or installed and running. There is no push server.
 
@@ -71,3 +71,15 @@ docs/ADDING_CONTENT.md   how to add a language or more material
 
 - **Hosted:** repo *Settings → Pages → Deploy from a branch → main → /docs*, The site is `https://<user>.github.io/LINGUA/`.
 - **Offline, no server:** `npm run build:offline` creates `dist-offline/index.html`, one self-contained file you can double-click (browsers block the normal build's module scripts on `file://`). The deployed site also serves it at `/lingua.html` for download.
+
+## The 30-day sprint — and what it honestly delivers
+
+Nobody becomes fluent in 30 days. LINGUA's 30-day programme is a **sprint that builds a working conversational base** (roughly A1–A2, with some B1 pieces): the sounds and script, the ~350 highest-value words and phrases, core grammar, and real listening and speaking practice. Each language shows its FSI difficulty category and typical hours to professional proficiency so expectations stay realistic.
+
+What it uses instead of streaks and badges: spaced retrieval (FSRS), active recall, comprehensible input, sentence dictation (new `dictate` mode), interleaving, and a **Sprint mode** (90 or 120 minute plans with spaced replays and bonus words).
+
+Non-Latin languages (Russian, Mandarin, Japanese, Korean, Arabic) get a dedicated script phase on days 1–3, romanisation shown beside every item, script-aware answer checking, and RTL layout for Arabic.
+
+## Adding a language
+
+See [docs/ADDING_CONTENT.md](docs/ADDING_CONTENT.md): one folder under `src/content/<code>/` plus one entry in `src/content/registry.ts`.

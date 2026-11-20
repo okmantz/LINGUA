@@ -3,7 +3,9 @@ import type { Cefr, Conversation, CheatSection, ConvStep, Exercise, GrammarLesso
 
 const sp = (s: string, sep = '|') => s.split(sep).map((x) => x.trim());
 const lines = (src: string) => src.split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('//'));
-const slug = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const asciiSlug = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+// Non-Latin words (Cyrillic, CJK, Hangul, Arabic) would all slug to '' — keep their letters so card ids stay stable and readable.
+const slug = (s: string) => asciiSlug(s) || s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '');
 const pair = (s: string): [string, string] => { const i = s.lastIndexOf(' = '); return i < 0 ? [s.trim(), ''] : [s.slice(0, i).trim(), s.slice(i + 3).trim()]; };
 
 // ── Vocabulary: cat|target|english|pos[.gender]|respelling|example|example translation|level?|note?

@@ -147,7 +147,7 @@ export function WritingBlock({ id, onDone }: { id: string; onDone: (score: numbe
     <div className="space-y-4">
       <Card>
         <div className="mb-2 flex gap-2"><Chip tone="accent">{w.level}</Chip><Chip>Writing</Chip></div>
-        <h2 className="text-xl font-bold">{w.title}</h2><p className="mt-2">{w.task}</p><p className="mt-1 text-sm text-muted">Aim for at least {w.minWords} words.</p>
+        <h2 className="text-xl font-bold">{w.title}</h2><p className="mt-2">{w.task}</p><p className="mt-1 text-sm text-muted">Aim for at least {w.minWords} {cfg.script === 'han' || cfg.script === 'kana' ? 'characters' : 'words'}.</p>
         <textarea value={text} onChange={(e) => setText(e.target.value)} disabled={!!res} rows={6} spellCheck={false} aria-label="Your writing" className="mt-3 w-full rounded-xl border border-line bg-surface p-3 text-lg outline-none focus:border-accent" placeholder={`Write in ${cfg.name}…`} />
         <div className="mt-2 flex flex-wrap items-center gap-1.5">{cfg.accents.map((a) => <button key={a} disabled={!!res} className="h-8 min-w-8 rounded-lg border border-line bg-surface px-2 hover:bg-surface2" onClick={() => setText((t) => t + a)}>{a}</button>)}<span className="ml-auto text-sm text-muted">{countWords(text)} words</span></div>
         {!res && <Btn className="mt-3" disabled={countWords(text) < 3} onClick={check}>Check my writing</Btn>}

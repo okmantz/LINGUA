@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { Link, NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useStore } from './state/store';
 import { useGuide } from './state/hooks';
-import { LANGUAGES } from './content/registry';
+import { LANGUAGES, getLang } from './content/registry';
 import { Avatar } from './components/Avatar';
 import { Logo, LogoMark } from './components/Logo';
 import { Icon, type IconName } from './components/Icon';
@@ -135,10 +135,32 @@ function BottomBar({ onPractice, onMore }: { onPractice: () => void; onMore: () 
   );
 }
 
+/** Tags target-language text so the browser lays it out correctly: right-to-left for Arabic (dir=auto) and the right
+ *  glyph set for Chinese/Japanese/Korean (lang). Done by observing the DOM so no component has to know about scripts. */
+function useScriptAttrs(code: string | null) {
+  useEffect(() => {
+    const cfg = getLang(code ?? ''); if (!cfg) return;
+    const lang = cfg.script === 'kana' ? 'ja' : cfg.script === 'han' ? 'zh-Hans' : cfg.script === 'hangul' ? 'ko' : cfg.script === 'arabic' ? 'ar' : cfg.script === 'cyrillic' ? cfg.code : null;
+    const re = cfg.script === 'arabic' ? /[\u0600-\u06ff]/ : cfg.script === 'kana' || cfg.script === 'han' ? /[\u3040-\u30ff\u3400-\u9fff]/ : cfg.script === 'hangul' ? /[\uac00-\ud7af\u1100-\u11ff]/ : null;
+    if (!lang || !re) return;
+    let raf = 0;
+    const run = () => {
+      raf = 0;
+      document.querySelectorAll<HTMLElement>('p,li,h1,h2,h3,h4,button,td,th,label,span,textarea,input').forEach((el) => {
+        const field = el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement;
+        if (field ? cfg.rtl : re.test(el.textContent ?? '')) { if (cfg.rtl && el.getAttribute('dir') !== 'auto') el.setAttribute('dir', 'auto'); if (el.getAttribute('lang') !== lang) el.setAttribute('lang', lang); }
+      });
+    };
+    const mo = new MutationObserver(() => { if (!raf) raf = requestAnimationFrame(run); });
+    mo.observe(document.body, { childList: true, subtree: true, characterData: true }); run();
+    return () => { mo.disconnect(); if (raf) cancelAnimationFrame(raf); };
+  }, [code]);
+}
+
 export default function App() {
   const store = useStore(); const { ready, profile, lang, content, toasts } = store; const loc = useLocation();
   const [sheet, setSheet] = useState<null | 'practice' | 'more'>(null);
-  useReminders(); useEffect(() => { setSheet(null); window.scrollTo(0, 0); }, [loc.pathname]);
+  useScriptAttrs(lang); useReminders(); useEffect(() => { setSheet(null); window.scrollTo(0, 0); }, [loc.pathname]);
   if (!ready) return <Splash text="Loading…" />;
   if (!profile) return <Onboarding />;
   if (!content) return <Splash text={`Loading ${lang}…`} />;

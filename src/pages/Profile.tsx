@@ -9,7 +9,7 @@ import { Icon } from '../components/Icon';
 import { Btn, Card, Chip, H1, Note, Tabs, cx } from '../components/ui';
 import { TEACHER } from '../core/teacher';
 
-const MINUTES = [5, 10, 15, 20, 30, 45, 60];
+const MINUTES = [5, 10, 15, 20, 30, 45, 60, 90, 120];
 const Row = ({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) => (
   <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line py-3.5 first:border-0 first:pt-0 last:pb-0"><div className="min-w-0 flex-1 basis-48"><p className="font-medium">{title}</p>{hint && <p className="text-sm text-muted">{hint}</p>}</div>{children}</div>
 );

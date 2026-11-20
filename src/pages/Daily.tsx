@@ -28,7 +28,7 @@ export default function Daily() {
         <Card className="mb-4 !p-4">
           <div className="flex flex-wrap items-center gap-2"><Chip tone="accent">{p.focus}</Chip><Chip><Icon name="clock" size={12} />{p.minutes} min</Chip>{p.dueTotal > 0 && <Chip tone="warn">{p.dueTotal} words due</Chip>}</div>
           <p className="mb-2 mt-4 text-sm font-medium">How much time do you have?</p>
-          <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1">{[5, 10, 15, 20, 30, 45, 60].map((m) => <Link key={m} to={`/daily?m=${m}`} replace className={cx('grid h-11 min-w-16 shrink-0 place-items-center whitespace-nowrap rounded-xl px-3 text-sm font-semibold transition', m === minutes ? 'bg-accent text-accent-ink shadow-sm' : 'bg-surface2 text-muted hover:text-ink')}>{m} min</Link>)}</div>
+          <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1">{[5, 10, 15, 20, 30, 45, 60, 90, 120].map((m) => <Link key={m} to={`/daily?m=${m}`} replace className={cx('grid h-11 min-w-16 shrink-0 place-items-center whitespace-nowrap rounded-xl px-3 text-sm font-semibold transition', m === minutes ? 'bg-accent text-accent-ink shadow-sm' : 'bg-surface2 text-muted hover:text-ink')}>{m} min</Link>)}</div>
           <Btn size="lg" className="mt-4 w-full" disabled={!p.blocks.length} onClick={start}>Start session<Icon name="arrow" size={18} /></Btn>
         </Card>
         {p.blocks.length > 0 && <>

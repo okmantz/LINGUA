@@ -87,10 +87,21 @@ export interface LanguageContent {
   placement: PlacementItem[];
   ui: LanguageUI;
   grammarLevels: Record<string, string>; // optional per-language notes
+  /** Optional per-day overrides of the shared 30-day plan (e.g. extra script/letter cards on days 1-3 for non-Latin languages). */
+  pace?: Record<number, { cats?: string[]; newWords?: number }>;
 }
 export interface LanguageConfig {
   code: LangCode; name: string; endonym: string; tts: string; accents: string[];
   blurb: string; load: () => Promise<LanguageContent>;
+  /** Writing system: drives keyboards, RTL layout and how typed answers are accepted. Default 'latin'. */
+  script?: 'latin' | 'cyrillic' | 'arabic' | 'han' | 'kana' | 'hangul';
+  rtl?: boolean;                 // right-to-left (Arabic)
+  noGender?: boolean;            // no grammatical gender on nouns (Chinese, Japanese, Korean)
+  romanLabel?: string;           // what the `pron` line is called: "Pinyin", "Rōmaji", "Romanization"…
+  /** US Foreign Service Institute difficulty for English speakers (1 easiest … 4 hardest) and typical class hours to professional proficiency. */
+  fsi?: { category: 1 | 2 | 3 | 4; hours: number };
+  /** The honest, realistic 30-day outcome for this language at the recommended daily time. */
+  outcome?: string;
 }
 
 // ── User data ──
@@ -136,7 +147,7 @@ export interface Profile {
 }
 
 // ── Cards (spaced repetition) ──
-export type Mode = 'recog' | 'rev' | 'listen' | 'cloze' | 'produce';
+export type Mode = 'recog' | 'rev' | 'listen' | 'cloze' | 'produce' | 'dictate';
 export interface Card {
   key: string;            // `${lang}:${itemId}`
   lang: LangCode; itemId: string; kind: 'vocab' | 'grammar';

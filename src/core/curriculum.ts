@@ -27,7 +27,8 @@ export function dayWords(def: DayDef, content: LanguageContent, claimed: Set<str
 
 export function resolveProgram(content: LanguageContent): DayContent[] {
   const claimed = new Set<string>();
-  return PROGRAM.map((def) => {
+  return PROGRAM.map((base) => {
+    const def: DayDef = { ...base, ...(content.pace?.[base.day] ?? {}) };
     const words = dayWords(def, content, claimed);
     words.forEach((w) => claimed.add(w.id));
     return {

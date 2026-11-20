@@ -1,4 +1,5 @@
 export const VOCAB_CATEGORIES: { id: string; label: string; icon: string }[] = [
+  { id: 'script', label: 'Letters & writing system', icon: '🔤' },
   { id: 'greetings', label: 'Greetings & courtesy', icon: '👋' },
   { id: 'pronouns', label: 'Pronouns & basics', icon: '🧩' },
   { id: 'numbers', label: 'Numbers', icon: '🔢' },
