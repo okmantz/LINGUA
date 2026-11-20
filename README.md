@@ -35,9 +35,10 @@ A free, local-first, offline-capable web app for learning **ten languages**: Spa
 ```bash
 npm install
 npm run dev        # local dev server
-npm test           # 50+ tests: FSRS, mastery, answer checking, placement, planner, programme flow, backup, content validation
+npm test           # 137 tests: FSRS, mastery, answer checking, placement, planner, programme flow, backup, content validation
 npm run typecheck
 npm run build      # tsc + vite build + PWA service worker
+npm run verify:docs  # checks every file the built site references exists in docs/
 ```
 
 ## Deploy to GitHub Pages
@@ -45,14 +46,23 @@ npm run build      # tsc + vite build + PWA service worker
 The built site is committed in `docs/`, so Pages serves it directly, no Actions needed.
 
 1. Repo -> **Settings -> Pages -> Source: Deploy from a branch -> `main` / `/docs`**.
-2. After changing code, run `npm run build:pages` and commit the updated `docs/` folder.
+2. After changing code, run `npm run build:pages` (it ends with an integrity check) and commit the **whole** `docs/` folder, including every file in `docs/assets/`.
 3. Open `https://<user>.github.io/LINGUA/` on your phone and use *Add to Home Screen* / *Install app*.
+
+### Troubleshooting: "The app failed to load"
+
+The site is a set of hashed files (`docs/index.html` pulls in `docs/assets/*.js`, character images, etc.). If even one is missing, the app can't start. This happens when `docs/` is uploaded partially (e.g. only some files picked in GitHub's web uploader).
+
+- Run `npm run verify:docs`. It lists every file that is referenced but missing.
+- Fix: run `npm run build:pages` and commit the entire `docs/` folder. Prefer `git add -A docs && git commit && git push` over the web uploader.
+- The failure screen itself names the missing files and links to `lingua.html`, a single-file build that needs nothing else.
+- The CI workflow (`.github/workflows/ci.yml`) runs the same check on every push.
 
 ## Project layout
 
 ```
 src/core/      pure logic: fsrs, mastery, session planner, guide (next step), teacher (tips), placement, analytics, progression, storage
-src/content/   per-language content (es, fr, de) + dsl.ts authoring parsers + registry.ts + validation tests
+src/content/   per-language content (es, fr, de, it, pl, ru, zh, ja, ko, ar) + dsl.ts authoring parsers + registry.ts + validation tests
 src/state/     React store (IndexedDB persistence), hooks (immersion flags, study clock)
 src/components blocks (review, vocab, grammar, reading, listening, conversation, pronunciation, writing), exercise runner, charts, avatar + Teacher, icons, logo
 src/pages/     route pages

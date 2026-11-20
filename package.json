@@ -10,6 +10,7 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "build:pages": "node scripts/build-pages.mjs",
+    "verify:docs": "node scripts/verify-docs.mjs docs",
     "build:offline": "tsc --noEmit && vite build --mode offline"
   },
   "dependencies": {
