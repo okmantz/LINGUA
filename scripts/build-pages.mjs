@@ -16,4 +16,5 @@ cpSync('dist', 'docs', { recursive: true });
 copyFileSync('dist/index.html', 'docs/404.html');
 copyFileSync('dist-offline/index.html', 'docs/lingua.html');
 writeFileSync('docs/.nojekyll', '');
-console.log('\nBuilt site into docs/ -> commit and push it.');
+run('node scripts/verify-docs.mjs docs');
+console.log('\nBuilt site into docs/ -> commit and push the WHOLE docs/ folder (every file in docs/assets/ too).');
