@@ -19,49 +19,49 @@ P: 爷爷奶奶住在上海。星期天我们一起吃午饭。 = Grandpa and gr
 G: 一起 = together ; 午饭 = lunch
 Q: mcq 我有几个哥哥？ ? 一个 | *两个 | 三个 | 四个
 Q: mcq 妈妈做什么工作？ ? 医生 | *老师 | 工程师 | 学生
-Q: mcq 什么时候一起吃午饭？ ? 星期一 | 星期六 | *星期天 | 每天
+Q: mcq 谁住在上海？ ? 哥哥 | *爷爷奶奶 | 爸爸 | 姐姐
 ## r-person | r-person | 我最好的朋友 | A1
 P: 我最好的朋友叫小明。他个子很高，也很瘦，头发是黑色的。他非常友好，总是很开心。 = My best friend is called Xiaoming. He's tall and slim, with black hair. He's very friendly and always happy.
 P: 小明住在我家附近。他是工程师，在一家大公司工作。 = Xiaoming lives near my house. He's an engineer and works at a big company.
 G: 瘦 = slim ; 头发 = hair ; 公司 = company
-Q: mcq 小明怎么样？ ? 很矮 | *很高 | 很胖 | 很懒
-Q: mcq 他的头发是什么颜色？ ? 黄色 | *黑色 | 红色 | 白色
-Q: mcq 小明做什么工作？ ? 医生 | 老师 | *工程师 | 厨师
+Q: mcq 什么是黑色的？ ? 公司 | *头发 | 朋友 | 工程师
+Q: mcq 他的头发是什么颜色？ ? 开心 | *黑色 | 很瘦 | 友好
+Q: mcq 小明是做什么工作的？ ? 很高 | *工程师 | 很瘦 | 开心
 ## r-work | r-work | 上班的一天 | A2
 P: 玛丽在上海市中心的办公室工作。她六点半起床，七点一刻坐公共汽车。 = Mary works in an office in downtown Shanghai. She gets up at six thirty and takes the bus at quarter past seven.
 P: 她十二点跟同事一起吃午饭。晚上回家，做饭，看电影。 = She has lunch with colleagues at twelve. In the evening she goes home, cooks and watches a film.
 G: 市中心 = city centre ; 同事 = colleague
 Q: mcq 玛丽几点起床？ ? 六点 | *六点半 | 七点 | 八点
-Q: mcq 她跟谁一起吃午饭？ ? 家人 | 朋友 | *同事 | 一个人
-Q: mcq 她晚上做什么？ ? 学习 | *做饭，看电影 | 运动 | 出去玩
+Q: mcq 她十二点做什么？ ? 坐公共汽车 | *吃午饭 | 做饭 | 看电影
+Q: mcq 她晚上做什么？ ? 在办公室工作 | *做饭，看电影 | 坐公共汽车 | 跟同事吃午饭
 ## r-weekend | r-weekend | 周末 | A2
 P: 上个星期六我跟朋友去了海边。我们吃了鱼，也游了泳。天气很热。 = Last Saturday I went to the seaside with friends. We ate fish and swam. The weather was very hot.
 P: 星期天我在家。我睡了很多觉，还看了一本书。晚上我给奶奶打了电话。 = On Sunday I was at home. I slept a lot and read a book. In the evening I called my grandmother.
 G: 海边 = seaside ; 打电话 = to phone
-Q: mcq 星期六去了哪儿？ ? 山上 | *海边 | 城里 | 电影院
-Q: mcq 天气怎么样？ ? 很冷 | 下雨 | *很热 | 有风
+Q: mcq 在海边他们做了什么？ ? 睡觉 | *吃鱼，游泳 | 看书 | 给奶奶打电话
+Q: mcq 什么时候天气很热？ ? 星期天 | *星期六 | 晚上 | 昨天
 Q: mcq 星期天晚上给谁打了电话？ ? 朋友 | *奶奶 | 妈妈 | 老板
 ## r-reasons | r-reasons | 为什么住在这儿 | A2
 P: 我住在上海，因为我在这儿工作和学习。这个城市很大，但是很安静。我喜欢这里，因为树很多。 = I live in Shanghai because I work and study here. The city is big but quiet. I like it here because there are many trees.
 P: 可惜这里不便宜，所以我跟两个朋友一起住。我认为这是最好的办法。 = Unfortunately it's not cheap, so I live with two friends. I think this is the best way.
 G: 安静 = quiet ; 办法 = method
-Q: mcq 为什么住在上海？ ? 喜欢海 | *在这儿工作学习 | 在这儿出生 | 家人在这儿
+Q: mcq 为什么住在上海？ ? 这里不便宜 | *在这儿工作和学习 | 树很多 | 城市很安静
 Q: mcq 这个城市怎么样？ ? 小而吵 | *大但是安静 | 便宜 | 很冷
-Q: mcq 为什么跟朋友一起住？ ? 没有家 | 不喜欢家 | *这里不便宜 | 有很多猫
+Q: mcq 为什么跟朋友一起住？ ? 在这儿工作和学习 | *这里不便宜 | 这个城市很大 | 树很多
 ## r-story | r-story | 难忘的旅行 | A2
 P: 昨天我没赶上去上海的火车。我九点到车站，可是火车已经开了。 = Yesterday I missed the train to Shanghai. I arrived at the station at nine, but the train had already left.
 P: 我买了另一张票，等了两个小时。最后我到了上海，很累，但是很高兴。 = I bought another ticket and waited two hours. Finally I got to Shanghai, tired but happy.
 G: 赶上 = to catch ; 最后 = finally
-Q: mcq 没赶上什么？ ? 公共汽车 | *火车 | 飞机 | 约会
-Q: mcq 等了多久？ ? 一个小时 | *两个小时 | 三个小时 | 十分钟
-Q: mcq 最后他觉得怎么样？ ? 生气 | *累但是高兴 | 难过 | 害怕
+Q: mcq 他买了什么？ ? 火车 | *另一张票 | 车站 | 两个小时
+Q: mcq 他等了多久？ ? 九点 | *两个小时 | 三个小时 | 十分钟
+Q: mcq 什么已经开了？ ? 那张票 | *火车 | 车站 | 上海
 ## r-social | r-social | 邀请 | A2
 P: 朱莉亚，星期六我在家开派对。你能来吗？八点开始，我的同事也来。 = Julia, on Saturday I'm having a party at home. Can you come? It starts at eight, and my colleagues are coming too.
 P: 我做比萨，你能带点喝的吗？星期四以前告诉我。马克。 = I'll make pizza; could you bring something to drink? Let me know by Thursday. Mark.
 G: 派对 = party ; 带 = to bring ; 以前 = before
 Q: mcq 派对是什么时候？ ? 星期天 | *星期六 | 星期四 | 星期五
-Q: mcq 马克做什么？ ? 红酒 | *比萨 | 蛋糕 | 音乐
-Q: mcq 朱莉亚什么时候以前回答？ ? 星期六以前 | *星期四以前 | 星期一以前 | 晚上以前
+Q: mcq 朱莉亚要带什么？ ? 比萨 | *喝的 | 同事 | 派对
+Q: mcq 朱莉亚什么时候以前回答？ ? 星期六 | *星期四以前 | 星期一以前 | 八点以前
 `;
 export const ZH_LISTENING = `
 ## l-intro | l-intro | 第一次见面 | A1
@@ -304,17 +304,17 @@ export const ZH_PLACEMENT = `
 vocabulary | A1 | - | mcq “房子”是什么意思？ ? the car | *the house | the table | the door
 grammar | A1 | - | mcq 我___学生。 ? 很 | *是 | 在 | 有
 grammar | A1 | - | mcq 我有三___书。 ? 个 | *本 | 杯 | 张
-reading | A1 | - | mcq 我叫小明，我二十岁。小明多大？ ? 十岁 | *二十岁 | 三十岁 | 十五岁
+reading | A1 | - | mcq 小明二十岁，他的妹妹十岁，他的爸爸四十岁。小明的妹妹多大？ ? 二十岁 | *十岁 | 四十岁 | 三十岁
 listening | A1 | 你好，我叫安娜。 | mcq What does she say? ? Goodbye, I'm Anna | *Hello, I'm Anna | Thank you, Anna | Where is Anna
 writing | A1 | - | mcq Translate: I live in Beijing. ? 我在北京 | *我住在北京 | 我是北京 | 我有北京
 grammar | A2 | - | mcq 昨天我看___一部电影。 ? 过 | *了 | 着 | 在
 grammar | A2 | - | mcq 火车___公共汽车快。 ? 很 | *比 | 是 | 在
 grammar | A2 | - | mcq 我___说中文。 (can, learned) ? 能 | *会 | 要 | 有
-reading | A2 | - | mcq 明天我坐火车去上海，因为比飞机便宜。为什么坐火车？ ? 更快 | *更便宜 | 没有飞机 | 喜欢上海
+reading | A2 | - | mcq 明天我坐火车去上海，因为火车便宜，可是我哥哥坐飞机，因为他很忙。哥哥为什么坐飞机？ ? 火车便宜 | *他很忙 | 没有火车 | 他喜欢上海
 listening | A2 | 请问，车站在哪儿？一直走，然后往左拐。 | mcq Which way should you turn? ? right | *left | back | straight on only
 grammar | B1 | - | mcq 如果我有钱，我___去中国。 ? 了 | *就 | 着 | 过
 grammar | B1 | - | mcq 我___时间。 (I have no time) ? 不有 | *没有 | 不是 | 没是
-reading | B1 | - | mcq 虽然下雨，我们还是去散步了，因为需要新鲜空气。为什么去散步？ ? 没下雨 | *需要新鲜空气 | 太晚了 | 要工作
+reading | B1 | - | mcq 虽然需要新鲜空气，我们还是没去散步，因为雨下得很大。为什么没去散步？ ? 需要新鲜空气 | *雨下得很大 | 太晚了 | 要工作
 vocabulary | B1 | - | mcq “房租”是什么意思？ ? salary | *rent | ticket | receipt
 writing | B1 | - | mcq Translate: I have lived here for two years. ? 我在这里两年 | *我在这里住了两年了 | 我住这里两年是 | 我这里住两年着
 grammar | B2 | - | mcq 我不觉得他___对。 ? 是 | *很 | 在 | 了
