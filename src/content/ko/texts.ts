@@ -19,48 +19,48 @@ P: 할머니와 할아버지는 대구에 살아요. 일요일에 같이 점심�
 G: 같이 = together ; 점심 = lunch
 Q: mcq 오빠가 몇 명 있어요? ? 한 명 | *두 명 | 세 명 | 네 명
 Q: mcq 어머니는 무슨 일을 해요? ? 의사 | *선생님 | 엔지니어 | 학생
-Q: mcq 언제 점심을 같이 먹어요? ? 월요일 | 토요일 | *일요일 | 매일
+Q: mcq 일요일에 뭐 해요? ? 대구에 살아요 | *같이 점심을 먹어요 | 의사예요 | 선생님이에요
 ## r-person | r-person | 제 제일 친한 친구 | A1
 P: 제 제일 친한 친구 이름은 민수예요. 키가 크고 날씬해요. 머리가 까매요. 아주 친절하고 항상 즐거워요. = My best friend's name is Minsu. He's tall and slim. He has black hair. He's very kind and always cheerful.
 P: 민수는 우리 집 가까이에 살아요. 엔지니어이고 큰 회사에서 일해요. = Minsu lives near our house. He's an engineer and works at a big company.
 G: 날씬해요 = slim ; 머리 = hair ; 회사 = company
 Q: mcq 민수는 어때요? ? 작아요 | *키가 커요 | 뚱뚱해요 | 게을러요
-Q: mcq 머리가 어때요? ? 노래요 | *까매요 | 빨개요 | 하얘요
-Q: mcq 민수는 무슨 일을 해요? ? 의사 | 선생님 | *엔지니어 | 요리사
+Q: mcq 민수의 머리가 어때요? ? 날씬해요 | *까매요 | 즐거워요 | 친절해요
+Q: mcq 민수는 무슨 일을 해요? ? 날씬해요 | *엔지니어예요 | 즐거워요 | 친절해요
 ## r-work | r-work | 회사 하루 | A2
 P: 마사는 대구 중심에 있는 사무실에서 일해요. 여섯 시 반에 일어나서 일곱 시 십오 분에 버스를 타요. = Marta works in an office in central Daegu. She gets up at half past six and takes the bus at quarter past seven.
 P: 점심은 한 시에 동료들과 먹어요. 저녁에는 집에 와서 요리하고 영화를 봐요. = She eats lunch at one with colleagues. In the evening she comes home, cooks and watches a film.
 G: 중심 = centre ; 동료 = colleague
 Q: mcq 마사는 몇 시에 일어나요? ? 여섯 시 | *여섯 시 반 | 일곱 시 | 여덟 시
-Q: mcq 누구와 점심을 먹어요? ? 가족 | 친구 | *동료들 | 혼자
-Q: mcq 저녁에 뭐 해요? ? 공부해요 | *요리하고 영화를 봐요 | 운동해요 | 나가요
+Q: mcq 한 시에 뭐 해요? ? 버스를 타요 | *점심을 먹어요 | 영화를 봐요 | 요리해요
+Q: mcq 저녁에 뭐 해요? ? 사무실에서 일해요 | *요리하고 영화를 봐요 | 버스를 타요 | 동료들과 먹어요
 ## r-weekend | r-weekend | 주말 | A2
 P: 지난 토요일에 친구들과 바다에 갔어요. 생선을 먹고 수영했어요. 아주 더웠어요. = Last Saturday I went to the sea with friends. We ate fish and swam. It was very hot.
 P: 일요일에는 집에 있었어요. 많이 자고 책을 읽었어요. 저녁에 할머니께 전화했어요. = On Sunday I stayed at home. I slept a lot and read a book. In the evening I called my grandmother.
 G: 바다 = sea ; 지난 = last
-Q: mcq 토요일에 어디에 갔어요? ? 산 | *바다 | 도시 | 영화관
-Q: mcq 날씨가 어땠어요? ? 추웠어요 | 비가 왔어요 | *아주 더웠어요 | 바람이 불었어요
+Q: mcq 바다에서 뭐 했어요? ? 잤어요 | *생선을 먹고 수영했어요 | 책을 읽었어요 | 할머니께 전화했어요
+Q: mcq 언제 아주 더웠어요? ? 일요일에 | *토요일에 | 저녁에 | 어제
 Q: mcq 일요일 저녁에 누구에게 전화했어요? ? 친구 | *할머니 | 어머니 | 사장님
 ## r-reasons | r-reasons | 왜 여기 살아요 | A2
 P: 저는 대구에 살아요. 여기에서 일하고 공부하니까요. 도시는 크지만 조용해요. 나무가 많아서 좋아요. = I live in Daegu because I work and study here. The city is big but quiet. I like it because there are many trees.
 P: 안타깝게도 싸지 않아서 친구 두 명과 같이 살아요. 제 생각에는 이게 제일 좋은 방법이에요. = Unfortunately it isn't cheap, so I live with two friends. In my opinion it's the best way.
 G: 조용해요 = quiet ; 방법 = way / method
-Q: mcq 왜 대구에 살아요? ? 바다를 좋아해서 | *일하고 공부해서 | 거기서 태어나서 | 가족이 있어서
-Q: mcq 도시는 어때요? ? 작고 시끄러워요 | *크지만 조용해요 | 싸요 | 추워요
-Q: mcq 왜 친구와 같이 살아요? ? 혼자예요 | 집이 싫어서 | *도시가 싸지 않아서 | 고양이가 많아서
+Q: mcq 왜 대구에 살아요? ? 싸지 않아서 | *여기에서 일하고 공부하니까요 | 나무가 많아서 | 도시는 조용해서
+Q: mcq 도시는 어때요? ? 싸지 않아서 | *크지만 조용해요 | 나무가 많아서 | 좋은 방법이에요
+Q: mcq 왜 친구와 같이 살아요? ? 여기에서 일하고 공부하니까요 | *싸지 않아서 | 나무가 많아서 | 도시는 조용해서
 ## r-story | r-story | 힘든 여행 | A2
 P: 어제 대구행 기차를 놓쳤어요. 아홉 시에 역에 도착했지만 기차는 이미 떠났어요. = Yesterday I missed the train to Daegu. I got to the station at nine, but the train had already left.
 P: 다른 표를 사서 두 시간 기다렸어요. 마침내 대구에 도착했어요. 피곤했지만 기뻤어요. = I bought another ticket and waited two hours. Finally I arrived in Daegu. I was tired but happy.
 G: 놓쳤어요 = missed ; 마침내 = finally
-Q: mcq 무엇을 놓쳤어요? ? 버스 | *기차 | 비행기 | 약속
+Q: mcq 무엇을 샀어요? ? 기차 | *다른 표 | 역 | 두 시간
 Q: mcq 얼마나 기다렸어요? ? 한 시간 | *두 시간 | 세 시간 | 십 분
-Q: mcq 마지막에 기분이 어땠어요? ? 화났어요 | *피곤했지만 기뻤어요 | 슬펐어요 | 무서웠어요
+Q: mcq 이미 떠난 것은 뭐예요? ? 표 | *기차 | 역 | 대구
 ## r-social | r-social | 초대 | A2
 P: 줄리아에게. 토요일에 우리 집에서 파티를 해요. 올 수 있어요? 여덟 시에 시작해요. 회사 동료들도 와요. = Dear Julia, on Saturday we're having a party at our house. Can you come? It starts at eight. Colleagues from work are coming too.
 P: 저는 피자를 만들 거예요. 마실 것을 가져올 수 있어요? 목요일까지 알려 주세요. 마크가. = I'll make pizza. Can you bring something to drink? Let me know by Thursday. From Mark.
 G: 파티 = party ; 가져오다 = to bring ; 까지 = until
 Q: mcq 파티는 언제예요? ? 일요일 | *토요일 | 목요일 | 금요일
-Q: mcq 마크는 뭘 만들 거예요? ? 와인 | *피자 | 케이크 | 음악
+Q: mcq 줄리아는 뭘 가져와요? ? 피자 | *마실 것 | 동료들 | 파티
 Q: mcq 줄리아는 언제까지 알려 줘야 해요? ? 토요일까지 | *목요일까지 | 월요일까지 | 저녁까지
 `;
 export const KO_LISTENING = `
@@ -303,17 +303,17 @@ export const KO_PLACEMENT = `
 vocabulary | A1 | - | mcq "집"의 뜻은? ? the car | *the house | the table | the door
 grammar | A1 | - | mcq 저는 학생___. ? 예요 | *이에요 | 있어요 | 아니에요
 grammar | A1 | - | mcq 책___ 재미있어요. ? 가 | *이 | 은 | 를
-reading | A1 | - | mcq 저는 민수예요. 스무 살이에요. 민수는 몇 살이에요? ? 열 살 | *스무 살 | 서른 살 | 열다섯 살
+reading | A1 | - | mcq 민수는 스무 살이에요. 여동생은 열 살이에요. 아버지는 마흔 살이에요. 여동생은 몇 살이에요? ? 스무 살 | *열 살 | 마흔 살 | 서른 살
 listening | A1 | 안녕하세요, 저는 안나예요. | mcq What does she say? ? Goodbye, I'm Anna | *Hello, I'm Anna | Thank you, Anna | Where is Anna
 writing | A1 | - | mcq Translate: I live in Seoul. ? 서울에 있어요 | *서울에 살아요 | 서울이에요 | 서울을 살아요
 grammar | A2 | - | mcq 어제 피자를 ___ . ? 먹어요 | *먹었어요 | 먹을 거예요 | 먹고 싶어요
 grammar | A2 | - | mcq 학교___ 가요. ? 에서 | *에 | 를 | 은
 grammar | A2 | - | mcq 커피를 마시___ 싶어요. ? 다 | *고 | 면 | 지만
-reading | A2 | - | mcq 내일 대구에 기차로 갈 거예요. 버스보다 싸니까요. 왜 기차를 타요? ? 빨라서 | *싸서 | 버스가 없어서 | 대구를 좋아해서
+reading | A2 | - | mcq 내일 저는 대구에 기차로 갈 거예요. 버스보다 싸니까요. 동생은 비행기로 갈 거예요. 바쁘니까요. 동생은 왜 비행기를 타요? ? 버스보다 싸니까요 | *바쁘니까요 | 기차가 없으니까요 | 대구를 좋아하니까요
 listening | A2 | 실례합니다, 역이 어디예요? 쭉 가서 왼쪽으로 가세요. | mcq Which way should you turn? ? right | *left | back | straight on only
 grammar | B1 | - | mcq 돈이 있으면 한국에 ___ . ? 가요 | *갈 거예요 | 갔어요 | 가고 있어요
 grammar | B1 | - | mcq 시간이 ___ . (I have no time) ? 있어요 | *없어요 | 아니에요 | 해요
-reading | B1 | - | mcq 비가 왔지만 산책하러 갔어요. 신선한 공기가 필요했으니까요. 왜 갔어요? ? 비가 안 와서 | *신선한 공기가 필요해서 | 늦어서 | 일해야 해서
+reading | B1 | - | mcq 산책하러 가고 싶었어요. 그렇지만 비가 많이 와서 안 갔어요. 왜 안 갔어요? ? 가고 싶었어요 | *비가 많이 와서 | 늦어서 | 일해야 해서
 vocabulary | B1 | - | mcq "월세" means ___ . ? salary | *monthly rent | ticket | receipt
 writing | B1 | - | mcq Translate: I have lived here for two years. ? 여기 이 년 있어요 | *여기에 이 년 동안 살았어요 | 여기 두 해예요 | 여기 살지 않아요
 grammar | B2 | - | mcq 그가 맞다고 ___ 않아요. ? 생각해 | *생각하지 | 생각 | 생각이
