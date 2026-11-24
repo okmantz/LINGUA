@@ -18,15 +18,15 @@ P: Meine Familie ist groß. Ich habe zwei Brüder und eine Schwester. Mein Vater
 P: Meine Großeltern wohnen in Salzburg. Am Sonntag essen wir alle zusammen bei ihnen. = My grandparents live in Salzburg. On Sunday we all eat together at their place.
 G: alle zusammen = all together ; am Sonntag = on Sunday
 Q: mcq Wie viele Geschwister hat er oder sie? ? zwei | *drei | vier | eins
-Q: mcq Was ist die Mutter von Beruf? ? Ärztin | *Lehrerin | Ingenieurin | Studentin
-Q: mcq Wann essen sie bei den Großeltern? ? am Montag | am Samstag | *am Sonntag | jeden Tag
+Q: mcq Wer ist Arzt? ? die Mutter | *der Vater | die Schwester | der Bruder
+Q: mcq Wer wohnt in Salzburg? ? die Brüder | *die Großeltern | die Eltern | die Freunde
 ## r-person | r-person | Mein bester Freund | A1
 P: Mein bester Freund heißt Daniel. Er ist groß und schlank und hat schwarze Haare. Er ist sehr nett und immer fröhlich. = My best friend is called Daniel. He is tall and slim and has black hair. He is very nice and always cheerful.
 P: Daniel wohnt in der Nähe von meinem Haus. Er ist Ingenieur und arbeitet in einer großen Firma. = Daniel lives near my house. He is an engineer and works at a big company.
 G: schlank = slim ; Haare = hair ; immer = always
-Q: mcq Wie ist Daniel? ? klein und dick | *groß und nett | traurig und still | alt und hässlich
-Q: mcq Wo wohnt Daniel? ? weit weg | in Berlin | *in der Nähe | im Büro
-Q: mcq Was ist Daniel von Beruf? ? Lehrer | Arzt | *Ingenieur | Student
+Q: mcq Was ist schwarz? ? die Firma | *die Haare | der Freund | das Haus
+Q: mcq Wo arbeitet Daniel? ? in der Nähe | *in einer Firma | im Büro | im Haus
+Q: mcq Welchen Beruf hat Daniel? ? groß | *Ingenieur | nett | fröhlich
 ## r-work | r-work | Ein Arbeitstag | A2
 P: Laura arbeitet in einer Bank. Sie steht um halb sieben auf und nimmt um Viertel nach sieben den Bus. Um acht Uhr kommt sie im Büro an. = Laura works at a bank. She gets up at half past six and takes the bus at quarter past seven. She arrives at the office at eight.
 P: Mittags isst sie mit ihren Kollegen. Am Nachmittag hat sie Termine mit Kunden. Sie hört um fünf Uhr auf, aber manchmal bleibt sie bis sechs. = At noon she eats with her colleagues. In the afternoon she has appointments with clients. She stops at five, but sometimes stays until six.
@@ -38,8 +38,8 @@ Q: mcq Was macht sie manchmal nach fünf Uhr? ? zur Bank gehen | *weiterarbeiten
 P: Letzten Samstag bin ich mit meinen Freunden an den See gefahren. Es war sehr sonnig und das Wasser war ruhig. Wir sind geschwommen, haben Fisch gegessen und Fußball gespielt. = Last Saturday I went to the lake with my friends. It was very sunny and the water was calm. We swam, ate fish and played football.
 P: Am Abend sind wir müde, aber glücklich nach Hause gekommen. Am Sonntag habe ich mich ausgeruht und ein Buch gelesen. = In the evening we came home tired but happy. On Sunday I rested and read a book.
 G: ruhig = calm ; ausgeruht = rested ; am Abend = in the evening
-Q: mcq Wohin ist er oder sie am Samstag gefahren? ? ins Kino | *an den See | in die Berge | ins Büro
-Q: mcq Wie war das Wetter? ? es hat geregnet | es war kalt | *es war sonnig | es hat geschneit
+Q: mcq Was haben sie am See gemacht? ? sich ausgeruht | *geschwommen und Fußball gespielt | ein Buch gelesen | gearbeitet
+Q: mcq Wie war das Wasser? ? unruhig | *ruhig | müde | glücklich
 Q: mcq Was hat er oder sie am Sonntag gemacht? ? geschwommen | *sich ausgeruht und gelesen | gearbeitet | gereist
 ## r-reasons | r-reasons | Warum ich hier wohne | A2
 P: Ich wohne in Hamburg, weil mir die Stadt und das Essen gefallen. Ich glaube, dass es eine perfekte Stadt ist: Sie hat einen Hafen, Parks und viel Kultur. = I live in Hamburg because I like the city and the food. I think it's a perfect city: it has a harbour, parks and lots of culture.
@@ -47,20 +47,20 @@ P: Aber sie ist nicht billig. Die Miete ist hoch, deshalb teile ich die Wohnung 
 G: Miete = rent ; teile = I share ; Wohnung = flat
 Q: mcq Warum wohnt er oder sie in Hamburg? ? wegen der Arbeit | *die Stadt und das Essen gefallen | wegen der Familie | weil es billig ist
 Q: mcq Welches Problem hat die Stadt? ? es ist kalt | *sie ist teuer | es gibt keinen Hafen | sie ist klein
-Q: mcq Mit wem teilt er oder sie die Wohnung? ? mit der Familie | *mit zwei Freunden | mit dem Chef | mit niemandem
+Q: mcq Was teilt er oder sie mit zwei Freunden? ? den Hafen | *die Wohnung | das Essen | die Kultur
 ## r-story | r-story | Eine schwierige Reise | A2
 P: Gestern wollte ich mit dem Zug nach Dresden fahren, aber ich bin zu spät zum Bahnhof gekommen und habe den Zug verpasst. Ich war sehr nervös. = Yesterday I wanted to take the train to Dresden, but I arrived late at the station and missed the train. I was very nervous.
 P: Dann habe ich einen Bus genommen. Die Fahrt war lang, aber ich habe ein sehr nettes Mädchen kennengelernt. Wir haben drei Stunden geredet und sind jetzt Freunde. = Then I took a bus. The trip was long but I met a very nice girl. We talked for three hours and are now friends.
 G: verpasst = missed ; kennengelernt = got to know / met ; geredet = talked
 Q: mcq Warum hat er oder sie den Zug verpasst? ? war krank | *kam zu spät | hatte kein Geld | war Sonntag
-Q: mcq Wie ist er oder sie nach Dresden gefahren? ? mit dem Flugzeug | mit dem Auto | *mit dem Bus | zu Fuß
-Q: mcq Was ist auf der Fahrt passiert? ? Koffer verloren | *ein Mädchen kennengelernt | zu früh angekommen | mit niemandem gesprochen
+Q: mcq Wie ist er oder sie nach Dresden gefahren? ? mit dem Zug | *mit dem Bus | mit dem Auto | zu Fuß
+Q: mcq Was ist auf der Fahrt mit dem Bus passiert? ? den Zug verpasst | *ein Mädchen kennengelernt | zu spät gekommen | nervös gewesen
 ## r-social | r-social | Eine Einladung | A2
 P: Hallo Marta! Am Samstag mache ich eine Party bei mir zu Hause, weil ich Geburtstag habe. Sie beginnt um acht Uhr. Es gibt Essen, Musik und viele Leute. Kannst du kommen? = Hi Marta! On Saturday I'm having a party at my place because it's my birthday. It starts at eight. There'll be food, music and lots of people. Can you come?
 P: Wenn du möchtest, kannst du einen Freund mitbringen. Sag mir bitte vor Donnerstag Bescheid. Liebe Grüße, Jan. = If you like, you can bring a friend. Please let me know before Thursday. Best wishes, Jan.
 G: Geburtstag = birthday ; mitbringen = to bring along ; Bescheid sagen = to let someone know
 Q: mcq Was feiert Jan? ? eine Hochzeit | *seinen Geburtstag | eine Stelle | den Sommer
-Q: mcq Wann beginnt die Party? ? um sechs | um sieben | *um acht | um neun
+Q: mcq Wann ist die Party? ? am Donnerstag | *am Samstag | am Sonntag | am Freitag
 Q: mcq Bis wann soll Marta antworten? ? Freitag | *Donnerstag | Samstag | Montag
 `;
 export const DE_LISTENING = `
@@ -328,22 +328,22 @@ export const DE_PLACEMENT = `
 vocabulary | A1 | - | mcq Was bedeutet "das Haus"? ? the car | *the house | the table | the door
 grammar | A1 | - | mcq Ich ___ Student. ? *bin | bist | ist | habe
 grammar | A1 | - | mcq Sie ___ zu Hause. ? bin | *ist | habe | gehen
-reading | A1 | - | mcq Ich heiße Lukas und bin zwanzig Jahre alt. Wie alt ist Lukas? ? zehn | *zwanzig | dreißig | fünfzehn
+reading | A1 | - | mcq Lukas ist zwanzig Jahre alt, seine Schwester ist zehn und sein Vater ist vierzig. Wie alt ist die Schwester von Lukas? ? zwanzig | *zehn | vierzig | dreißig
 listening | A1 | Guten Morgen, ich heiße Anna. | mcq What does she say? ? Goodbye, I'm Anna | *Good morning, my name is Anna | Thank you, Anna | Where is Anna
 writing | A1 | - | order Translate: I live in Berlin. => Ich wohne in Berlin
 grammar | A2 | - | mcq Wir ___ am Samstag ins Kino. ? *gehen | gehst | geht | gehe
 grammar | A2 | - | mcq Gestern ___ ich Pizza gegessen. ? bin | *habe | werde | hatte
 grammar | A2 | - | mcq Ich fahre mit ___ Bus. ? der | den | *dem | des
-reading | A2 | - | mcq Morgen fahre ich mit dem Zug nach Köln, weil er billiger als das Flugzeug ist. Warum fährt er mit dem Zug? ? er ist schneller | *er ist billiger | es gibt kein Flugzeug | er mag Köln
+reading | A2 | - | mcq Morgen fahre ich mit dem Zug nach Köln, weil es billiger ist, aber mein Bruder fliegt, weil er es eilig hat. Warum fliegt der Bruder? ? es ist billiger | *er hat es eilig | es gibt keinen Zug | er mag Köln
 listening | A2 | Entschuldigung, wo ist der Bahnhof? Gehen Sie geradeaus und dann links. | mcq Which way should you turn? ? right | *left | back | straight on only
 grammar | B1 | - | mcq Wenn ich Geld hätte, ___ ich nach Spanien fahren. ? fahre | *würde | werde | fuhr
 grammar | B1 | - | mcq Ich möchte, dass du mit ___ kommst. ? ich | mich | *mir | mein
-reading | B1 | - | mcq Obwohl es geregnet hat, sind wir spazieren gegangen, weil wir frische Luft brauchten. Warum sind sie gegangen? ? es hat nicht geregnet | *sie brauchten frische Luft | es war spät | sie hatten Arbeit
+reading | B1 | - | mcq Obwohl wir frische Luft brauchten, sind wir nicht spazieren gegangen, weil es stark geregnet hat. Warum sind sie nicht gegangen? ? sie brauchten frische Luft | *es hat stark geregnet | es war spät | sie hatten Arbeit
 vocabulary | B1 | - | mcq "Miete" bedeutet ___. ? salary | *rent | ticket | receipt
 writing | B1 | - | order Translate: I have been living here for two years. => Ich wohne seit zwei Jahren hier
 grammar | B2 | - | mcq Das ist der Mann, ___ ich gestern gesehen habe. ? der | *den | dem | dessen
 grammar | B2 | - | mcq Der Brief ___ gestern geschrieben. ? hat | ist | *wurde | wird
-reading | B2 | - | mcq Obwohl die Preise gestiegen sind, blieb die Nachfrage stabil. Was geschah mit der Nachfrage? ? sie sank stark | sie stieg | *sie blieb stabil | sie verschwand
+reading | B2 | - | mcq Obwohl die Preise gestiegen sind, blieb die Nachfrage unverändert. Was geschah mit der Nachfrage? ? sie sank stark | sie stieg | *sie änderte sich nicht | sie verschwand
 vocabulary | B2 | - | mcq "Ausnutzen" bedeutet ___. ? to waste | *to take advantage of | to forget | to cancel
 `;
 export const DE_UI = { choose: 'Wähle die richtige Antwort', check: 'Prüfen', next: 'Weiter', correct: 'Richtig!', wrong: 'Fast', listen: 'Hör zu', translate: 'Übersetze', fill: 'Ergänze den Satz', order: 'Bring die Wörter in Reihenfolge', answer: 'Deine Antwort', well: 'Sehr gut!', again: 'Nochmal', read: 'Lies den Text', speak: 'Sprich' };

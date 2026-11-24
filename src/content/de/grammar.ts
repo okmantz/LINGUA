@@ -82,7 +82,7 @@ M: "Du arbeitst" — add -e for the du form after t: du arbeitest.
 M: Keeping the infinitive: "Ich wohnen" → Ich wohne.
 X: fill Ich ___ (wohnen) in Berlin. => wohne
 X: fill Du ___ (arbeiten) viel. => arbeitest
-X: fill Wir ___ (spielen) Fußball. => spielen
+X: fill Er ___ (spielen) Fußball. => spielt
 X: order Translate: Today I learn German. => Heute lerne ich Deutsch
 ## have-verb | have-verb | Haben (to have) & es gibt | A1
 S: Haben means "to have"; es gibt means "there is/are".
@@ -232,7 +232,7 @@ E: Der alte Mann ist freundlich. = The old man is friendly.
 M: "Das Haus ist großes" — no ending after sein.
 M: "ein große Haus" — neuter needs -es after ein: ein großes Haus.
 M: Putting adjectives after the noun like Spanish: "Haus groß".
-X: fill Das Haus ist ___. (klein) => klein
+X: fill Das Haus ist ___. (small) => klein
 X: fill Ich habe ein ___ Handy. (neu) => neues
 X: fill Das ist eine ___ Stadt. (schön) => schöne
 X: mcq "the old man" ? der alter Mann | *der alte Mann | die alte Mann | der alt Mann
@@ -291,7 +291,7 @@ M: "Ich kannst" — ich kann (no -st).
 M: "Ich kann zu sprechen" — no "zu" with modals.
 M: Putting the infinitive in 2nd position instead of last.
 X: fill Ich ___ ein bisschen Deutsch sprechen. (können) => kann
-X: fill Wir ___ jetzt gehen. (müssen) => müssen
+X: fill Ihr ___ jetzt gehen. (müssen) => müsst
 X: fill ___ ich hier sitzen? (dürfen) => Darf
 X: order Translate: I can speak a little German. => Ich kann ein bisschen Deutsch sprechen
 ## comparatives | comparatives | Comparing things | A2
@@ -429,7 +429,7 @@ M: Using the infinitive as an order in speech — only on signs.
 M: "Du komm!" — drop the pronoun: Komm!
 M: "Fährt!" for du — Fahr!
 X: fill (du, kommen) ___ bitte her! => Komm
-X: fill (Sie, sprechen) ___ Sie bitte langsamer. => Sprechen
+X: fill (du, sprechen) ___ bitte langsamer! => Sprich
 X: mcq "Get up!" (du) ? Aufstehe! | *Steh auf! | Stehst auf! | Auf steh!
 X: mcq "Be on time!" (Sie) ? Sind Sie pünktlich | *Seien Sie pünktlich! | Bist pünktlich | Sein Sie pünktlich
 ## cases | cases | The four cases (overview) | A2
@@ -462,7 +462,7 @@ E: Ich wäre gern in Spanien. = I'd like to be in Spain.
 M: Using würde in both halves: Wenn ich würde Zeit haben → Wenn ich Zeit hätte.
 M: Confusing könnte (could, polite/hypothetical) with konnte (could, past).
 M: Putting the infinitive anywhere but the end.
-X: fill Ich ___ gern reisen. (würde) => würde
+X: fill Ich ___ gern reisen. (would) => würde
 X: fill Wenn ich Zeit ___, würde ich reisen. (haben, Konj. II) => hätte
 X: mcq "Could you help me?" ? Konntest du mir helfen | *Könnten Sie mir helfen | Kannten Sie mir helfen | Würden helfen mir
 X: mcq Wenn ich reich ___, würde ich ein Haus kaufen. ? bin | *wäre | war | werde
@@ -480,8 +480,8 @@ E: Die Stadt, in der ich wohne, ist klein. = The city I live in is small.
 M: Dropping the pronoun as in English: "Das Buch ich lese".
 M: Wrong case: "Die Frau, mit die ich spreche" — mit + dative: der.
 M: Verb not at the end: "der dort sitzt" ✓; "der sitzt dort" ✗.
-X: fill Das Buch, ___ ich lese, ist spannend. => das
-X: fill Der Mann, ___ dort sitzt, ist mein Chef. => der
+X: fill Der Film, ___ ich gestern gesehen habe, war toll. => den
+X: fill Die Frau, ___ ich helfe, ist nett. => der
 X: mcq Die Frau, mit ___ ich spreche, ist nett. ? die | *der | den | dem
 X: mcq Correct word order? ? Das Buch, das ich lese | *Das Buch, das lese ich | Das Buch, ich das lese | Das Buch, lese ich das
 ## passive | passive | Passive voice | B2
