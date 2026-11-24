@@ -19,48 +19,48 @@ P: Moi dziadkowie mieszkają w Krakowie. W niedzielę jemy razem obiad u nich. =
 G: razem = together ; u nich = at their place ; w niedzielę = on Sunday
 Q: mcq Ilu braci ma autor? ? jednego | *dwóch | trzech | czterech
 Q: mcq Kim jest mama? ? lekarką | *nauczycielką | inżynierem | studentką
-Q: mcq Kiedy jedzą obiad u dziadków? ? w poniedziałek | w sobotę | *w niedzielę | codziennie
+Q: mcq Kto mieszka w Krakowie? ? bracia | *dziadkowie | rodzice | przyjaciele
 ## r-person | r-person | Mój najlepszy przyjaciel | A1
 P: Mój najlepszy przyjaciel ma na imię Dawid. Jest wysoki i szczupły i ma ciemne włosy. Jest bardzo miły i zawsze zadowolony. = My best friend is called Dawid. He is tall and slim and has dark hair. He is very nice and always pleased.
 P: Dawid mieszka blisko mojego domu. Jest inżynierem i pracuje w dużej firmie. = Dawid lives near my house. He is an engineer and works in a big company.
 G: szczupły = slim ; włosy = hair ; firma = company
-Q: mcq Jaki jest Dawid? ? niski | *wysoki | gruby | leniwy
-Q: mcq Jakie ma włosy? ? jasne | *ciemne | rude | białe
-Q: mcq Kim jest Dawid? ? lekarzem | nauczycielem | *inżynierem | kucharzem
+Q: mcq Co jest duże? ? włosy | *firma | przyjaciel | dom
+Q: mcq Jakie włosy ma Dawid? ? zadowolone | *ciemne | szczupłe | miłe
+Q: mcq Jaki zawód ma Dawid? ? wysoki | *inżynier | szczupły | zadowolony
 ## r-work | r-work | Dzień w pracy | A2
 P: Marta pracuje w biurze w centrum Wrocławia. Budzi się o wpół do siódmej i jedzie tramwajem o kwadrans po siódmej. = Marta works in an office in the centre of Wrocław. She wakes up at half past six and takes the tram at a quarter past seven.
 P: Obiad je o pierwszej z kolegami. Wieczorem wraca do domu, gotuje i ogląda film. = She has lunch at one with her colleagues. In the evening she goes home, cooks and watches a film.
 G: centrum = centre ; tramwaj = tram ; koledzy = colleagues
 Q: mcq O której budzi się Marta? ? o szóstej | *o wpół do siódmej | o siódmej | o ósmej
-Q: mcq Z kim je obiad? ? z rodziną | z przyjacielem | *z kolegami | sama
-Q: mcq Co robi wieczorem? ? uczy się | *gotuje i ogląda film | idzie na siłownię | wychodzi z przyjaciółmi
+Q: mcq Co robi Marta o pierwszej? ? jedzie tramwajem | *je obiad | gotuje | ogląda film
+Q: mcq Co robi wieczorem? ? pracuje w biurze | *gotuje i ogląda film | jedzie tramwajem | je obiad z kolegami
 ## r-weekend | r-weekend | Weekend | A2
 P: W zeszłą sobotę pojechałem nad morze z przyjaciółmi. Jedliśmy rybę i pływaliśmy. Było bardzo gorąco. = Last Saturday I went to the seaside with friends. We ate fish and swam. It was very hot.
 P: W niedzielę zostałem w domu. Dużo spałem i czytałem książkę. Wieczorem zadzwoniłem do babci. = On Sunday I stayed at home. I slept a lot and read a book. In the evening I called my grandmother.
 G: nad morze = to the seaside ; zeszły = last ; zadzwonić = to call (once)
-Q: mcq Dokąd pojechał w sobotę? ? w góry | *nad morze | do miasta | do kina
-Q: mcq Jaka była pogoda? ? zimno | padało | *bardzo gorąco | wiał wiatr
+Q: mcq Co robili nad morzem? ? spali | *jedli rybę i pływali | czytali książkę | dzwonili do babci
+Q: mcq Kiedy było bardzo gorąco? ? w niedzielę | *w sobotę | wieczorem | wczoraj
 Q: mcq Do kogo zadzwonił wieczorem w niedzielę? ? do przyjaciela | *do babci | do mamy | do szefa
 ## r-reasons | r-reasons | Dlaczego tu mieszkam | A2
 P: Mieszkam we Wrocławiu, bo tu pracuję i studiuję. Miasto jest duże, ale spokojne. Podoba mi się, bo ma dużo zieleni. = I live in Wrocław because I work and study here. The city is big but quiet. I like it because it has a lot of greenery.
 P: Niestety nie jest tanie, więc dzielę mieszkanie z dwójką przyjaciół. Moim zdaniem to najlepszy wybór. = Unfortunately it isn't cheap, so I share the flat with two friends. In my opinion it's the best choice.
 G: dużo zieleni = a lot of greenery ; dzielić = to share ; wybór = choice
-Q: mcq Dlaczego mieszka we Wrocławiu? ? lubi morze | *tu pracuje i studiuje | tu się urodził | ma tu rodzinę
+Q: mcq Dlaczego mieszka we Wrocławiu? ? dzieli mieszkanie | *tu pracuje i studiuje | miasto jest duże | miasto nie jest tanie
 Q: mcq Jakie jest miasto? ? małe i hałaśliwe | *duże, ale spokojne | tanie | zimne
-Q: mcq Dlaczego dzieli mieszkanie? ? jest sam | nie lubi domu | *miasto nie jest tanie | ma dużo kotów
+Q: mcq Dlaczego dzieli mieszkanie? ? tu pracuje i studiuje | *miasto nie jest tanie | miasto jest spokojne | ma dużo zieleni
 ## r-story | r-story | Trudna podróż | A2
 P: Wczoraj spóźniłem się na pociąg do Poznania. Przyszedłem na dworzec o dziewiątej, ale pociąg już odjechał. = Yesterday I missed the train to Poznań. I got to the station at nine, but the train had already left.
 P: Kupiłem inny bilet i czekałem dwie godziny. W końcu dojechałem do Poznania, zmęczony, ale zadowolony. = I bought another ticket and waited two hours. In the end I got to Poznań, tired but pleased.
 G: odjechać = to depart ; w końcu = in the end ; dojechać = to reach
-Q: mcq Na co się spóźnił? ? na autobus | *na pociąg | na samolot | na spotkanie
+Q: mcq Co kupił? ? pociąg | *inny bilet | dworzec | godzinę
 Q: mcq Jak długo czekał? ? godzinę | *dwie godziny | trzy godziny | dziesięć minut
-Q: mcq Jak się czuł na końcu? ? zły | *zmęczony, ale zadowolony | smutny | zmartwiony
+Q: mcq Co już odjechało? ? bilet | *pociąg | dworzec | Poznań
 ## r-social | r-social | Zaproszenie | A2
 P: Droga Julio, w sobotę robię imprezę u siebie w domu. Czy chcesz przyjść? Zaczynamy o ósmej. Będą też moi koledzy z pracy. = Dear Julia, on Saturday I'm having a party at my place. Do you want to come? We start at eight. My colleagues from work will be there too.
 P: Ja przygotuję pizzę, a ty możesz przynieść coś do picia? Daj mi znać do czwartku. Do zobaczenia, Marek. = I'll prepare the pizza, and could you bring something to drink? Let me know by Thursday. See you, Marek.
 G: impreza = party ; przynieść = to bring ; do czwartku = by Thursday
 Q: mcq Kiedy jest impreza? ? w niedzielę | *w sobotę | w czwartek | w piątek
-Q: mcq Co przygotuje Marek? ? wino | *pizzę | ciasto | muzykę
+Q: mcq Co ma przynieść Julia? ? pizzę | *coś do picia | kolegów | imprezę
 Q: mcq Do kiedy Julia ma odpowiedzieć? ? do soboty | *do czwartku | do poniedziałku | do wieczora
 `;
 export const PL_LISTENING = `
@@ -318,17 +318,17 @@ export const PL_PLACEMENT = `
 vocabulary | A1 | - | mcq Co znaczy "dom"? ? the car | *the house | the table | the door
 grammar | A1 | - | mcq Ja ___ studentem. ? jest | *jestem | jesteś | są
 grammar | A1 | - | mcq On ___ w domu. ? jestem | jesteś | *jest | jesteśmy
-reading | A1 | - | mcq Mam na imię Łukasz i mam dwadzieścia lat. Ile lat ma Łukasz? ? dziesięć | *dwadzieścia | trzydzieści | piętnaście
+reading | A1 | - | mcq Łukasz ma dwadzieścia lat, jego siostra ma dziesięć lat, a jego ojciec ma czterdzieści lat. Ile lat ma siostra Łukasza? ? dwadzieścia | *dziesięć | czterdzieści | trzydzieści
 listening | A1 | Dzień dobry, mam na imię Anna. | mcq What does she say? ? Goodbye, I'm Anna | *Good morning, my name is Anna | Thank you, Anna | Where is Anna
 writing | A1 | - | order Translate: I live in Warsaw. => Mieszkam w Warszawie
 grammar | A2 | - | mcq Wczoraj ja ___ pizzę. (woman) ? jem | *jadłam | będę jeść | jadł
 grammar | A2 | - | mcq Idę ___ domu. ? w | na | *do | z
 grammar | A2 | - | mcq Mam ___ . (a sister) ? siostra | *siostrę | siostry | siostrze
-reading | A2 | - | mcq Jutro jadę do Krakowa pociągiem, bo jest tańszy niż samolot. Dlaczego jedzie pociągiem? ? jest szybszy | *jest tańszy | nie ma samolotu | lubi Kraków
+reading | A2 | - | mcq Jutro ja jadę do Krakowa pociągiem, bo jest tańszy, ale mój brat leci samolotem, bo się spieszy. Dlaczego brat leci samolotem? ? jest tańszy | *się spieszy | nie ma pociągu | lubi Kraków
 listening | A2 | Przepraszam, gdzie jest dworzec? Proszę iść prosto i skręcić w lewo. | mcq Which way should you turn? ? right | *left | back | straight on only
 grammar | B1 | - | mcq Gdybym miał pieniądze, ___ do Polski. ? jadę | *pojechałbym | pojadę | pojechałem
 grammar | B1 | - | mcq Nie mam ___ . (time) ? czas | *czasu | czasem | czasie
-reading | B1 | - | mcq Chociaż padało, wyszliśmy na spacer, bo potrzebowaliśmy świeżego powietrza. Dlaczego wyszli? ? nie padało | *potrzebowali świeżego powietrza | było późno | musieli pracować
+reading | B1 | - | mcq Chociaż potrzebowaliśmy świeżego powietrza, nie poszliśmy na spacer, bo mocno padało. Dlaczego nie poszli na spacer? ? potrzebowali świeżego powietrza | *mocno padało | było późno | musieli pracować
 vocabulary | B1 | - | mcq "Wynajem" means ___ . ? salary | *rent | ticket | receipt
 writing | B1 | - | order Translate: I have been living here for two years. => Mieszkam tu od dwóch lat
 grammar | B2 | - | mcq Nie sądzę, żeby on ___ rację. ? ma | *miał | będzie miał | mieć

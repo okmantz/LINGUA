@@ -385,7 +385,7 @@ E: Napiszę do ciebie wieczorem. = I'll write to you in the evening.
 M: Combining będę with a perfective verb: "będę zrobić" is wrong.
 M: Forgetting the infinitive: "będę praca" is wrong.
 M: Using the future for plans already fixed: the present is fine.
-X: fill Jutro ___ pracować. (będę) => będę
+X: fill Jutro ___ pracować. (I will) => będę
 X: mcq Next year I'll study. ? Uczę się rok | *Będę się uczyć w przyszłym roku | Uczyłem się | Uczę
 X: mcq Future of być (ja) ? jestem | byłem | *będę | bądź
 X: fill Oni ___ jutro w domu. (być, future) => będą
