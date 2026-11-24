@@ -58,7 +58,7 @@ M: Forgetting to change the article in the plural (il libri). Both words change.
 X: mcq ___ casa è grande. ? Il | *La | Lo | Un
 X: fill ___ zaino è nuovo. (the) => Lo
 X: mcq Plural of "la casa": ? i case | *le case | le casi | la case
-X: type the books (i libri) => i libri
+X: type the books (libro) => i libri
 ## present-regular | present-regular | Present tense: regular verbs | A1
 S: Italian verbs belong to three families, -are, -ere and -ire, and each person has its own ending.
 B: Take off the infinitive ending and add: **-o, -i, -a, -iamo, -ate/-ete/-ite, -ano/-ono**. Verbs in -ire often add **-isc-** in io, tu, lui and loro: capire → capisco.

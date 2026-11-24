@@ -17,50 +17,50 @@ Q: mcq Che cosa NON c'è? ? formaggio | *pizza | tè | pane
 P: La mia famiglia è grande. Ho due fratelli e una sorella. Mio padre è medico e mia madre è insegnante. = My family is big. I have two brothers and a sister. My father is a doctor and my mother is a teacher.
 P: I miei nonni abitano a Napoli. La domenica mangiamo tutti insieme a casa loro. = My grandparents live in Naples. On Sundays we all eat together at their house.
 G: tutti insieme = all together ; la domenica = on Sundays
-Q: mcq Quanti fratelli ha? ? uno | *due | tre | quattro
+Q: mcq Chi è medico? ? la madre | *il padre | la sorella | il fratello
 Q: mcq Che lavoro fa sua madre? ? è medico | *è insegnante | è ingegnere | è studentessa
-Q: mcq Quando mangiano dai nonni? ? il lunedì | il sabato | *la domenica | ogni giorno
+Q: mcq Chi abita a Napoli? ? i fratelli | *i nonni | i genitori | gli amici
 ## r-person | r-person | Il mio migliore amico | A1
 P: Il mio migliore amico si chiama Diego. È alto e magro e ha i capelli neri. È molto simpatico e sempre contento. = My best friend is called Diego. He is tall and thin and has black hair. He is very nice and always happy.
 P: Diego abita vicino a casa mia. È ingegnere e lavora in una grande azienda. = Diego lives near my house. He is an engineer and works in a big company.
 G: magro = thin ; capelli = hair ; azienda = company
-Q: mcq Com'è Diego? ? basso | *alto | grasso | pigro
-Q: mcq Di che colore sono i capelli? ? biondi | *neri | rossi | bianchi
-Q: mcq Che lavoro fa? ? medico | insegnante | *ingegnere | cuoco
+Q: mcq Che cosa è grande? ? i capelli | *l'azienda | l'amico | la casa
+Q: mcq Di che colore sono i capelli di Diego? ? contenti | *neri | simpatici | magri
+Q: mcq Che lavoro fa Diego? ? alto | *ingegnere | magro | contento
 ## r-work | r-work | Una giornata di lavoro | A2
 P: Marta lavora in un ufficio al centro di Torino. Si alza alle sei e mezza e prende il treno alle sette e un quarto. = Marta works in an office in the centre of Turin. She gets up at six thirty and takes the train at a quarter past seven.
 P: Pranza alla una con i colleghi. La sera torna a casa, cucina e guarda un film. = She has lunch at one with her colleagues. In the evening she goes home, cooks and watches a film.
 G: al centro = in the centre ; pranza = has lunch ; colleghi = colleagues
 Q: mcq A che ora si alza Marta? ? alle sei | *alle sei e mezza | alle sette | alle otto
-Q: mcq Con chi pranza? ? con la famiglia | con un amico | *con i colleghi | da sola
-Q: mcq Che cosa fa la sera? ? studia | *cucina e guarda un film | va in palestra | esce con gli amici
+Q: mcq Che cosa prende Marta alle sette e un quarto? ? un ufficio | *il treno | un film | un centro
+Q: mcq Che cosa fa la sera? ? lavora in un ufficio | *cucina e guarda un film | prende il treno | pranza con i colleghi
 ## r-weekend | r-weekend | Il fine settimana | A2
 P: Sabato scorso sono andato al mare con i miei amici. Abbiamo mangiato il pesce e abbiamo nuotato. Faceva molto caldo. = Last Saturday I went to the sea with my friends. We ate fish and we swam. It was very hot.
 P: La domenica sono rimasto a casa. Ho dormito molto e ho letto un libro. La sera ho chiamato mia nonna. = On Sunday I stayed home. I slept a lot and read a book. In the evening I called my grandmother.
 G: scorso = last ; nuotato = swam ; rimasto = stayed
-Q: mcq Dove è andato sabato? ? in montagna | *al mare | in città | al cinema
-Q: mcq Che tempo faceva? ? freddo | pioveva | *molto caldo | c'era vento
+Q: mcq Che cosa hanno fatto al mare? ? dormire | *mangiare il pesce e nuotare | leggere un libro | chiamare la nonna
+Q: mcq Quando faceva molto caldo? ? la domenica | *sabato scorso | la sera | ieri
 Q: mcq Chi ha chiamato la sera di domenica? ? un amico | *sua nonna | sua madre | il capo
 ## r-reasons | r-reasons | Perché vivo qui | A2
 P: Vivo a Bologna perché qui lavoro e studio. La città è piccola ma ha molte cose da fare. Mi piace perché è tranquilla. = I live in Bologna because I work and study here. The city is small but has a lot to do. I like it because it's quiet.
 P: Però non è economica, quindi divido l'appartamento con due amici. Secondo me, è la scelta migliore. = But it isn't cheap, so I share the apartment with two friends. In my opinion it's the best choice.
 G: tranquilla = quiet ; dividere = to share ; scelta = choice
-Q: mcq Perché vive a Bologna? ? per il clima | *lavora e studia lì | è nato lì | ama il mare
+Q: mcq Perché vive a Bologna? ? divide l'appartamento | *qui lavora e studia | non è economica | è piccola
 Q: mcq Com'è la città? ? grande e rumorosa | *piccola e tranquilla | economica | fredda
-Q: mcq Perché divide l'appartamento? ? è solo | non ama la casa | *non è economica | per i gatti
+Q: mcq Perché divide l'appartamento? ? perché è tranquilla | *perché non è economica | perché è piccola | perché lavora lì
 ## r-story | r-story | Un viaggio difficile | A2
 P: Ieri ho perso il treno per Firenze. Sono arrivato alla stazione alle nove, ma il treno era già partito. = Yesterday I missed the train to Florence. I got to the station at nine, but the train had already left.
 P: Ho comprato un altro biglietto e ho aspettato due ore. Alla fine sono arrivato a Firenze, stanco ma contento. = I bought another ticket and waited two hours. In the end I arrived in Florence, tired but happy.
 G: perso = lost / missed ; già = already ; alla fine = in the end
-Q: mcq Che cosa ha perso? ? il portafoglio | *il treno | la valigia | il telefono
-Q: mcq Quanto ha aspettato? ? un'ora | *due ore | tre ore | dieci minuti
-Q: mcq Come si sentiva alla fine? ? arrabbiato | *stanco ma contento | triste | preoccupato
+Q: mcq Che cosa ha comprato? ? il treno | *un altro biglietto | una valigia | un telefono
+Q: mcq Quando è arrivato alla stazione? ? alle due | *alle nove | alle tre | alle dieci
+Q: mcq Che cosa è già partito? ? il biglietto | *il treno | la stazione | Firenze
 ## r-social | r-social | Un invito | A2
 P: Cara Giulia, sabato faccio una festa a casa mia. Vuoi venire? Inizia alle otto. Ci sono anche i miei colleghi. = Dear Giulia, on Saturday I'm having a party at my house. Do you want to come? It starts at eight. My colleagues are coming too.
 P: Porto io la pizza, tu puoi portare qualcosa da bere? Fammi sapere entro giovedì. A presto, Marco. = I'll bring the pizza, can you bring something to drink? Let me know by Thursday. See you soon, Marco.
 G: festa = party ; entro = by (a deadline) ; portare = to bring
 Q: mcq Quando è la festa? ? domenica | *sabato | giovedì | venerdì
-Q: mcq Che cosa porta Marco? ? il vino | *la pizza | il dolce | la musica
+Q: mcq Che cosa deve portare Giulia? ? la pizza | *qualcosa da bere | i colleghi | la festa
 Q: mcq Entro quando deve rispondere Giulia? ? sabato | *giovedì | lunedì | stasera
 `;
 export const IT_LISTENING = `
@@ -311,17 +311,17 @@ export const IT_PLACEMENT = `
 vocabulary | A1 | - | mcq Che cosa significa "la casa"? ? the car | *the house | the table | the door
 grammar | A1 | - | mcq Io ___ studente. ? *sono | ho | vado | faccio
 grammar | A1 | - | mcq Lei ___ a casa. ? ha | *è | sono | siamo
-reading | A1 | - | mcq Mi chiamo Luigi e ho venti anni. Quanti anni ha Luigi? ? dieci | *venti | trenta | quindici
+reading | A1 | - | mcq Luigi ha venti anni, sua sorella ha dieci anni e suo padre ha quaranta anni. Quanti anni ha la sorella di Luigi? ? venti | *dieci | quaranta | trenta
 listening | A1 | Buongiorno, mi chiamo Anna. | mcq What does she say? ? Goodbye, I'm Anna | *Good morning, my name is Anna | Thank you, Anna | Where is Anna
 writing | A1 | - | order Translate: I live in Rome. => Abito a Roma
 grammar | A2 | - | mcq Noi ___ al cinema il sabato. ? vado | *andiamo | andate | vanno
 grammar | A2 | - | mcq Ieri io ___ la pizza. ? mangio | *ho mangiato | mangerò | mangiavo
 grammar | A2 | - | mcq Mi ___ i libri. ? piace | *piacciono | piaccio | piacete
-reading | A2 | - | mcq Domani vado a Firenze in treno perché è più economico dell'aereo. Perché va in treno? ? è più veloce | *è più economico | non c'è l'aereo | ama Firenze
+reading | A2 | - | mcq Domani vado a Firenze in treno perché è più economico, ma mio fratello va in aereo perché ha fretta. Perché il fratello va in aereo? ? è più economico | *ha fretta | non c'è il treno | ama Firenze
 listening | A2 | Scusi, dov'è la stazione? Vada dritto e giri a sinistra. | mcq Which way should you turn? ? right | *left | back | straight on only
 grammar | B1 | - | mcq Se avessi soldi, ___ in Italia. ? vado | *andrei | andrò | sono andato
 grammar | B1 | - | mcq Voglio che tu ___ con me. ? vieni | *venga | venivi | verrai
-reading | B1 | - | mcq Anche se pioveva, siamo usciti a camminare perché avevamo bisogno di aria fresca. Perché sono usciti? ? non pioveva | *avevano bisogno di aria fresca | era tardi | dovevano lavorare
+reading | B1 | - | mcq Anche se avevamo bisogno di aria fresca, non siamo usciti perché pioveva molto. Perché non sono usciti? ? avevano bisogno di aria fresca | *pioveva molto | era tardi | dovevano lavorare
 vocabulary | B1 | - | mcq "Affitto" means ___ . ? salary | *rent | ticket | receipt
 writing | B1 | - | order Translate: I have been living here for two years. => Abito qui da due anni
 grammar | B2 | - | mcq Non credo che lui ___ ragione. ? ha | *abbia | avrà | ebbe
