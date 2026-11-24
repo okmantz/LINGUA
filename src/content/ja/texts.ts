@@ -19,48 +19,48 @@ P: おじいさんとおばあさんは大阪にすんでいます。日曜日�
 G: いっしょに = together ; 昼ごはん = lunch
 Q: mcq 兄は何人いますか。 ? 一人 | *二人 | 三人 | 四人
 Q: mcq 母のしごとはなんですか。 ? 医者 | *先生 | エンジニア | 学生
-Q: mcq いつ昼ごはんをいっしょに食べますか。 ? 月曜日 | 土曜日 | *日曜日 | 毎日
+Q: mcq 日曜日になにをしますか。 ? 大阪にすんでいます | *いっしょに昼ごはんを食べます | 医者です | 先生です
 ## r-person | r-person | わたしのしんゆう | A1
 P: わたしのしんゆうのなまえは健です。せがたかくて、やせています。かみはくろいです。とてもしんせつで、いつもげんきです。 = My best friend is Ken. He's tall and slim. His hair is black. He's very kind and always cheerful.
 P: 健はわたしの家のちかくにすんでいます。エンジニアで、大きい会社ではたらいています。 = Ken lives near my house. He's an engineer and works at a big company.
 G: やせています = slim ; かみ = hair ; 会社 = company
-Q: mcq 健はどんな人ですか。 ? ひくい | *せがたかい | ふとっている | なまけもの
-Q: mcq かみの色は？ ? あかい | *くろい | しろい | きいろい
-Q: mcq 健のしごとはなんですか。 ? 医者 | 先生 | *エンジニア | コック
+Q: mcq なにが大きいですか。 ? かみ | *会社 | 家 | しんゆう
+Q: mcq 健のかみはどうですか。 ? やせています | *くろいです | げんきです | しんせつです
+Q: mcq 健のしごとはなんですか。 ? やせています | *エンジニアです | げんきです | しんせつです
 ## r-work | r-work | 会社の一日 | A2
 P: 真理は大阪の中心にある事務所ではたらいています。六時半におきて、七時十五分にバスに乗ります。 = Mari works at an office in central Osaka. She gets up at 6:30 and takes the bus at 7:15.
 P: 昼ごはんは一時に同僚と食べます。夜は家に帰って、りょうりをして、映画を見ます。 = She eats lunch at one with colleagues. In the evening she goes home, cooks and watches a film.
 G: 中心 = centre ; 同僚 = colleague
 Q: mcq 真理はなん時におきますか。 ? 六時 | *六時半 | 七時 | 八時
-Q: mcq だれと昼ごはんを食べますか。 ? 家族 | 友達 | *同僚 | ひとり
-Q: mcq 夜はなにをしますか。 ? べんきょうする | *りょうりをして映画を見る | スポーツをする | 出かける
+Q: mcq 一時になにをしますか。 ? バスに乗ります | *昼ごはんを食べます | 映画を見ます | りょうりをします
+Q: mcq 夜はなにをしますか。 ? 事務所ではたらきます | *りょうりをして、映画を見ます | バスに乗ります | 同僚と食べます
 ## r-weekend | r-weekend | 週末 | A2
 P: このあいだの土曜日、友達と海に行きました。さかなを食べて、およぎました。とてもあつかったです。 = Last Saturday I went to the sea with friends. We ate fish and swam. It was very hot.
 P: 日曜日は家にいました。たくさんねて、本を読みました。夜、おばあさんに電話をしました。 = On Sunday I stayed at home. I slept a lot and read a book. In the evening I phoned my grandmother.
 G: 海 = sea ; このあいだ = recently
 Q: mcq 土曜日にどこに行きましたか。 ? 山 | *海 | 町 | 映画館
-Q: mcq 天気はどうでしたか。 ? さむかった | 雨だった | *とてもあつかった | 風がつよかった
+Q: mcq いつ、とてもあつかったですか。 ? 日曜日 | *土曜日 | 夜 | 昨日
 Q: mcq 日曜日の夜にだれに電話しましたか。 ? 友達 | *おばあさん | 母 | 社長
 ## r-reasons | r-reasons | なぜここにすんでいるか | A2
 P: わたしは大阪にすんでいます。ここではたらいて、べんきょうしているからです。町は大きいですが、しずかです。木がおおいのでいいです。 = I live in Osaka because I work and study here. The town is big but quiet. I like it because there are many trees.
 P: ざんねんながらやすくないので、友達二人といっしょにすんでいます。わたしの考えでは、これがいちばんいい方法です。 = Unfortunately it isn't cheap, so I live with two friends. In my view this is the best way.
 G: しずか = quiet ; 方法 = method
-Q: mcq どうして大阪にすんでいますか。 ? 海がすきだから | *はたらいてべんきょうしているから | そこでうまれたから | 家族がいるから
-Q: mcq 町はどうですか。 ? 小さくてうるさい | *大きいがしずか | やすい | さむい
+Q: mcq どうして大阪にすんでいますか。 ? やすくないので | *はたらいて、べんきょうしているからです | 木がおおいので | 町がしずかなので
+Q: mcq 町はどうですか。 ? やすくないので | *大きいですが、しずかです | 木がおおいので | ざんねんながら
 Q: mcq どうして友達といっしょにすんでいますか。 ? ひとりだから | 家がきらいだから | *町がやすくないから | ねこがおおいから
 ## r-story | r-story | たいへんなりょこう | A2
 P: 昨日、大阪行きの電車におくれました。九時に駅につきましたが、電車はもう行ってしまいました。 = Yesterday I missed the train to Osaka. I got to the station at nine, but the train had already gone.
 P: ほかの切符を買って、二時間待ちました。やっと大阪につきました。つかれましたが、うれしかったです。 = I bought another ticket and waited two hours. I finally reached Osaka. I was tired but happy.
 G: おくれる = to be late ; やっと = finally
-Q: mcq なににおくれましたか。 ? バス | *電車 | 飛行機 | やくそく
-Q: mcq どのくらい待ちましたか。 ? 一時間 | *二時間 | 三時間 | 十分
-Q: mcq さいごのきぶんは？ ? おこった | *つかれたがうれしかった | かなしかった | こわかった
+Q: mcq なにを買いましたか。 ? 電車 | *ほかの切符 | 駅 | 二時間
+Q: mcq 何時に駅につきましたか。 ? 二時 | *九時 | 三時 | 十時
+Q: mcq もう行ってしまったのはなにですか。 ? 切符 | *電車 | 駅 | 大阪
 ## r-social | r-social | しょうたい | A2
 P: ジュリアさんへ。土曜日にうちでパーティーをします。来ることができますか。八時にはじまります。会社の同僚も来ます。 = To Julia. We're having a party at our house on Saturday. Can you come? It starts at eight. Colleagues from work are coming too.
 P: わたしはピザをつくります。のみものをもってきてくれませんか。木曜日までにしらせてください。マークより。 = I'll make pizza. Could you bring something to drink? Please let me know by Thursday. From Mark.
 G: パーティー = party ; もってくる = bring ; までに = by
 Q: mcq パーティーはいつですか。 ? 日曜日 | *土曜日 | 木曜日 | 金曜日
-Q: mcq マークはなにをつくりますか。 ? ワイン | *ピザ | ケーキ | 音楽
+Q: mcq ジュリアさんはなにをもってきますか。 ? ピザ | *のみもの | 同僚 | パーティー
 Q: mcq いつまでにしらせますか。 ? 土曜日まで | *木曜日まで | 月曜日まで | 夜まで
 `;
 export const JA_LISTENING = `
@@ -306,17 +306,17 @@ export const JA_PLACEMENT = `
 vocabulary | A1 | - | mcq 「家」はなんですか。 ? the car | *the house | the table | the door
 grammar | A1 | - | mcq わたしは学生___。 ? ます | *です | います | あります
 grammar | A1 | - | mcq 本___ 読みます。 ? は | *を | が | の
-reading | A1 | - | mcq わたしはけんです。二十さいです。けんはなんさいですか。 ? 十さい | *二十さい | 三十さい | 十五さい
+reading | A1 | - | mcq けんは二十さいです。いもうとは十さいです。おとうさんは四十さいです。いもうとはなんさいですか。 ? 二十さい | *十さい | 四十さい | 三十さい
 listening | A1 | こんにちは、わたしはアンナです。 | mcq What does she say? ? Goodbye, I'm Anna | *Hello, I'm Anna | Thank you, Anna | Where is Anna
 writing | A1 | - | mcq Translate: I live in Tokyo. ? 東京にいます | *東京にすんでいます | 東京です | 東京をすんでいます
 grammar | A2 | - | mcq 昨日、ピザを___。 ? 食べます | *食べました | 食べません | 食べたい
 grammar | A2 | - | mcq 学校___ 行きます。 ? で | *に | を | は
 grammar | A2 | - | mcq コーヒーを飲み___です。 ? ます | *たい | て | た
-reading | A2 | - | mcq 明日、大阪に電車で行きます。バスよりやすいからです。どうして電車ですか。 ? はやいから | *やすいから | バスがないから | 大阪がすきだから
+reading | A2 | - | mcq 明日わたしは大阪に電車で行きます。バスよりやすいからです。あにはひこうきで行きます。いそいでいるからです。どうしてあにはひこうきですか。 ? バスよりやすいから | *いそいでいるから | でんしゃがないから | 大阪がすきだから
 listening | A2 | すみません、駅はどこですか。まっすぐ行って、左に曲がってください。 | mcq Which way should you turn? ? right | *left | back | straight on only
 grammar | B1 | - | mcq お金があったら、日本に___。 ? 行きます | *行きたいです | 行きました | 行って
 grammar | B1 | - | mcq 時間が___。 (I have no time) ? あります | *ありません | います | です
-reading | B1 | - | mcq 雨がふっていましたが、さんぽに行きました。空気がほしかったからです。どうして行きましたか。 ? 雨じゃなかった | *空気がほしかった | おそかった | しごとだった
+reading | B1 | - | mcq さんぽに行きたかったです。でも、雨がたくさんふっていたから、行きませんでした。どうして行きませんでしたか。 ? 行きたかったから | *雨がたくさんふっていたから | おそかったから | しごとだったから
 vocabulary | B1 | - | mcq 「家賃」はなんですか。 ? salary | *rent | ticket | receipt
 writing | B1 | - | mcq Translate: I have lived here for two years. ? ここに二年です | *ここに二年すんでいます | ここは二年あります | ここをすみます
 grammar | B2 | - | mcq 彼が正しいとは___。 ? 思います | *思いません | 思いました | 思って
