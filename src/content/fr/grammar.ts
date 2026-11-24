@@ -16,7 +16,7 @@ M: Dropping the pronoun like in Spanish: "Parle français" — you need Je parle
 M: Using tu with a stranger or boss — use vous.
 M: "Ils" for an all-female group — use elles.
 X: mcq To address your boss politely, use ___. ? tu | *vous | elle | on
-X: fill ___ habite à Paris. (I, before a vowel: j') => J'
+X: fill ___ habite à Paris. (I, before a vowel) => J'
 X: mcq Which means "they" for an all-female group? ? ils | *elles | on | vous
 X: type we (informal, everyday) => on
 ## be-verb | be-verb | Être (to be) & c'est | A1
@@ -407,7 +407,7 @@ E: Tu lui donnes le cadeau ? = Are you giving him/her the gift?
 M: Putting the pronoun after the verb: "Je prends le" — Je le prends.
 M: "Je l'ai vue" — participle agrees with a preceding direct object (la → vue).
 M: Using lui for things — lui is for people (indirect).
-X: fill Tu ___ téléphones demain ? (me) => me
+X: fill Tu ___ téléphones demain ? (first person) => me
 X: fill Je ___ prends. (the book) => le
 X: mcq I want to see it (le film). ? Je le veux voir | *Je veux le voir | Je veux voir le | Je lui veux voir
 X: mcq I gave him the gift. ? Je le donne le cadeau | *Je lui ai donné le cadeau | Je lui donne à le cadeau | Je ai lui donné

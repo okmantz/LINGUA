@@ -3,7 +3,7 @@ export const FR_READING = `
 P: Je m'appelle Ana et je suis chilienne. J'ai vingt ans. Je suis étudiante et j'habite à Santiago. = My name is Ana and I'm Chilean. I'm twenty. I'm a student and I live in Santiago.
 P: Je parle espagnol et anglais. Mon frère s'appelle Pablo. Il a quinze ans. = I speak Spanish and English. My brother is called Pablo. He is fifteen.
 G: chilienne = Chilean (f) ; j'habite = I live ; frère = brother
-Q: mcq D'où est Ana ? ? d'Espagne | *du Chili | du Mexique | du Pérou
+Q: mcq Qui est étudiante ? ? Pablo | *Ana | sa mère | son amie
 Q: mcq Quel âge a Ana ? ? quinze ans | *vingt ans | trente ans | vingt et un ans
 Q: mcq Qui a quinze ans ? ? Ana | sa mère | *Pablo | son amie
 ## r-menu | r-menu | Au café | A1
@@ -17,16 +17,16 @@ Q: mcq Qu'est-ce qu'il n'y a PAS au menu ? ? du fromage | *de la pizza | du thé
 P: Ma famille est grande. J'ai deux frères et une sœur. Mon père est médecin et ma mère est professeure. = My family is big. I have two brothers and a sister. My father is a doctor and my mother is a teacher.
 P: Mes grands-parents habitent à Lyon. Le dimanche, nous mangeons tous ensemble chez eux. = My grandparents live in Lyon. On Sundays we all eat together at their house.
 G: tous ensemble = all together ; chez eux = at their place
-Q: mcq Combien de frères a-t-il/elle ? ? un | *deux | trois | quatre
+Q: mcq Qui est médecin ? ? sa mère | *son père | sa sœur | son frère
 Q: mcq Que fait sa mère ? ? elle est médecin | *elle est professeure | elle est ingénieure | elle est étudiante
-Q: mcq Quand mangent-ils chez les grands-parents ? ? le lundi | le samedi | *le dimanche | tous les jours
+Q: mcq Qui habite à Lyon ? ? ses frères | *ses grands-parents | ses parents | ses amis
 ## r-person | r-person | Mon meilleur ami | A1
 P: Mon meilleur ami s'appelle Diego. Il est grand et mince, et il a les cheveux noirs. Il est très gentil et toujours content. = My best friend is called Diego. He is tall and slim, and has black hair. He is very kind and always happy.
 P: Diego habite près de chez moi. Il est ingénieur et il travaille dans une grande entreprise. = Diego lives near my place. He is an engineer and works in a big company.
 G: mince = slim ; cheveux = hair ; toujours = always
-Q: mcq Comment est Diego ? ? petit et gros | *grand et gentil | triste et silencieux | vieux et laid
+Q: mcq Qu'est-ce qui est noir ? ? l'entreprise | *les cheveux | l'ami | le bureau
 Q: mcq Où habite Diego ? ? loin | à Madrid | *près de chez lui/elle | au bureau
-Q: mcq Que fait Diego ? ? professeur | médecin | *ingénieur | étudiant
+Q: mcq Quel est le métier de Diego ? ? grand | *ingénieur | content | mince
 ## r-work | r-work | Une journée de travail | A2
 P: Laura travaille dans une banque. Elle se lève à six heures et demie et prend le bus à sept heures et quart. Elle arrive au bureau à huit heures. = Laura works in a bank. She gets up at six-thirty and takes the bus at seven-fifteen. She arrives at the office at eight.
 P: À midi, elle mange avec ses collègues. L'après-midi, elle a des réunions avec des clients. Elle finit à cinq heures, mais parfois elle reste jusqu'à six heures. = At noon she eats with her colleagues. In the afternoon she has meetings with clients. She finishes at five, but sometimes stays until six.
@@ -38,29 +38,29 @@ Q: mcq Que fait-elle parfois après cinq heures ? ? elle va à la banque | *elle
 P: Samedi dernier, je suis allé à la plage avec mes amis. Il faisait très beau et la mer était calme. Nous avons nagé, mangé du poisson et joué au football. = Last Saturday I went to the beach with my friends. The weather was very nice and the sea was calm. We swam, ate fish and played football.
 P: Le soir, nous sommes rentrés très fatigués mais heureux. Dimanche, je me suis reposé et j'ai lu un livre. = In the evening we got home very tired but happy. On Sunday I rested and read a book.
 G: calme = calm ; rentrés = came back ; reposé = rested
-Q: mcq Où est-il allé samedi ? ? au cinéma | *à la plage | à la montagne | au bureau
-Q: mcq Quel temps faisait-il ? ? il pleuvait | il faisait froid | *il faisait beau | il neigeait
+Q: mcq Qu'ont-ils fait à la plage ? ? se reposer | *nager et jouer au football | lire | voyager
+Q: mcq Comment était la mer ? ? agitée | *calme | fatiguée | heureuse
 Q: mcq Qu'a-t-il fait dimanche ? ? il a nagé | *il s'est reposé et a lu | il a travaillé | il a voyagé
 ## r-reasons | r-reasons | Pourquoi j'habite ici | A2
 P: J'habite à Montpellier parce que j'aime le climat et la cuisine. Je pense que c'est une ville parfaite : il y a la plage, des parcs et beaucoup de culture. = I live in Montpellier because I like the climate and the food. I think it's a perfect city: there's a beach, parks and lots of culture.
 P: Cependant, elle n'est pas bon marché. Le loyer est cher, alors je partage un appartement avec deux amis. = However, it isn't cheap. Rent is expensive, so I share a flat with two friends.
 G: loyer = rent ; partage = I share ; cependant = however
 Q: mcq Pourquoi habite-t-il/elle à Montpellier ? ? pour le travail | *il/elle aime le climat et la cuisine | pour sa famille | parce que c'est bon marché
-Q: mcq Quel est le problème de la ville ? ? il fait froid | *elle est chère | il n'y a pas de plage | elle est petite
-Q: mcq Avec qui partage-t-il/elle un appartement ? ? avec sa famille | *avec deux amis | avec son patron | seul(e)
+Q: mcq Qu'est-ce qui est cher ? ? le climat | *le loyer | la cuisine | la plage
+Q: mcq Que partage-t-il/elle avec deux amis ? ? la plage | *un appartement | la cuisine | le climat
 ## r-story | r-story | Un voyage difficile | A2
 P: Hier, je voulais aller à Grenoble en train, mais je suis arrivé en retard à la gare et j'ai raté le train. J'étais très nerveux. = Yesterday I wanted to go to Grenoble by train, but I arrived late at the station and missed the train. I was very nervous.
 P: Alors j'ai pris un bus. Le voyage était long, mais j'ai rencontré une fille très sympa. Nous avons parlé pendant trois heures et maintenant nous sommes amis. = So I took a bus. The trip was long, but I met a very nice girl. We talked for three hours and now we are friends.
 G: raté = missed ; rencontré = met ; pendant = during
 Q: mcq Pourquoi a-t-il raté le train ? ? il était malade | *il est arrivé en retard | il n'avait pas d'argent | c'était dimanche
-Q: mcq Comment a-t-il voyagé ? ? en avion | en voiture | *en bus | à pied
-Q: mcq Que s'est-il passé pendant le voyage ? ? il a perdu sa valise | *il a rencontré une fille | il est arrivé tôt | il n'a parlé à personne
+Q: mcq Comment a-t-il voyagé ? ? en train | *en bus | en voiture | à pied
+Q: mcq Que s'est-il passé pendant le voyage en bus ? ? il a raté le train | *il a rencontré une fille | il est arrivé en retard | il était nerveux
 ## r-social | r-social | Une invitation | A2
 P: Salut Marta, Samedi, je fais une fête chez moi pour mon anniversaire. Ça commence à huit heures. Il y aura de la nourriture, de la musique et beaucoup de monde. Tu peux venir ? = Hi Marta, On Saturday I'm having a party at my place for my birthday. It starts at eight. There will be food, music and lots of people. Can you come?
 P: Si tu veux, tu peux amener un ami. Dis-moi quelque chose avant jeudi, s'il te plaît. Bises, Julien. = If you like, you can bring a friend. Let me know before Thursday, please. Kisses, Julien.
 G: anniversaire = birthday ; il y aura = there will be ; bises = kisses (informal sign-off)
 Q: mcq Que fête Julien ? ? un mariage | *son anniversaire | un travail | l'été
-Q: mcq À quelle heure commence la fête ? ? à six heures | à sept heures | *à huit heures | à neuf heures
+Q: mcq Quand a lieu la fête ? ? jeudi | *samedi | dimanche | vendredi
 Q: mcq Jusqu'à quand Marta doit-elle répondre ? ? vendredi | *jeudi | samedi | lundi
 `;
 export const FR_LISTENING = `
@@ -305,17 +305,17 @@ export const FR_PLACEMENT = `
 vocabulary | A1 | - | mcq Que signifie « la maison » ? ? the car | *the house | the table | the door
 grammar | A1 | - | mcq Je ___ étudiant. ? *suis | ai | vais | fais
 grammar | A1 | - | mcq J'___ vingt ans. ? suis | *ai | fais | vais
-reading | A1 | - | mcq Je m'appelle Luc et j'ai vingt ans. Quel âge a Luc ? ? dix | *vingt | trente | quinze
+reading | A1 | - | mcq Luc a vingt ans, sa sœur a dix ans et son père a quarante ans. Quel âge a la sœur de Luc ? ? vingt | *dix | quarante | trente
 listening | A1 | Bonjour, je m'appelle Ana. | mcq What does she say? ? Goodbye, I'm Ana | *Hello, my name is Ana | Thank you, Ana | Where is Ana
 writing | A1 | - | order Translate: I live in Paris. => J'habite à Paris
 grammar | A2 | - | mcq Nous ___ au cinéma le samedi. ? *allons | allez | vais | vont
 grammar | A2 | - | mcq Hier, j'___ mangé une pizza. ? suis | *ai | vais | avais
 grammar | A2 | - | mcq Elle est ___ à la plage hier. ? allé | *allée | allés | aller
-reading | A2 | - | mcq Demain, je vais voyager à Lyon en train parce que c'est moins cher que l'avion. Pourquoi en train ? ? c'est plus rapide | *c'est moins cher | il n'y a pas d'avion | il aime Lyon
+reading | A2 | - | mcq Demain, je vais à Lyon en train parce que c'est moins cher, mais mon frère prend l'avion parce qu'il est pressé. Pourquoi le frère prend-il l'avion ? ? c'est moins cher | *il est pressé | il n'y a pas de train | il aime Lyon
 listening | A2 | Pardon, où est la gare ? Allez tout droit et tournez à gauche. | mcq Which way should you turn? ? right | *left | back | straight on only
 grammar | B1 | - | mcq Si j'avais de l'argent, je ___ en France. ? voyage | *voyagerais | voyagerai | voyageais
 grammar | B1 | - | mcq Il faut que tu ___ avec moi. ? viens | *viennes | venais | viendras
-reading | B1 | - | mcq Bien qu'il pleuve, nous sommes sortis parce que nous avions besoin d'air frais. Pourquoi sont-ils sortis ? ? il ne pleuvait pas | *ils avaient besoin d'air frais | il était tard | ils travaillaient
+reading | B1 | - | mcq Bien que nous voulions sortir, nous sommes restés à la maison parce qu'il pleuvait beaucoup. Pourquoi sommes-nous restés à la maison ? ? nous voulions sortir | *il pleuvait beaucoup | il était tard | nous travaillions
 vocabulary | B1 | - | mcq « Un loyer » signifie ___. ? a salary | *rent | a ticket | a receipt
 writing | B1 | - | order Translate: I have been living here for two years. => J'habite ici depuis deux ans
 grammar | B2 | - | mcq Je ne pense pas qu'il ___ raison. ? a | *ait | aura | eut
