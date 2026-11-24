@@ -19,14 +19,14 @@ P: Mis abuelos viven en Sevilla. Los domingos comemos todos juntos en su casa. =
 G: todos juntos = all together ; los domingos = on Sundays
 Q: mcq ¿Cuántos hermanos tiene? ? dos | *tres | cuatro | uno
 Q: mcq ¿Qué hace su madre? ? es médica | *es profesora | es ingeniera | es estudiante
-Q: mcq ¿Cuándo comen con los abuelos? ? los lunes | los sábados | *los domingos | cada día
+Q: mcq ¿Quiénes viven en Sevilla? ? los hermanos | *los abuelos | los padres | los amigos
 ## r-person | r-person | Mi mejor amigo | A1
 P: Mi mejor amigo se llama Diego. Es alto y delgado, y tiene el pelo negro. Es muy simpático y siempre está contento. = My best friend is called Diego. He is tall and slim, and has black hair. He is very nice and is always happy.
 P: Diego vive cerca de mi casa. Es ingeniero y trabaja en una empresa grande. = Diego lives near my house. He is an engineer and works in a big company.
 G: delgado = slim ; pelo = hair ; siempre = always
-Q: mcq ¿Cómo es Diego? ? bajo y gordo | *alto y simpático | triste y callado | viejo y feo
-Q: mcq ¿Dónde vive Diego? ? lejos | en Madrid | *cerca de su casa | en la oficina
-Q: mcq ¿Qué es Diego? ? profesor | médico | *ingeniero | estudiante
+Q: mcq ¿Qué es grande? ? el pelo | *la empresa | el amigo | la casa
+Q: mcq ¿Dónde trabaja Diego? ? cerca de la casa | *en una empresa | en un banco | en la oficina
+Q: mcq ¿Cuál es el trabajo de Diego? ? alto | *ingeniero | contento | delgado
 ## r-work | r-work | Un día de trabajo | A2
 P: Laura trabaja en un banco. Se levanta a las seis y media y toma el autobús a las siete y cuarto. Llega a la oficina a las ocho. = Laura works in a bank. She gets up at six-thirty and takes the bus at seven-fifteen. She arrives at the office at eight.
 P: A mediodía come con sus compañeros. Por la tarde tiene reuniones con clientes. Termina a las cinco, pero a veces se queda hasta las seis. = At midday she eats with her colleagues. In the afternoon she has meetings with clients. She finishes at five, but sometimes stays until six.
@@ -38,8 +38,8 @@ Q: mcq ¿Qué hace a veces después de las cinco? ? va al banco | *se queda trab
 P: El sábado pasado fui a la playa con mis amigos. Hacía mucho sol y el mar estaba tranquilo. Nadamos, comimos pescado y jugamos al fútbol. = Last Saturday I went to the beach with my friends. It was very sunny and the sea was calm. We swam, ate fish and played football.
 P: Por la noche volvimos a casa muy cansados, pero felices. El domingo descansé y leí un libro. = In the evening we got home very tired but happy. On Sunday I rested and read a book.
 G: tranquilo = calm ; volvimos = we returned ; descansé = I rested
-Q: mcq ¿Adónde fue el sábado? ? al cine | *a la playa | a la montaña | a la oficina
-Q: mcq ¿Qué tiempo hacía? ? llovía | hacía frío | *hacía sol | nevaba
+Q: mcq ¿Qué hicieron en la playa? ? descansaron | *nadaron y jugaron al fútbol | leyeron | viajaron
+Q: mcq ¿Cómo estaba el mar? ? agitado | *tranquilo | cansado | feliz
 Q: mcq ¿Qué hizo el domingo? ? nadó | *descansó y leyó | trabajó | viajó
 ## r-reasons | r-reasons | Por qué vivo aquí | A2
 P: Vivo en Valencia porque me gusta el clima y la comida. Creo que es una ciudad perfecta: tiene playa, parques y mucha cultura. = I live in Valencia because I like the climate and the food. I think it's a perfect city: it has a beach, parks and lots of culture.
@@ -47,20 +47,20 @@ P: Sin embargo, no es barata. El alquiler es caro, así que comparto piso con do
 G: alquiler = rent ; comparto = I share ; piso = flat
 Q: mcq ¿Por qué vive en Valencia? ? por el trabajo | *le gustan el clima y la comida | por su familia | porque es barata
 Q: mcq ¿Qué problema tiene la ciudad? ? hace frío | *es cara | no hay playa | es pequeña
-Q: mcq ¿Con quién comparte piso? ? con su familia | *con dos amigos | con su jefe | sola
+Q: mcq ¿Qué es caro? ? el clima | *el alquiler | la comida | la playa
 ## r-story | r-story | Un viaje difícil | A2
 P: Ayer quería viajar a Granada en tren, pero llegué tarde a la estación y perdí el tren. Estaba muy nervioso. = Yesterday I wanted to travel to Granada by train, but I arrived late at the station and missed the train. I was very nervous.
 P: Entonces tomé un autobús. El viaje fue largo, pero conocí a una chica muy simpática. Hablamos durante tres horas y ahora somos amigos. = Then I took a bus. The trip was long, but I met a very nice girl. We talked for three hours and now we are friends.
 G: perdí = I missed/lost ; conocí a = I met ; durante = during
-Q: mcq ¿Por qué perdió el tren? ? estaba enfermo | *llegó tarde | no tenía dinero | era domingo
-Q: mcq ¿Cómo viajó a Granada? ? en avión | en coche | *en autobús | a pie
-Q: mcq ¿Qué pasó en el viaje? ? perdió su maleta | *conoció a una chica | llegó temprano | no habló con nadie
+Q: mcq ¿Por qué perdió el tren? ? estaba nervioso | *llegó tarde | no tenía dinero | era domingo
+Q: mcq ¿Cómo viajó a Granada? ? en tren | *en autobús | en coche | a pie
+Q: mcq ¿Qué pasó durante el viaje en autobús? ? perdió el tren | *conoció a una chica | llegó tarde | estaba nervioso
 ## r-social | r-social | Una invitación | A2
 P: Hola Marta: El sábado hago una fiesta en mi casa para celebrar mi cumpleaños. Empieza a las ocho. Habrá comida, música y mucha gente. ¿Puedes venir? = Hi Marta: On Saturday I'm having a party at my house to celebrate my birthday. It starts at eight. There will be food, music and lots of people. Can you come?
 P: Si quieres, puedes traer a un amigo. Dime algo antes del jueves, por favor. Un abrazo, Javier. = If you like, you can bring a friend. Let me know before Thursday, please. A hug, Javier.
 G: cumpleaños = birthday ; habrá = there will be ; abrazo = hug
-Q: mcq ¿Qué celebra Javier? ? una boda | *su cumpleaños | un trabajo | el verano
-Q: mcq ¿A qué hora empieza? ? a las seis | a las siete | *a las ocho | a las nueve
+Q: mcq ¿Qué celebra Javier? ? una boda | *su cumpleaños | la comida | la música
+Q: mcq ¿Cuándo es la fiesta? ? el jueves | *el sábado | el lunes | el domingo
 Q: mcq ¿Hasta cuándo debe responder Marta? ? el viernes | *el jueves | el sábado | el lunes
 `;
 export const ES_LISTENING = `
@@ -313,17 +313,17 @@ export const ES_PLACEMENT = `
 vocabulary | A1 | - | mcq ¿Qué significa "la casa"? ? the car | *the house | the table | the door
 grammar | A1 | - | mcq Yo ___ estudiante. ? *soy | estoy | tengo | voy
 grammar | A1 | - | mcq Ella ___ en casa. ? es | *está | soy | tiene
-reading | A1 | - | mcq Me llamo Luis y tengo veinte años. ¿Cuántos años tiene Luis? ? diez | *veinte | treinta | quince
+reading | A1 | - | mcq Luis tiene veinte años, su hermana tiene diez y su padre tiene cuarenta. ¿Cuántos años tiene la hermana de Luis? ? veinte | *diez | cuarenta | treinta
 listening | A1 | Buenos días, me llamo Ana. | mcq What does she say? ? Goodbye, I'm Ana | *Good morning, my name is Ana | Thank you, Ana | Where is Ana
 writing | A1 | - | order Translate: I live in Madrid. => Vivo en Madrid
 grammar | A2 | - | mcq Nosotros ___ al cine los sábados. ? *vamos | vais | voy | van
 grammar | A2 | - | mcq Ayer yo ___ paella. ? como | *comí | comeré | comía
 grammar | A2 | - | mcq Me ___ los libros. ? gusta | *gustan | gusto | gustamos
-reading | A2 | - | mcq Mañana voy a viajar a Sevilla en tren porque es más barato que el avión. ¿Por qué viaja en tren? ? es más rápido | *es más barato | no hay avión | le gusta Sevilla
+reading | A2 | - | mcq Mañana yo voy a Sevilla en tren porque es más barato, pero mi hermano va en avión porque tiene prisa. ¿Por qué va en avión el hermano? ? es más barato | *tiene prisa | no hay tren | le gusta Sevilla
 listening | A2 | Perdón, ¿dónde está la estación? Siga todo recto y gire a la izquierda. | mcq Which way should you turn? ? right | *left | back | straight on only
 grammar | B1 | - | mcq Si tuviera dinero, ___ a España. ? viajo | *viajaría | viajaré | viajé
 grammar | B1 | - | mcq Quiero que tú ___ conmigo. ? vienes | *vengas | venías | vendrás
-reading | B1 | - | mcq Aunque llovía, salimos a caminar porque necesitábamos aire fresco. ¿Por qué salieron? ? no llovía | *necesitaban aire fresco | era tarde | tenían trabajo
+reading | B1 | - | mcq Aunque necesitábamos aire fresco, no salimos a caminar porque llovía mucho. ¿Por qué no salieron? ? necesitaban aire fresco | *llovía mucho | era tarde | tenían trabajo
 vocabulary | B1 | - | mcq "Alquiler" means ___. ? salary | *rent | ticket | receipt
 writing | B1 | - | order Translate: I have been living here for two years. => Llevo dos años viviendo aquí
 grammar | B2 | - | mcq No creo que él ___ razón. ? tiene | *tenga | tendrá | tuvo

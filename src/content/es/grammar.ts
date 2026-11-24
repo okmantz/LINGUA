@@ -117,7 +117,7 @@ M: "Yo no quiero algo" — in negatives use nada: No quiero nada.
 M: Thinking double negatives cancel out — in Spanish they reinforce each other.
 M: Using también for "me neither" — use tampoco.
 X: mcq I never eat meat → ___ como carne. ? No | *Nunca | Nada | Tampoco
-X: fill No tengo ___ . (nothing / nada) => nada
+X: fill No tengo ___ . (nothing) => nada
 X: mcq "Me neither" is ___. ? Yo también | *Yo tampoco | Yo no | Yo nada
 X: order Translate: I don't speak French. => No hablo francés
 ## questions | questions | Asking questions | A1
@@ -264,7 +264,7 @@ E: ¿Qué te gusta hacer? = What do you like to do?
 M: "Yo gusto el café" — reverse it: me gusta el café.
 M: "Me gusta los libros" — plural thing → me gustan.
 M: Using "gustar" for people you love — use querer/amar/me cae bien.
-X: fill ___ gusta el café. (me) => Me
+X: fill ___ gusta el café. (first person) => Me
 X: fill Me ___ los libros. (gustar) => gustan
 X: mcq I like to dance. ? Yo gusto bailar | *Me gusta bailar | Me gustan bailar | Gusto me bailar
 X: fill A ella ___ gusta el té. => le
@@ -402,8 +402,8 @@ E: Le doy el regalo. → Se lo doy. = I give him the gift → I give it to him.
 M: "Lo tengo el libro" — don't repeat the noun and the pronoun (in basic sentences).
 M: Putting the pronoun after a conjugated verb: "Compro lo" → Lo compro.
 M: "Le lo doy" — le + lo → se lo.
-X: fill ¿La casa? Yo ___ tengo. => la
-X: fill Yo ___ llamo mañana. (you, te) => te
+X: fill ¿Tienes el libro? Sí, yo ___ tengo. => lo
+X: fill Yo ___ llamo mañana. (you) => te
 X: mcq I want to see it (el libro). ? Quiero ver | *Quiero verlo | Quiero lo ver | Lo quiero verlo
 X: mcq I give it to him (the gift). ? Le lo doy | *Se lo doy | Lo le doy | Me lo doy
 ## connectors-opinions | connectors-opinions | Connectors & opinions | A2
