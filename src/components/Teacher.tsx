@@ -38,12 +38,13 @@ export function TeacherDock() {
   const unseen = tips.filter((t) => t.id !== 'next' && !seen[t.id]);
   const tip = tips[Math.min(idx, Math.max(0, tips.length - 1))];
 
-  // Pop up once per page visit when there is something new to say.
+  // Navigating never opens the Teacher by itself. She only opens on her own for an `important` tip (the first-run welcome, the
+  // 30-day milestone), once ever; everything else waits behind the widget, which shows a dot when she has something new to say.
   useEffect(() => {
     setOpen(false); setTour(0);
     if (off || store.focus || autoFor.current === loc.pathname) return;
-    const first = tips.findIndex((t) => t.id !== 'next' && !seen[t.id]);
-    if (first < 0) { autoFor.current = loc.pathname; return; }
+    const first = tips.findIndex((t) => t.important && !seen[t.id]);
+    if (first < 0) return;
     const id = setTimeout(() => { autoFor.current = loc.pathname; setIdx(first); setAuto(tips[first].id !== 'tour-v1'); setOpen(true); }, 1100);
     return () => clearTimeout(id);
     // eslint-disable-next-line
