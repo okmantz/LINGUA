@@ -16,10 +16,11 @@ export default function Assessment() {
   const set = useMemo(() => {
     const prog = resolveProgram(content); const seen = new Set(store.cards.filter((c) => c.reps > 0).map((c) => c.itemId));
     const words = shuffle(content.vocab.filter((v) => seen.has(v.id) || prog.some((d) => d.words.includes(v))), rnd).slice(0, 8);
-    const out: { ex: Exercise; skill: Skill; speak?: string }[] = [];
+    const out: { ex: Exercise; skill: Skill; speak?: string; passage?: string[] }[] = [];
     words.forEach((w, k) => { const ce = makeExercise(w, k % 2 ? 'produce' : 'rev', content.vocab, rnd); out.push({ ex: ce.ex, skill: 'vocabulary', speak: ce.speak }); });
     shuffle(prog.flatMap((d) => d.grammar).flatMap((g) => g.exercises), rnd).slice(0, 6).forEach((ex) => out.push({ ex, skill: 'grammar' }));
-    shuffle(content.reading.filter((r) => r.level === 'A1' || r.level === 'A2').flatMap((r) => r.questions), rnd).slice(0, 3).forEach((ex) => out.push({ ex, skill: 'reading' }));
+    // A reading question is meaningless without its text, so each one carries the passage it is about.
+    shuffle(content.reading.filter((r) => r.level === 'A1' || r.level === 'A2'), rnd).slice(0, 3).forEach((r) => out.push({ ex: shuffle(r.questions, rnd)[0], skill: 'reading', passage: r.paragraphs }));
     shuffle(content.listening.filter((r) => r.level === 'A1' || r.level === 'A2'), rnd).slice(0, 3).forEach((l) => out.push({ ex: l.questions[0], skill: 'listening', speak: l.lines.map((x) => x.t).join(' ') }));
     return out; // eslint-disable-next-line
   }, [content, run]);
@@ -48,5 +49,5 @@ export default function Assessment() {
     store.logEvent({ type: 'assessment', skill: cur.skill, correct: r.correct, ms: r.ms });
     if (i + 1 >= set.length) { const score = nr.filter((x) => x.ok).length / nr.length; store.patchLang(state.code, (s) => ({ ...s, finalAssessment: { at: Date.now(), score, passed: score >= 0.7, cefr: 'A1' }, xp: s.xp + (score >= 0.7 ? 30 : 10) })); setDone(true); setTimeout(store.evaluate, 80); } else setI(i + 1);
   };
-  return <div><Progress value={i / set.length} className="mb-5" label="Assessment progress" /><ExerciseView key={i} ex={cur.ex} cfg={cfg} ui={ui} speakText={cur.speak} autoSpeak={cur.skill === 'listening'} rate={rate} onDone={onDone} /></div>;
+  return <div><Progress value={i / set.length} className="mb-5" label="Assessment progress" />{cur.passage && <Card className="mb-4">{cur.passage.map((p, k) => <p key={k} className="mb-2 last:mb-0">{p}</p>)}</Card>}<ExerciseView key={i} ex={cur.ex} cfg={cfg} ui={ui} speakText={cur.speak} autoSpeak={cur.skill === 'listening'} rate={rate} onDone={onDone} /></div>;
 }

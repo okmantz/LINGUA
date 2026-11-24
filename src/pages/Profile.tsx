@@ -35,8 +35,8 @@ export default function ProfilePage() {
           <p className="mt-3 text-xs text-muted">The ring around your picture shows your mastery tier. Finn, Bolt and Milo unlock as you progress, based on demonstrated mastery rather than time spent.</p></Card>
         <Card><h2 className="mb-3 text-lg font-bold">Name</h2><label className="sr-only" htmlFor="un">Username</label>
           <input id="un" value={name} maxLength={24} onChange={(e) => setName(e.target.value)} onBlur={() => name.trim().length >= 2 && store.patchProfile((x) => ({ ...x, username: name.trim() }))} className="h-12 w-full rounded-xl border border-line bg-surface px-3.5 outline-none focus:border-accent" /></Card>
-        <Card><div className="mb-3 flex items-center gap-3"><TeacherAvatar size={48} className="rounded-full" /><div><h2 className="text-lg font-bold">{TEACHER.name}</h2><p className="text-sm text-muted">Pops up with tips, reminders and advice.</p></div></div>
-          <Row title="Show the Teacher" hint="Tips appear once per page, never repeatedly."><Switch on={teacherOn} onChange={(v) => store.setTeacherOff(!v)} label="Show the Teacher" /></Row>
+        <Card><div className="mb-3 flex items-center gap-3"><TeacherAvatar size={48} className="rounded-full" /><div><h2 className="text-lg font-bold">{TEACHER.name}</h2><p className="text-sm text-muted">Gives tips, reminders and advice when you tap her.</p></div></div>
+          <Row title="Show the Teacher" hint="She only opens on her own for something really important. Tap her for tips any time."><Switch on={teacherOn} onChange={(v) => store.setTeacherOff(!v)} label="Show the Teacher" /></Row>
           <Row title="Show all tips again" hint="Replay the welcome tour and every tip."><Btn size="sm" variant="ghost" onClick={() => store.resetTips()}>Reset tips</Btn></Row></Card>
       </div>}
 
