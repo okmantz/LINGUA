@@ -50,6 +50,12 @@ describe('recommended library item', () => {
 });
 
 describe('Teacher', () => {
+  it('only opens by itself for important tips, never just because the page changed', () => {
+    const paths = ['/', '/path', '/daily', '/vocabulary', '/grammar', '/conversations', '/listening', '/reading', '/writing', '/pronunciation', '/cheats', '/progress', '/achievements', '/languages', '/settings', '/assessment'];
+    for (const path of paths) for (const t of tipsFor({ ...base(), path, due: 90, hour: 19 })) if (t.important) expect(['tour-v1', 'prog-done']).toContain(t.id);
+    expect(tipsFor({ ...base(), newcomer: true })[0].important).toBe(true);
+    expect(tipsFor({ ...base(), path: '/path' }).every((t) => !t.important)).toBe(true);
+  });
   const base = () => { const s = newLangState('es', 15); return { path: '/', name: 'Owen', langName: 'Spanish', state: s, stats: null, due: 0, next: nextStep({ state: s, plan: plan(s), todayMin: 0 }), todayMin: 0, hour: 10, today: '2026-01-01', programme: true, newcomer: false }; };
   it('has a tip for every page, with unique ids', () => {
     const ids = new Set<string>();
