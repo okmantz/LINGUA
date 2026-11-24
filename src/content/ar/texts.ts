@@ -24,9 +24,9 @@ Q: mcq متى نأكل الغداء معا؟ ? الاثنين | السبت | *ا
 P: أفضل صديق عندي اسمه كريم. هو طويل ونحيف وشعره أسود. هو لطيف جدا ودائما سعيد. = My best friend is called Karim. He's tall and slim with black hair. He's very kind and always happy.
 P: كريم يسكن قريبا من بيتي. هو مهندس ويعمل في شركة كبيرة. = Karim lives near my house. He's an engineer and works in a big company.
 G: نحيف = slim ; شعر = hair ; شركة = company
-Q: mcq كيف هو كريم؟ ? قصير | *طويل | سمين | كسول
-Q: mcq ما لون شعره؟ ? أصفر | *أسود | أحمر | أبيض
-Q: mcq ماذا يعمل كريم؟ ? طبيب | معلم | *مهندس | طباخ
+Q: mcq ما الشيء الكبير؟ ? شعره | *الشركة | صديقه | بيته
+Q: mcq كيف شعر كريم؟ ? نحيف | *أسود | لطيف | سعيد
+Q: mcq ما عمل كريم؟ ? طويل | *مهندس | نحيف | سعيد
 ## r-work | r-work | يوم عمل | A2
 P: ماري تعمل في مكتب وسط القاهرة. تستيقظ في السادسة والنصف وتركب الحافلة في السابعة والربع. = Mary works in an office in downtown Cairo. She wakes at six thirty and takes the bus at quarter past seven.
 P: في الثانية عشرة تأكل الغداء مع زملائها. في المساء تعود إلى البيت وتطبخ وتشاهد فيلما. = At twelve she eats lunch with her colleagues. In the evening she returns home, cooks and watches a film.
@@ -38,8 +38,8 @@ Q: mcq ماذا تفعل مساء؟ ? تدرس | *تطبخ وتشاهد فيلم
 P: يوم السبت الماضي ذهبت إلى البحر مع أصدقائي. أكلنا السمك وسبحنا. كان الجو حارا. = Last Saturday I went to the sea with my friends. We ate fish and swam. It was hot.
 P: يوم الأحد بقيت في البيت. نمت كثيرا وقرأت كتابا. وفي المساء اتصلت بجدتي. = On Sunday I stayed at home. I slept a lot and read a book. In the evening I called my grandmother.
 G: البحر = sea ; اتصلت = I called
-Q: mcq أين ذهب يوم السبت؟ ? الجبل | *البحر | المدينة | السينما
-Q: mcq كيف كان الجو؟ ? باردا | ممطرا | *حارا | عاصفا
+Q: mcq ماذا فعلوا في البحر؟ ? نمت | *أكلنا السمك وسبحنا | قرأت كتابا | اتصلت بجدتي
+Q: mcq متى كان الجو حارا؟ ? يوم الأحد | *يوم السبت | في المساء | أمس
 Q: mcq بمن اتصل مساء الأحد؟ ? صديق | *جدته | أمه | مديره
 ## r-reasons | r-reasons | لماذا أسكن هنا | A2
 P: أسكن في القاهرة لأنني أعمل وأدرس هنا. المدينة كبيرة لكنها حية. أحبها لأن فيها ناسا كثيرين. = I live in Cairo because I work and study here. The city is big but lively. I like it because there are many people.
@@ -47,20 +47,20 @@ P: للأسف ليست رخيصة، لذلك أسكن مع صديقين. أعت�
 G: حية = lively ; طريقة = way
 Q: mcq لماذا يسكن في القاهرة؟ ? يحب البحر | *يعمل ويدرس هنا | ولد هنا | عائلته هنا
 Q: mcq كيف المدينة؟ ? صغيرة وهادئة | *كبيرة لكنها حية | رخيصة | باردة
-Q: mcq لماذا يسكن مع صديقين؟ ? ليس عنده بيت | لا يحب البيت | *المدينة ليست رخيصة | عندهما قطط
+Q: mcq لماذا يسكن مع صديقين؟ ? يعمل ويدرس هنا | *ليست رخيصة | المدينة كبيرة | أحبها
 ## r-story | r-story | رحلة لا تنسى | A2
 P: أمس فاتني القطار إلى الإسكندرية. وصلت إلى المحطة في التاسعة لكن القطار كان قد غادر. = Yesterday I missed the train to Alexandria. I arrived at the station at nine, but the train had already left.
 P: اشتريت تذكرة أخرى وانتظرت ساعتين. أخيرا وصلت متعبا لكن سعيدا. = I bought another ticket and waited two hours. Finally I arrived tired but happy.
 G: فاتني = I missed ; غادر = left
-Q: mcq ماذا فاته؟ ? الحافلة | *القطار | الطائرة | الموعد
-Q: mcq كم انتظر؟ ? ساعة | *ساعتين | ثلاث ساعات | عشر دقائق
-Q: mcq كيف كان في النهاية؟ ? غاضبا | *متعبا لكن سعيدا | حزينا | خائفا
+Q: mcq ماذا اشترى؟ ? القطار | *تذكرة أخرى | المحطة | ساعتين
+Q: mcq كم انتظر؟ ? في التاسعة | *ساعتين | ثلاث ساعات | عشر دقائق
+Q: mcq ما الذي غادر؟ ? التذكرة | *القطار | المحطة | الإسكندرية
 ## r-social | r-social | دعوة | A2
 P: جوليا، يوم السبت سأقيم حفلة في البيت. هل تستطيعين أن تأتي؟ تبدأ في الثامنة ويأتي زملائي أيضا. = Julia, on Saturday I'm having a party at home. Can you come? It starts at eight and my colleagues are coming too.
 P: سأطبخ البيتزا. هل تستطيعين أن تحضري شيئا للشرب؟ أخبريني قبل الخميس. مارك. = I'll make pizza. Could you bring something to drink? Let me know before Thursday. Mark.
 G: حفلة = party ; أحضر = to bring ; قبل = before
 Q: mcq متى الحفلة؟ ? الأحد | *السبت | الخميس | الجمعة
-Q: mcq ماذا سيطبخ مارك؟ ? الأرز | *البيتزا | الكعك | السمك
+Q: mcq ماذا ستحضر جوليا؟ ? البيتزا | *شيئا للشرب | زملاء | حفلة
 Q: mcq قبل متى تخبره جوليا؟ ? السبت | *الخميس | الاثنين | المساء
 `;
 export const AR_LISTENING = `
@@ -295,17 +295,17 @@ export const AR_PLACEMENT = `
 vocabulary | A1 | - | mcq ما معنى "بيت"؟ ? the car | *the house | the table | the door
 grammar | A1 | - | mcq أنا ___ . (I am a student, m.) ? طالبة | *طالب | طلاب | الطالب
 grammar | A1 | - | mcq ___ كتاب على الطاولة. (there is) ? هو | *هناك | أنا | هل
-reading | A1 | - | mcq اسمي كريم وعمري عشرون سنة. كم عمر كريم؟ ? عشر | *عشرون | ثلاثون | خمسة
+reading | A1 | - | mcq عمر كريم عشرون سنة، وعمر أخته عشر سنوات، وعمر أبيه أربعون سنة. كم عمر أخت كريم؟ ? عشرون | *عشر | أربعون | ثلاثون
 listening | A1 | مرحبا، اسمي آنا. | mcq What does she say? ? Goodbye, I'm Anna | *Hello, my name is Anna | Thank you, Anna | Where is Anna
 writing | A1 | - | mcq Translate: I live in Cairo. ? أنا القاهرة | *أسكن في القاهرة | أنا أسكن القاهرة | القاهرة أسكن
 grammar | A2 | - | mcq أمس ___ إلى السوق. (I went) ? أذهب | *ذهبت | سأذهب | يذهب
 grammar | A2 | - | mcq القطار ___ من الحافلة. (faster) ? سريع | *أسرع | سرعة | أسرعا
 grammar | A2 | - | mcq غدا ___ إلى العمل. (I will go) ? ذهبت | أذهب | *سأذهب | ذهب
-reading | A2 | - | mcq غدا سأسافر بالقطار لأنه أرخص. لماذا القطار؟ ? أسرع | *أرخص | لا طائرة | يحب المدينة
+reading | A2 | - | mcq غدا سأسافر أنا بالقطار لأنه أرخص، لكن أخي سيسافر بالطائرة لأنه مستعجل. لماذا يسافر أخي بالطائرة؟ ? لأنه أرخص | *لأنه مستعجل | لا يوجد قطار | يحب المدينة
 listening | A2 | عفوا، أين المحطة؟ اذهب مباشرة ثم إلى اليسار. | mcq Which way do you turn? ? right | *left | back | straight only
 grammar | B1 | - | mcq إذا ___ المطر أبقى في البيت. (falls) ? ينزل | *نزل | نازلين | تنزل
 grammar | B1 | - | mcq ___ عندي وقت. (I have no) ? لا | *ليس | لم | ما
-reading | B1 | - | mcq رغم المطر ذهبنا إلى الحديقة لأننا نحتاج الهواء. لماذا ذهبوا؟ ? لم يمطر | *يحتاجون الهواء | الوقت متأخر | عندهم عمل
+reading | B1 | - | mcq رغم أننا نحتاج الهواء، لم نذهب إلى الحديقة لأن المطر كان شديدا. لماذا لم نذهب إلى الحديقة؟ ? نحتاج الهواء | *المطر كان شديدا | الوقت متأخر | عندنا عمل
 vocabulary | B1 | - | mcq ما معنى "إيجار"؟ ? salary | *rent | ticket | receipt
 writing | B1 | - | mcq Translate: I have lived here for two years. ? أسكن هنا سنتين | *أسكن هنا منذ سنتين | سنتين أنا هنا | أنا هنا سنتان
 grammar | B2 | - | mcq ___ أن القطار أرخص. (In my view) ? من رأي | *في رأيي | على رأي | مع رأيي
