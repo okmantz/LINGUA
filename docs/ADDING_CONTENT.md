@@ -47,3 +47,11 @@ Registry fields: `script` (`cyrillic`, `han`, `kana`, `hangul`, `arabic`), `rtl`
 - The `dictate` exercise mode (sentence dictation) is used automatically for languages with a listening-friendly script.
 - Vocab ids for non-Latin words are generated from Unicode letters when the ASCII slug would be empty.
 - Run `npx vitest run src/content` after every file: it checks ids, `*` marks on multiple-choice answers, duplicate choices and minimum content sizes.
+
+## Sign languages (ASL)
+
+`src/content/asl/` is the worked example. Set `sign: true` in the registry entry; vocabulary lines carry a 10th field, the figure spec (`h=B o=down,mid l=chest to=front m=tap` …; see the header of `src/core/signRender.ts`). Check every figure on a contact sheet, give each sign a written description, and use gloss (`IX-1`, `[yn]`, `fs-ANA`) for readings, listening and writing. Audio, speech recognition and pronunciation scoring are off for sign languages. Have a Deaf signer review the result before relying on it.
+
+## Extending an existing language (B1–C2)
+
+Each language keeps its core in `vocab.ts`, `grammar.ts`, `convs.ts`, `texts.ts`, its B1–C2 material in `adv.ts`, and further B1–C2 material in `ext.ts` (same line formats). Reading questions must not be answerable by copying a phrase from the text: write distractors from the text itself, and paraphrase the correct answer (`src/content/leaks.test.ts` fails otherwise).
