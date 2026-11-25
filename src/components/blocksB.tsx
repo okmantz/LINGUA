@@ -1,4 +1,5 @@
 // Conversation, pronunciation and writing blocks. Checks here are keyword/checklist/recognition based — labelled as such in the UI.
+import { SignFigure } from './SignFigure';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { fold, sentenceSimilarity, shuffle, countWords } from '../core/text';
 import { speak, hasTTS, hasRecognition, hasRecorder, listenOnce, startRecording } from '../core/speech';
@@ -81,6 +82,15 @@ export function PronBlock({ id, onDone }: { id: string; onDone: (score: number) 
   const [pairI, setPairI] = useState(0); const [pairOk, setPairOk] = useState<boolean[]>([]); const [pairAns, setPairAns] = useState<number | null>(null);
   const pairPick = useMemo(() => p.minimalPairs.map(() => (Math.random() < 0.5 ? 0 : 1)), [p]);
   if (!p) return <Note tone="warn">Lesson not found.</Note>;
+  if (cfg.sign) return (
+    <div className="space-y-4">
+      <Card><div className="mb-2 flex gap-2"><Chip tone="accent">{p.level}</Chip><Chip>Handshapes</Chip></div><h2 className="text-2xl font-bold">{p.title}</h2><p className="mt-2 text-muted">{p.intro}</p>
+        <Note>These figures are schematic diagrams of a right-handed signer facing you (their dominant hand is on your left). Read the written description as well, and check new signs against a Deaf teacher or video.</Note></Card>
+      <Card><div className="grid gap-4 sm:grid-cols-2">{p.sounds.map((s, i) => <div key={i} className="flex items-start gap-3 border-b border-line pb-3 last:border-0"><div className="shrink-0">{/^fs=|^h=/.test(s.sym) ? <SignFigure spec={s.sym} size={120} /> : /^[A-Z0-9]$/.test(s.sym) ? <SignFigure spec={`fs=${s.sym}`} size={120} /> : null}</div><div><b>{/^fs=|^h=/.test(s.sym) ? '' : s.sym}</b><p className="text-sm text-muted">{s.tip}</p>{s.examples.length > 0 && <p className="mt-1 text-sm">{s.examples.map((e) => e[0]).join(" · ")}</p>}</div></div>)}</div></Card>
+      <Card><h3 className="mb-2 font-semibold">Common mistakes</h3><ul className="list-disc space-y-1 pl-5 text-sm">{p.mistakes.map((m, i) => <li key={i}>{m}</li>)}</ul></Card>
+      <Finish title="Handshape lesson read" score={1} detail="Now practise these shapes with your own hands in front of a mirror." onDone={() => { stop(); onDone(1); }} />
+    </div>
+  );
   const say = (t: string) => { if (hasTTS()) void speak(t, cfg.tts, rate); };
 
   if (phase === 'learn') return (

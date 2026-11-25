@@ -6,6 +6,7 @@ import { speak, hasTTS, hasVoiceFor, stopSpeaking } from '../core/speech';
 import { ExerciseView, gradeFor, type ExResult } from './ExerciseView';
 import { Btn, Card, Chip, Note, Progress, Speak } from './ui';
 import { Rich, Table } from './Rich';
+import { SignFigure } from './SignFigure';
 import { useCtx, useStudyClock } from '../state/hooks';
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -26,7 +27,7 @@ export function ReviewBlock({ ids, onDone }: { ids: string[]; onDone: (score: nu
   return (
     <div>
       <Progress value={i / Math.max(total, queue.length)} className="mb-5" label="Block progress" />
-      <ExerciseView key={i} ex={cur.ex} cfg={cfg} ui={ui} speakText={cur.speak} autoSpeak={cur.mode === 'listen' || cur.mode === 'dictate'} rate={rate} onDone={done} immersive={flags.hideHints}
+      <ExerciseView key={i} ex={cur.ex} fig={cur.fig} cfg={cfg} ui={ui} speakText={cur.speak} autoSpeak={cur.mode === 'listen' || cur.mode === 'dictate'} rate={rate} onDone={done} immersive={flags.hideHints}
         answerLabel={`${cur.entry.t} = ${cur.entry.n}${cur.entry.note ? ' · ' + cur.entry.note : ''}`} />
     </div>
   );
@@ -36,6 +37,7 @@ export function WordCard({ e, rate, showRoman = true }: { e: VocabEntry; rate: n
   const { cfg } = useCtx();
   return (
     <Card className="text-center">
+      {e.fig && <div className="mb-3 flex justify-center"><SignFigure spec={e.fig} size={260} /></div>}
       <div className="flex items-center justify-center gap-3"><h2 className="text-3xl font-bold sm:text-4xl">{e.t}</h2>{hasTTS() && <Speak onClick={() => void speak(e.t, cfg.tts, rate)} />}</div>
       {showRoman && <p className="mt-1 text-muted">{cfg.romanLabel ? <><span className="text-xs uppercase tracking-wide">{cfg.romanLabel}</span> <b className="font-semibold text-ink">{e.pron}</b></> : <>/{e.pron}/</>} · {e.pos}{e.gender ? `.${e.gender}` : ''}</p>}
       <p className="mt-3 text-xl">{e.n}</p>
@@ -70,7 +72,7 @@ export function NewVocabBlock({ ids, onDone }: { ids: string[]; onDone: (score: 
     if (!r.correct) setTests((q) => [...q, makeExercise(cur.entry, 'recog', content.vocab, rnd)]);
     setT((x) => x + 1);
   };
-  return (<div><Progress value={t / tests.length} className="mb-5" label="Test progress" /><ExerciseView key={t} ex={cur.ex} cfg={cfg} ui={ui} speakText={cur.speak} rate={rate} onDone={done} answerLabel={`${cur.entry.t} = ${cur.entry.n}`} /></div>);
+  return (<div><Progress value={t / tests.length} className="mb-5" label="Test progress" /><ExerciseView key={t} ex={cur.ex} fig={cur.fig} cfg={cfg} ui={ui} speakText={cur.speak} rate={rate} onDone={done} answerLabel={`${cur.entry.t} = ${cur.entry.n}`} /></div>);
 }
 
 export function Finish({ title, score, detail, onDone, cta = 'Continue' }: { title: string; score: number; detail?: string; onDone: () => void; cta?: string }) {
@@ -161,7 +163,7 @@ export function ReadingBlock({ id, onDone }: { id: string; onDone: (score: numbe
 export function ListeningBlock({ id, onDone }: { id: string; onDone: (score: number) => void }) {
   const { content, flags, cfg, rate, store } = useCtx(); const stop = useStudyClock();
   const l = content.listening.find((x) => x.id === id)!;
-  const audio = hasTTS() && hasVoiceFor(cfg.tts);
+  const sign = !!cfg.sign; const audio = !sign && hasTTS() && hasVoiceFor(cfg.tts);
   const [phase, setPhase] = useState<'listen' | 'quiz' | 'after'>('listen'); const [score, setScore] = useState(0); const [slow, setSlow] = useState(false); const [playing, setPlaying] = useState(false); const [plays, setPlays] = useState(0);
   const [showT, setShowT] = useState(!audio); const cancel = useRef(false);
   const play = async () => { if (playing) { cancel.current = true; stopSpeaking(); setPlaying(false); return; } cancel.current = false; setPlaying(true); setPlays((p) => p + 1); for (const ln of l.lines) { if (cancel.current) break; await speak(ln.t, cfg.tts, slow ? Math.min(rate, 0.7) : rate); await sleep(280); } setPlaying(false); };
@@ -171,9 +173,9 @@ export function ListeningBlock({ id, onDone }: { id: string; onDone: (score: num
   if (phase === 'listen') return (
     <div className="space-y-4">
       <Card>
-        <div className="mb-2 flex items-center gap-2"><Chip tone="accent">{l.level}</Chip><Chip>Listening</Chip></div>
+        <div className="mb-2 flex items-center gap-2"><Chip tone="accent">{l.level}</Chip><Chip>{sign ? 'Watching' : 'Listening'}</Chip></div>
         <h2 className="text-xl font-bold">{l.title}</h2>
-        {audio ? <p className="mt-1 text-sm text-muted">Listen first without reading. Replay as often as you like — the questions come next.</p> : <Note tone="warn">This browser has no {cfg.name} voice installed, so there is no audio. You can read the transcript, but that is reading practice, not listening — it will be logged as reading.</Note>}
+        {audio ? <p className="mt-1 text-sm text-muted">Listen first without reading. Replay as often as you like — the questions come next.</p> : sign ? <Note>This is a signed dialogue written as glosses (ASL words in capitals, in sign order). Read it as if you were watching it: sign it aloud with your hands, then answer the questions. Real video from Deaf signers is the best way to train your eyes, so watch some alongside this.</Note> : <Note tone="warn">This browser has no {cfg.name} voice installed, so there is no audio. You can read the transcript, but that is reading practice, not listening — it will be logged as reading.</Note>}
         {audio && <div className="mt-4 flex flex-wrap items-center gap-3"><Btn size="lg" onClick={() => void play()}>{playing ? '⏹ Stop' : plays ? '🔊 Play again' : '🔊 Play dialogue'}</Btn><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={slow} onChange={(e) => setSlow(e.target.checked)} /> Slower</label></div>}
         <p className="mt-3 text-xs text-muted">Audio is your browser's text-to-speech voice (synthetic, not a native speaker).</p>
         {(showT || flags.translations === 'always') ? <div className="mt-4 rounded-xl bg-surface2 p-3">{transcript}</div> : audio && <button className="mt-3 text-sm underline text-muted" onClick={() => setShowT(true)}>Show transcript (makes it easier)</button>}
@@ -183,5 +185,5 @@ export function ListeningBlock({ id, onDone }: { id: string; onDone: (score: num
   );
   if (phase === 'quiz') return <ExerciseSeries exercises={l.questions} skill={audio ? 'listening' : 'reading'} itemId={l.id} onFinish={(s) => { setScore(s); setPhase('after'); }} header={audio ? <div className="mb-4"><Btn size="sm" variant="ghost" onClick={() => void play()}>{playing ? '⏹ Stop' : '🔊 Replay'}</Btn></div> : undefined} />;
   void store;
-  return <div className="space-y-4"><Card><h3 className="mb-2 font-semibold">Transcript</h3>{transcript}</Card><Finish title="Listening complete" score={score} detail={audio ? undefined : 'Counted as reading practice — no audio was available.'} onDone={() => { stop(); onDone(score); }} /></div>;
+  return <div className="space-y-4"><Card><h3 className="mb-2 font-semibold">Transcript</h3>{transcript}</Card><Finish title="Listening complete" score={score} detail={sign ? 'Counted as watching practice (glossed signed dialogue).' : audio ? undefined : 'Counted as reading practice — no audio was available.'} onDone={() => { stop(); onDone(score); }} /></div>;
 }
