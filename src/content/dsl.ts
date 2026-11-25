@@ -12,11 +12,11 @@ const pair = (s: string): [string, string] => { const i = s.lastIndexOf(' = '); 
 export function parseVocab(src: string): VocabEntry[] {
   const seen = new Map<string, number>();
   return lines(src).map((l) => {
-    const [cat, t, n, posg, pron, ex, exn, lvl, note] = sp(l);
+    const [cat, t, n, posg, pron, ex, exn, lvl, note, fig] = sp(l);
     const [pos, gender] = posg.split('.');
     let id = slug(t) || 'w'; const k = seen.get(id) ?? 0; seen.set(id, k + 1); if (k) id += `-${k + 1}`;
     const posFull = ({ n: 'noun', v: 'verb', adj: 'adj', adv: 'adv', phr: 'phrase', prep: 'prep', pron: 'pron', conj: 'conj', num: 'num', q: 'question' } as Record<string, string>)[pos] ?? pos;
-    return { id, cat, t, n, pos: posFull, gender: gender || undefined, pron, ex, exn, level: (lvl || 'A1') as Cefr, note: note || undefined };
+    return { id, cat, t, n, pos: posFull, gender: gender || undefined, pron, ex, exn, level: (lvl || 'A1') as Cefr, note: note || undefined, fig: fig || undefined };
   });
 }
 

@@ -5,7 +5,18 @@ import { PROGRAM } from '../core/program';
 import { resolveProgram } from '../core/curriculum';
 import { VOCAB_CATEGORIES } from '../core/categories';
 import { clozeOf } from '../core/exercises';
-import type { Exercise, LanguageContent } from '../core/types';
+import type { Cefr, Exercise, LanguageContent } from '../core/types';
+import { buildPlacementPool, initPlacement, nextItem, submit, placementResult, difficulty, guessRate, MARGIN } from '../core/placement';
+import { mulberry32 } from '../core/text';
+import { cefrIndex } from '../core/types';
+
+/** Minimum material per level above A2: the point of these floors is that a learner can keep going from B1 to the top of what the app teaches. */
+const DEPTH: Record<string, { vocab: number; grammar: number; conv: number; reading: number; listening: number; writing: number }> = {
+  B1: { vocab: 18, grammar: 2, conv: 1, reading: 1, listening: 1, writing: 1 },
+  B2: { vocab: 18, grammar: 2, conv: 1, reading: 1, listening: 1, writing: 1 },
+  C1: { vocab: 16, grammar: 2, conv: 1, reading: 1, listening: 1, writing: 1 },
+  C2: { vocab: 10, grammar: 1, conv: 1, reading: 1, listening: 0, writing: 0 },
+};
 
 const checkEx = (ex: Exercise, where: string) => {
   if (ex.kind === 'mcq') {
@@ -67,13 +78,38 @@ for (const lang of LANGUAGES) {
       for (const p of c.pronunciation) { expect(p.sounds.length).toBeGreaterThan(2); expect(p.drills.length).toBeGreaterThan(1); }
       for (const w of c.writing) { expect(w.requires.length).toBeGreaterThan(1); expect(w.model).toBeTruthy(); }
     });
-    it('placement covers A1–B2 with several skills', () => {
-      for (const lvl of ['A1', 'A2', 'B1', 'B2'] as const) {
+    it('placement covers A1–C2 with several skills', () => {
+      for (const lvl of ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const) {
         const items = c.placement.filter((p) => p.level === lvl);
-        expect(items.length, `placement ${lvl}`).toBeGreaterThanOrEqual(3);
+        expect(items.length, `placement ${lvl}`).toBeGreaterThanOrEqual(lvl === 'A1' || lvl === 'A2' ? 4 : 5);
         expect(new Set(items.map((i) => i.skill)).size, `skills at ${lvl}`).toBeGreaterThanOrEqual(2);
         items.forEach((p) => checkEx(p.ex, p.id));
       }
+      expect(new Set(c.placement.map((p) => p.id)).size, 'placement ids unique').toBe(c.placement.length);
+    });
+    it('goes deep: real material at every level up to C2', () => {
+      for (const lvl of ['B1', 'B2', 'C1', 'C2'] as Cefr[]) {
+        const need = { ...DEPTH[lvl], ...(lang.depth?.[lvl] ?? {}) };
+        const n = (arr: { level: string }[]) => arr.filter((x) => x.level === lvl).length;
+        expect(n(c.vocab), `${lvl} vocab`).toBeGreaterThanOrEqual(need.vocab);
+        expect(n(c.grammar), `${lvl} grammar`).toBeGreaterThanOrEqual(need.grammar);
+        expect(n(c.conversations), `${lvl} conversations`).toBeGreaterThanOrEqual(need.conv);
+        expect(n(c.reading), `${lvl} reading`).toBeGreaterThanOrEqual(need.reading);
+        expect(n(c.listening), `${lvl} listening`).toBeGreaterThanOrEqual(need.listening);
+        expect(n(c.writing), `${lvl} writing`).toBeGreaterThanOrEqual(need.writing);
+      }
+    });
+    it('the real placement pool recovers simulated learners (within one level ≥ 90 %, never over by 2+)', () => {
+      const pool = buildPlacementPool(c.placement, c.vocab, mulberry32(3), { sign: lang.sign });
+      for (const lvl of ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const) expect(pool.filter((p) => p.level === lvl).length, `pool ${lvl}`).toBeGreaterThanOrEqual(10);
+      let within = 0, runs = 0, over2 = 0;
+      for (let lv = 0; lv <= 5; lv++) for (let k = 0; k < 12; k++) {
+        const theta = lv + MARGIN + 0.1 + (k / 12) * 0.6 - 0.3; const rnd = mulberry32(900 + lv * 50 + k); let st = initPlacement(); let g = 0;
+        while (!st.done && g++ < 60) { const it = nextItem(pool, st, rnd, false); if (!it) break; const know = rnd() < 1 / (1 + Math.exp(-1.7 * (theta - difficulty(it)))); st = submit(pool, st, it, know || rnd() < guessRate(it.ex), false); }
+        const r = placementResult(st, 0); const d = cefrIndex(r.overall) - Math.max(0, Math.min(5, Math.floor(theta - MARGIN + 1e-9)));
+        runs++; if (Math.abs(d) <= 1) within++; if (d >= 2) over2++;
+      }
+      expect(within / runs).toBeGreaterThanOrEqual(0.9); expect(over2).toBe(0);
     });
     if (lang.code === 'de') it('German nouns carry a Plural note', () => { for (const v of c.vocab.filter((x) => x.pos === 'n')) expect(v.note ?? '', v.id).toMatch(/Plural:/); });
     it('cheat sheets exist and have rows', () => { expect(c.cheats.length).toBeGreaterThanOrEqual(8); c.cheats.forEach((s) => expect(s.rows.length).toBeGreaterThan(1)); });
