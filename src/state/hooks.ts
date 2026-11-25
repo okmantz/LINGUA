@@ -4,6 +4,7 @@ import { mulberry32 } from '../core/text';
 import { planSession } from '../core/session';
 import { nextStep } from '../core/guide';
 import { dayKey } from '../core/fsrs';
+import { setAudioOff } from '../core/speech';
 
 export interface Flags { translations: 'always' | 'tap' | 'after' | 'never'; targetUI: boolean; hideRoman: boolean; hideHints: boolean }
 export const immersionFlags = (level: number): Flags => ({
@@ -22,6 +23,7 @@ export const IMMERSION_LABELS = [
 export function useCtx() {
   const store = useStore(); const { lang, content, state, profile } = store;
   const cfg = langConfig(lang)!;
+  setAudioOff(!!cfg?.sign);
   const flags = immersionFlags(state?.immersion ?? 0);
   const baseUI = { choose: 'Choose the correct answer', check: 'Check', next: 'Continue', correct: 'Correct!', wrong: 'Not quite', listen: 'Listen', translate: 'Translate', fill: 'Fill in the blank', order: 'Put the words in order', answer: 'Your answer', well: 'Well done!', again: 'Try again', read: 'Read the text', speak: 'Speak' };
   const ui = flags.targetUI && content ? content.ui : baseUI;
