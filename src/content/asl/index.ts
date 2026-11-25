@@ -2,11 +2,12 @@ import type { LanguageContent } from '../../core/types';
 import { parseVocab, parseGrammar, parseConvs, parseReading, parseListening, parsePron, parseWriting, parseCheats, parsePlacement } from '../dsl';
 import { ASL_VOCAB } from './vocab'; import { ASL_VOCAB_ADV } from './adv'; import { ASL_GRAMMAR } from './grammar'; import { ASL_CONVS } from './convs';
 import { ASL_READING, ASL_LISTENING, ASL_WRITING, ASL_PRON, ASL_CHEATS, ASL_PLACEMENT, ASL_UI } from './texts';
+import { ASL_GRAMMAR_DEEP, ASL_CONVS_DEEP, ASL_READING_DEEP, ASL_LISTENING_DEEP, ASL_WRITING_DEEP, ASL_PLACEMENT_DEEP, ASL_CHEATS_DEEP, ASL_PRON_DEEP } from './deep';
 
 const content: LanguageContent = {
-  vocab: parseVocab(ASL_VOCAB + ASL_VOCAB_ADV), grammar: parseGrammar(ASL_GRAMMAR), conversations: parseConvs(ASL_CONVS),
-  reading: parseReading(ASL_READING), listening: parseListening(ASL_LISTENING), pronunciation: parsePron(ASL_PRON),
-  writing: parseWriting(ASL_WRITING), cheats: parseCheats(ASL_CHEATS), placement: parsePlacement(ASL_PLACEMENT),
+  vocab: parseVocab(ASL_VOCAB + ASL_VOCAB_ADV), grammar: parseGrammar(ASL_GRAMMAR + ASL_GRAMMAR_DEEP), conversations: parseConvs(ASL_CONVS + ASL_CONVS_DEEP),
+  reading: parseReading(ASL_READING + ASL_READING_DEEP), listening: parseListening(ASL_LISTENING + ASL_LISTENING_DEEP), pronunciation: parsePron(ASL_PRON + ASL_PRON_DEEP),
+  writing: parseWriting(ASL_WRITING + ASL_WRITING_DEEP), cheats: parseCheats(ASL_CHEATS + ASL_CHEATS_DEEP), placement: parsePlacement(ASL_PLACEMENT + ASL_PLACEMENT_DEEP),
   ui: ASL_UI, grammarLevels: {},
   // Days 1–5 start with the alphabet, then greetings/pronouns, so the first week is mostly handshapes and everyday signs.
   pace: { 1: { cats: ['greetings'], newWords: 12 }, 2: { cats: ['numbers', 'pronouns'], newWords: 12 }, 3: { cats: ['objects'], newWords: 12 }, 16: { cats: ['health'], newWords: 6 }, 17: { cats: ['connectors'], newWords: 7 }, 19: { cats: ['health'], newWords: 5 }, 20: { cats: ['connectors'], newWords: 7 } },

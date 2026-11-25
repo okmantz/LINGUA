@@ -26,7 +26,7 @@ A free, local-first, offline-capable web app for learning **eleven languages**: 
 - **Speech recognition** (pronunciation) uses your browser's engine where available. In Chrome it sends audio to Google. It is a rough match score, not a pronunciation expert. Recording + playback for self-comparison always works where `MediaRecorder` exists.
 - **Writing and open conversation are keyword/checklist checks**, not AI grading. They cannot tell whether a sentence is grammatical; the UI says so and shows a model answer.
 - **Placement is an adaptive A1–C2 test** (3-parameter IRT, about 15–25 questions, stops when the estimate is stable). It is accurate to within about one level in simulation, but C1/C2 are inferred from closed-form items; only a human examiner can certify them. The dashboard level is an *estimate* from retained vocabulary and accuracy.
-- **Content covers A1–C2 in every language** (several hundred words, 20–30 grammar lessons, 30+ conversations, 15+ readings, 15+ listenings, 10+ writing prompts and a 40+ item placement bank each; see the table below). B1–C2 has its own `adv.ts` and `ext.ts` files per language. It is machine-drafted and must be reviewed by native speakers before you rely on it, especially at C1/C2. Depth thins towards C2 by design. Levels with no material are labelled "No material yet" rather than faked.
+- **Content covers A1–C2 in every language** (several hundred words, 20–30 grammar lessons, 30+ conversations, 15+ readings, 15+ listenings, 10+ writing prompts and a 40+ item placement bank each; see the table below). B1–C2 has its own `adv.ts` and `ext.ts` files per language, and every language also has a `deep.ts` / `deep2.ts` pack (A2–C2 vocabulary with idioms, register and near-native grammar, harder dialogues, readings and listenings, cheat sheets on idioms, register, native-level errors, linkers and false friends) so a learner can keep progressing from beginner to native-level (ASL has one `deep.ts`). It is machine-drafted and must be reviewed by native speakers before you rely on it, especially at C1/C2. Depth still thins slightly towards C2 for ASL. Levels with no material are labelled "No material yet" rather than faked.
 - **Swahili** is standard Kiswahili (Tanzanian/Kenyan coastal standard). Regional and Sheng usage are not covered.
 - **American Sign Language (ASL) is included, with honest limits.** ASL lessons use schematic sign diagrams (a right-handed signer facing you; faded hand = start, solid = end, arrows = movement, ⊙/⊗ = toward/away from you) plus a written description of every sign, and gloss notation for grammar. The diagrams cannot show speed, rhythm, mouth detail or contact exactly, regional variation is not covered, and none of it has been reviewed by a Deaf signer. Treat the content as a study aid and check signs against video from Deaf teachers (for example, Deaf-led courses and dictionaries) before relying on it. Audio, speech recognition and pronunciation scoring are turned off for ASL; vocabulary is shown as figures, and writing practice is typed gloss.
 - **No cloud sync.** Data lives in one browser. Use Export/Import to move devices. The schema is versioned so sync could be added later; it is not implemented and not pretended.
@@ -64,7 +64,7 @@ The site is a set of hashed files (`docs/index.html` pulls in `docs/assets/*.js`
 
 ```
 src/core/      pure logic: fsrs, mastery, session planner, guide (next step), teacher (tips), placement, analytics, progression, storage
-src/content/   per-language content (es, fr, de, it, pl, ru, zh, ja, ko, ar, sw, asl; each has vocab/grammar/convs/texts plus adv.ts and ext.ts for B1–C2) + dsl.ts authoring parsers + registry.ts + validation tests
+src/content/   per-language content (es, fr, de, it, pl, ru, zh, ja, ko, ar, sw, asl; each has vocab/grammar/convs/texts plus adv.ts, ext.ts and deep*.ts for B1–C2) + dsl.ts authoring parsers + registry.ts + validation tests
 src/state/     React store (IndexedDB persistence), hooks (immersion flags, study clock)
 src/components blocks (review, vocab, grammar, reading, listening, conversation, pronunciation, writing), exercise runner, charts, avatar + Teacher, icons, logo
 src/pages/     route pages
@@ -103,15 +103,15 @@ Vocabulary per level (A1 / A2 / B1 / B2 / C1 / C2), grammar lessons per level, t
 
 | Language | Vocab | Grammar | Convs | Reading | Listening | Writing | Placement |
 |---|---|---|---|---|---|---|---|
-| Spanish | 340 / 29 / 39 / 29 / 28 / 21 | 15 / 9 / 5 / 5 / 3 / 2 | 33 | 15 | 17 | 10 | 39 |
-| French | 338 / 27 / 36 / 25 / 23 / 18 | 15 / 9 / 5 / 5 / 3 / 2 | 32 | 15 | 17 | 10 | 40 |
-| German | 327 / 36 / 35 / 25 / 23 / 18 | 15 / 9 / 5 / 4 / 3 / 1 | 32 | 15 | 17 | 10 | 40 |
-| Italian | 322 / 37 / 30 / 25 / 23 / 18 | 15 / 8 / 4 / 4 / 3 / 1 | 32 | 15 | 17 | 10 | 40 |
-| Polish | 307 / 43 / 30 / 25 / 23 / 18 | 15 / 9 / 4 / 3 / 3 / 1 | 32 | 15 | 17 | 10 | 40 |
-| Russian | 365 / 22 / 30 / 25 / 23 / 18 | 14 / 9 / 3 / 3 / 3 / 1 | 32 | 15 | 17 | 10 | 41 |
-| Korean | 359 / 23 / 29 / 26 / 23 / 16 | 14 / 9 / 3 / 3 / 3 / 1 | 32 | 15 | 17 | 10 | 40 |
-| Japanese | 344 / 23 / 29 / 25 / 23 / 16 | 14 / 9 / 3 / 3 / 3 / 1 | 32 | 15 | 17 | 10 | 40 |
-| Mandarin Chinese | 338 / 22 / 29 / 26 / 23 / 16 | 14 / 9 / 3 / 3 / 3 / 1 | 32 | 15 | 17 | 10 | 40 |
-| Arabic (MSA) | 337 / 23 / 29 / 26 / 23 / 16 | 14 / 8 / 3 / 3 / 3 / 1 | 32 | 15 | 17 | 10 | 44 |
-| Swahili | 290 / 32 / 32 / 27 / 25 / 18 | 15 / 7 / 4 / 3 / 3 / 1 | 32 | 15 | 17 | 10 | 42 |
-| American Sign Language | 209 / 21 / 16 / 15 / 4 / 0 | 14 / 8 / 3 / 3 / 3 / 2 | 30 | 13 | 15 | 8 | 42 |
+| Spanish | 340 / 49 / 60 / 50 / 48 / 41 | 15 / 10 / 7 / 7 / 5 / 4 | 39 | 20 | 21 | 15 | 65 |
+| French | 338 / 47 / 56 / 45 / 42 / 37 | 15 / 10 / 7 / 7 / 5 / 4 | 38 | 20 | 21 | 15 | 66 |
+| German | 327 / 55 / 54 / 44 / 40 / 37 | 15 / 10 / 7 / 6 / 5 / 3 | 38 | 20 | 21 | 15 | 66 |
+| Italian | 322 / 57 / 50 / 43 / 43 / 36 | 15 / 9 / 6 / 6 / 5 / 3 | 38 | 20 | 21 | 15 | 66 |
+| Polish | 307 / 61 / 48 / 42 / 44 / 34 | 15 / 10 / 6 / 5 / 5 / 3 | 38 | 20 | 21 | 15 | 66 |
+| Russian | 365 / 38 / 48 / 43 / 43 / 34 | 14 / 10 / 5 / 5 / 5 / 3 | 38 | 20 | 21 | 15 | 67 |
+| Korean | 359 / 39 / 47 / 43 / 46 / 32 | 14 / 11 / 5 / 5 / 5 / 2 | 38 | 20 | 21 | 15 | 66 |
+| Japanese | 344 / 39 / 46 / 42 / 46 / 32 | 14 / 11 / 5 / 5 / 4 / 2 | 38 | 20 | 21 | 15 | 66 |
+| Mandarin Chinese | 338 / 38 / 47 / 41 / 42 / 32 | 14 / 11 / 5 / 5 / 4 / 2 | 38 | 20 | 21 | 15 | 66 |
+| Arabic (MSA) | 337 / 42 / 47 / 43 / 45 / 32 | 14 / 9 / 6 / 5 / 4 / 2 | 38 | 20 | 21 | 15 | 70 |
+| Swahili | 290 / 45 / 49 / 45 / 45 / 38 | 15 / 8 / 6 / 6 / 4 / 2 | 38 | 20 | 21 | 15 | 69 |
+| American Sign Language | 209 / 21 / 16 / 15 / 4 / 0 | 14 / 8 / 5 / 5 / 5 / 4 | 34 | 16 | 18 | 11 | 62 |

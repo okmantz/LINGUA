@@ -54,4 +54,4 @@ Registry fields: `script` (`cyrillic`, `han`, `kana`, `hangul`, `arabic`), `rtl`
 
 ## Extending an existing language (B1–C2)
 
-Each language keeps its core in `vocab.ts`, `grammar.ts`, `convs.ts`, `texts.ts`, its B1–C2 material in `adv.ts`, and further B1–C2 material in `ext.ts` (same line formats). Reading questions must not be answerable by copying a phrase from the text: write distractors from the text itself, and paraphrase the correct answer (`src/content/leaks.test.ts` fails otherwise).
+Each language keeps its core in `vocab.ts`, `grammar.ts`, `convs.ts`, `texts.ts`, its B1–C2 material in `adv.ts`, further B1–C2 material in `ext.ts`, and the near-native "depth" pack in `deep.ts` (vocab and grammar) and `deep2.ts` (conversations, reading, listening, writing, placement, cheats, pronunciation), all in the same line formats. Reading questions must not be answerable by copying a phrase from the text: write distractors from the text itself, and paraphrase the correct answer (`src/content/leaks.test.ts` fails otherwise).
