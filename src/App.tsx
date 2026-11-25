@@ -34,6 +34,12 @@ const GROUPS: { label: string; items: Item[] }[] = [
   { label: 'Use it', items: [I('/conversations', 'Conversations', 'chat', 'Say real sentences'), I('/pronunciation', 'Pronunciation', 'mic', 'Speak and compare'), I('/writing', 'Writing', 'pen', 'Write with a checklist')] },
   { label: 'Track & tools', items: [I('/progress', 'Progress', 'chart', 'How you are doing'), I('/achievements', 'Achievements', 'trophy', 'Badges to aim for'), I('/cheats', 'Cheat Sheets', 'sheet', 'Quick reference')] },
 ];
+/** Sign languages have no sound: the skills that depend on it are renamed rather than hidden. */
+const groupsFor = (lang?: string | null) => {
+  if (!LANGUAGES.find((l) => l.code === lang)?.sign) return GROUPS;
+  const map: Record<string, [string, string]> = { Listening: ['Watching', 'Follow signed dialogue'], Pronunciation: ['Handshapes', 'Learn the building blocks'] };
+  return GROUPS.map((g) => ({ ...g, items: g.items.map((it) => (map[it.label] ? { ...it, label: map[it.label][0], hint: map[it.label][1] } : it)) }));
+};
 const SKILL_ITEMS = [...GROUPS[1].items, ...GROUPS[2].items];
 const SKILL_PATHS = SKILL_ITEMS.map((p) => p.to);
 const MORE: Item[] = [I('/progress', 'Progress', 'chart'), I('/achievements', 'Achievements', 'trophy'), I('/cheats', 'Cheat Sheets', 'sheet'), I('/languages', 'My Languages', 'globe'), I('/settings', 'Profile & Settings', 'sliders')];
@@ -86,7 +92,7 @@ function Sidebar() {
         </Link>
       </div>
       <nav aria-label="Main" className="flex-1 space-y-3 overflow-y-auto px-3 py-2">
-        {GROUPS.map((g) => (
+        {groupsFor(store.lang).map((g) => (
           <div key={g.label}><p className="mb-1 px-3 text-[11px] font-bold uppercase tracking-wider text-muted/80">{g.label}</p>
             <div>{g.items.map((n) => <NavItem key={n.to} n={n} badge={n.to === '/vocabulary' ? due : undefined} tag={n.to === focusTo && n.to !== '/vocabulary' ? 'Focus' : undefined} />)}</div></div>
         ))}
@@ -201,7 +207,7 @@ function Shell({ sheet, setSheet, toasts }: { sheet: null | 'practice' | 'more';
       </div>
       <TeacherDock />
       <Sheet open={sheet === 'practice'} onClose={() => setSheet(null)} title="Practice a skill">
-        {GROUPS.slice(1, 3).map((g) => <div key={g.label} className="mb-3"><p className="mb-1.5 px-0.5 text-[11px] font-bold uppercase tracking-wider text-muted">{g.label}</p><div className="grid grid-cols-3 gap-2.5">{g.items.map(tile)}</div></div>)}
+        {groupsFor(store.lang).slice(1, 3).map((g) => <div key={g.label} className="mb-3"><p className="mb-1.5 px-0.5 text-[11px] font-bold uppercase tracking-wider text-muted">{g.label}</p><div className="grid grid-cols-3 gap-2.5">{g.items.map(tile)}</div></div>)}
         <p className="mt-1 text-center text-xs text-muted">Not sure where to start? Tap <b>Today</b> and I'll pick for you.</p>
       </Sheet>
       <Sheet open={sheet === 'more'} onClose={() => setSheet(null)} title="Menu">
@@ -211,7 +217,7 @@ function Shell({ sheet, setSheet, toasts }: { sheet: null | 'practice' | 'more';
           <Icon name="sliders" size={18} className="text-muted" />
         </Link>
         <div className="space-y-3">
-          {GROUPS.map((g) => (
+          {groupsFor(store.lang).map((g) => (
             <div key={g.label}><p className="mb-1 px-3 text-[11px] font-bold uppercase tracking-wider text-muted/80">{g.label}</p>
               <div>{g.items.map((n) => <NavItem key={n.to} n={n} onClick={() => setSheet(null)} badge={n.to === '/vocabulary' ? due : undefined} />)}</div></div>
           ))}
