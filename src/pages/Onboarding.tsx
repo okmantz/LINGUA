@@ -11,7 +11,7 @@ import { Icon, type IconName } from '../components/Icon';
 import { Btn, Card, Chip, Note, cx } from '../components/ui';
 
 const MINUTES: [number, string][] = [[5, 'Quick'], [10, 'Light'], [15, 'Steady'], [20, 'Sweet spot'], [30, 'Focused'], [45, 'Serious'], [60, 'Intense'], [90, '30-day sprint'], [120, 'Full sprint']];
-const HELLO: Record<string, string> = { es: '¡Hola!', fr: 'Bonjour !', de: 'Hallo!', it: 'Ciao!', pl: 'Cześć!', ru: 'Привет!', ko: '안녕!', ja: 'やあ', zh: '你好', ar: 'مرحبا' };
+const HELLO: Record<string, string> = { es: '¡Hola!', fr: 'Bonjour !', de: 'Hallo!', it: 'Ciao!', pl: 'Cześć!', ru: 'Привет!', ko: '안녕!', ja: 'やあ', zh: '你好', ar: 'مرحبا', sw: 'Hujambo!' };
 
 function Say({ children, mood = 'wave' }: { children: ReactNode; mood?: 'wave' | 'happy' | 'think' | 'cheer' }) {
   return (
@@ -78,7 +78,7 @@ export default function Onboarding() {
             <div className="rise"><Say mood="happy">Last question{langs.length > 1 ? ` (${li + 1} of ${langs.length})` : ''}: how much {l.name} do you already know?</Say>
               <div className="grid gap-3">
                 <button onClick={() => next({ ...results, [code]: undefined })} className="flex items-center gap-3 rounded-2xl border-2 border-line bg-surface p-4 text-left transition hover:border-accent active:scale-[.99]"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-accent/15 text-accent"><Icon name="sparkles" size={22} /></span><span className="flex-1"><b className="block">I'm a complete beginner</b><span className="text-sm text-muted">Start the 30-day programme at day 1. Recommended if unsure.</span></span><Chip tone="accent">Best for most</Chip></button>
-                <button onClick={() => setTesting(true)} className="flex items-center gap-3 rounded-2xl border-2 border-line bg-surface p-4 text-left transition hover:border-accent active:scale-[.99]"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-surface2 text-muted"><Icon name="target" size={22} /></span><span className="flex-1"><b className="block">I know some {l.name}. Test me</b><span className="text-sm text-muted">An adaptive 5–10 minute test. It gets harder while you keep answering correctly.</span></span></button>
+                <button onClick={() => setTesting(true)} className="flex items-center gap-3 rounded-2xl border-2 border-line bg-surface p-4 text-left transition hover:border-accent active:scale-[.99]"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-surface2 text-muted"><Icon name="target" size={22} /></span><span className="flex-1"><b className="block">I know some {l.name}. Test me</b><span className="text-sm text-muted">An adaptive test of about 15–25 questions. It gets harder while you keep answering correctly, from A1 up to C2.</span></span></button>
               </div>
               <div className="mt-4"><Note>You can retake placement any time from My Languages.</Note></div>
               <Footer><Btn variant="ghost" onClick={() => setStep(3)}>Back</Btn><div className="ml-auto flex items-center gap-2"><Avatar cfg={avatar} size={32} /><span className="text-sm text-muted">{name}</span></div></Footer></div>

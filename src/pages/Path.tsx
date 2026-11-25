@@ -5,6 +5,7 @@ import { PHASES, PROGRAM, PROGRAM_LENGTH } from '../core/program';
 import { resolveProgram } from '../core/curriculum';
 import { LIB_KEY, PASS, programActive, type LibKind } from '../core/guide';
 import { CEFR_ORDER, type Cefr } from '../core/types';
+import { levelProgress, LEVEL_UP_AT } from '../core/progression';
 import { Icon } from '../components/Icon';
 import { Btn, Card, Chip, H1, Progress, cx } from '../components/ui';
 
@@ -60,14 +61,17 @@ export default function Path() {
 
 /** After the programme (or after skipping it): progress by CEFR level, with the next lesson to take. */
 function PathwayView() {
-  const { state, content, cfg, next } = useGuide();
+  const { state, content, cfg, next, store } = useGuide();
+  const lp = levelProgress(state, content, state.pathLevel);
   const KINDS: [LibKind, string, string][] = [['grammar', 'Grammar', '/grammar'], ['conversations', 'Conversations', '/conversations'], ['listening', 'Listening', '/listening'], ['reading', 'Reading', '/reading'], ['writing', 'Writing', '/writing'], ['pronunciation', 'Pronunciation', '/pronunciation']];
   const listOf = (k: LibKind): { id: string; level: Cefr }[] => (k === 'pronunciation' ? content.pronunciation : content[k]);
   const levels = CEFR_ORDER.filter((l) => KINDS.some(([k]) => listOf(k).some((x) => x.level === l)));
   return (
     <div>
       <H1 sub={`Your ${cfg.name} pathway by level. Finish what's available at your level, then move up.`}>Your path</H1>
-      <Card className="mb-5 border-accent/50"><p className="text-sm text-muted">Current level</p><p className="text-3xl font-extrabold">{state.pathLevel}</p><p className="mt-1 text-sm text-muted">{next.title}. {next.body}</p><Link to={next.to}><Btn className="mt-3">{next.cta}<Icon name="arrow" size={17} /></Btn></Link></Card>
+      <Card className="mb-5 border-accent/50"><p className="text-sm text-muted">Current level</p><p className="text-3xl font-extrabold">{state.pathLevel}</p><p className="mt-1 text-sm text-muted">{next.title}. {next.body}</p><Link to={next.to}><Btn className="mt-3">{next.cta}<Icon name="arrow" size={17} /></Btn></Link>
+        {lp.total > 0 && <><Progress value={lp.ratio} className="mt-4" label="Level progress" /><p className="mt-1 text-xs text-muted">{lp.passed} of {lp.total} {state.pathLevel} lessons passed. At {Math.round(LEVEL_UP_AT * 100)}% you move up to the next level automatically.</p></>}
+        <div className="mt-4 flex flex-wrap items-center gap-1.5 text-sm"><span className="text-muted">Not the right level? Switch to</span>{CEFR_ORDER.map((l) => <button key={l} aria-pressed={l === state.pathLevel} onClick={() => store.patchLang(state.code, (s) => ({ ...s, pathLevel: l }))} className={cx('rounded-full border px-3 py-1 font-semibold', l === state.pathLevel ? 'border-accent bg-accent/15' : 'border-line hover:bg-surface2')}>{l}</button>)}</div></Card>
       <div className="space-y-4">{levels.map((lvl) => (
         <Card key={lvl}><div className="mb-3 flex items-center gap-2"><h2 className="text-xl font-extrabold">{lvl}</h2>{lvl === state.pathLevel && <Chip tone="accent">You are here</Chip>}</div>
           <div className="space-y-2.5">{KINDS.map(([k, label, to]) => {
