@@ -1,6 +1,6 @@
 # LINGUA — science-based language learning
 
-A free, local-first, offline-capable web app for learning **ten languages**: Spanish, French, German, Italian, Polish, Russian, Mandarin Chinese, Japanese, Korean and Arabic, built on what memory research supports rather than on gamified streak-farming. Hosted on GitHub Pages; there is no backend, no account and no paid API.
+A free, local-first, offline-capable web app for learning **eleven languages**: Spanish, French, German, Italian, Polish, Russian, Mandarin Chinese, Japanese, Korean, Arabic and Swahili, built on what memory research supports rather than on gamified streak-farming. Hosted on GitHub Pages; there is no backend, no account and no paid API.
 
 **Stack:** React 19 · TypeScript · Vite · Tailwind v4 · IndexedDB (`idb`) · PWA (service worker) · Vitest.
 
@@ -25,8 +25,10 @@ A free, local-first, offline-capable web app for learning **ten languages**: Spa
 - **Audio is browser text-to-speech.** It is synthetic, quality varies by device, and a language voice may not be installed. When it isn't, listening items say so and are logged as reading.
 - **Speech recognition** (pronunciation) uses your browser's engine where available. In Chrome it sends audio to Google. It is a rough match score, not a pronunciation expert. Recording + playback for self-comparison always works where `MediaRecorder` exists.
 - **Writing and open conversation are keyword/checklist checks**, not AI grading. They cannot tell whether a sentence is grammatical; the UI says so and shows a model answer.
-- **Placement measures A1–B2.** C1/C2 need a human examiner; a top score is reported as "B2 or above". The dashboard level is an *estimate* from retained vocabulary and accuracy.
-- **Content is a solid starter core per language** (roughly 330–365 words, 22 grammar lessons, 26 conversations, 9 readings, 12 listenings, 5 writing prompts and 2 pronunciation lessons each). It is machine-drafted and should be reviewed by native speakers before you rely on it. Levels without material (B1+ in most modules) are labelled "No material yet" rather than faked.
+- **Placement is an adaptive A1–C2 test** (3-parameter IRT, about 15–25 questions, stops when the estimate is stable). It is accurate to within about one level in simulation, but C1/C2 are inferred from closed-form items; only a human examiner can certify them. The dashboard level is an *estimate* from retained vocabulary and accuracy.
+- **Content covers A1–C2 in every language** (about 600–700 words, 20–25 grammar lessons, 30 conversations, 13 readings, 15 listenings, 8 writing prompts and a 31–36 item placement bank each; see the table below). It is machine-drafted and must be reviewed by native speakers before you rely on it, especially at C1/C2. Depth thins towards C2 by design. Levels with no material are labelled "No material yet" rather than faked.
+- **Swahili** is standard Kiswahili (Tanzanian/Kenyan coastal standard). Regional and Sheng usage are not covered.
+- **Sign language is not included.** Static drawn hands cannot teach movement, facial grammar or space reliably, and none could be checked by a Deaf signer. Add ASL only with filmed or licensed video from Deaf creators.
 - **No cloud sync.** Data lives in one browser. Use Export/Import to move devices. The schema is versioned so sync could be added later; it is not implemented and not pretended.
 - **Reminders** are browser notifications that only fire while the app is open or installed and running. There is no push server.
 
@@ -35,7 +37,7 @@ A free, local-first, offline-capable web app for learning **ten languages**: Spa
 ```bash
 npm install
 npm run dev        # local dev server
-npm test           # 137 tests: FSRS, mastery, answer checking, placement, planner, programme flow, backup, content validation
+npm test           # all tests: FSRS, mastery, answer checking, placement, planner, programme flow, backup, content validation
 npm run typecheck
 npm run build      # tsc + vite build + PWA service worker
 npm run verify:docs  # checks every file the built site references exists in docs/
@@ -93,3 +95,22 @@ Non-Latin languages (Russian, Mandarin, Japanese, Korean, Arabic) get a dedicate
 ## Adding a language
 
 See [docs/ADDING_CONTENT.md](docs/ADDING_CONTENT.md): one folder under `src/content/<code>/` plus one entry in `src/content/registry.ts`.
+
+
+## Content per language
+
+Vocabulary per level (A1 / A2 / B1 / B2 / C1 / C2), grammar lessons per level, then totals.
+
+| Language | Vocab | Grammar | Convs | Reading | Listening | Writing | Placement |
+|---|---|---|---|---|---|---|---|
+| Spanish | 340 / 29 / 27 / 19 / 19 / 15 | 15 / 9 / 4 / 4 / 2 / 2 | 30 | 13 | 15 | 8 | 31 |
+| French | 338 / 27 / 27 / 19 / 18 / 14 | 15 / 9 / 4 / 5 / 2 / 2 | 30 | 13 | 15 | 8 | 32 |
+| German | 327 / 36 / 26 / 19 / 18 / 14 | 15 / 9 / 4 / 3 / 2 / 1 | 30 | 13 | 15 | 8 | 32 |
+| Italian | 322 / 37 / 21 / 19 / 18 / 14 | 15 / 8 / 3 / 3 / 2 / 1 | 30 | 13 | 15 | 8 | 32 |
+| Polish | 307 / 43 / 21 / 19 / 18 / 14 | 15 / 9 / 3 / 2 / 2 / 1 | 30 | 13 | 15 | 8 | 32 |
+| Russian | 365 / 22 / 21 / 19 / 18 / 14 | 14 / 9 / 2 / 2 / 2 / 1 | 30 | 13 | 15 | 8 | 33 |
+| Korean | 359 / 23 / 20 / 20 / 18 / 12 | 14 / 9 / 2 / 2 / 2 / 1 | 30 | 13 | 15 | 8 | 32 |
+| Japanese | 344 / 23 / 20 / 19 / 18 / 12 | 14 / 9 / 2 / 2 / 2 / 1 | 30 | 13 | 15 | 8 | 32 |
+| Mandarin Chinese | 338 / 22 / 20 / 20 / 18 / 12 | 14 / 9 / 2 / 2 / 2 / 1 | 30 | 13 | 15 | 8 | 32 |
+| Arabic (MSA) | 337 / 23 / 20 / 20 / 18 / 12 | 14 / 8 / 2 / 2 / 2 / 1 | 30 | 13 | 15 | 8 | 36 |
+| Swahili | 290 / 32 / 23 / 21 / 20 / 14 | 15 / 7 / 3 / 2 / 2 / 1 | 30 | 13 | 15 | 8 | 34 |
