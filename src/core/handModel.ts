@@ -49,8 +49,8 @@ export const SHAPES: Record<string, Shape> = {
   'M': { f: [FIST, FIST, FIST, FIST], t: T([-0.7, 0.4, 0.35], [-1, 0.3, 0.1], [-1, 0.25, 0]) },
   'N': { f: [FIST, FIST, FIST, FIST], t: T([-0.6, 0.45, 0.35], [-0.9, 0.3, 0.1], [-0.9, 0.25, 0]) },
   'E': { f: [f(65, 75, 45), f(65, 75, 45), f(65, 75, 45), f(65, 75, 45)], t: T([-0.2, 0.3, 0.85], [-1, 0.3, 0.2], [-1, 0.25, 0.1]) },
-  'C': { f: [CUP(), CUP(), CUP(), CUP()], t: T([0.55, 0.15, 0.45], [0.2, 0.15, 0.85], [-0.1, 0.35, 0.9]) },
-  'O': { f: [f(48, 62, 45), f(52, 62, 45), f(55, 60, 45), f(58, 55, 45)], t: T([0.55, 0.3, 0.5], [0.1, 0.45, 0.85], [-0.2, 0.65, 0.75]) },
+  'C': { f: [CUP(1.15), CUP(1.15), CUP(1.15), CUP(1.15)], t: T([0.2, 0.1, 0.95], [0.1, 0.35, 0.9], [-0.1, 0.75, 0.6]) },
+  'O': { f: [f(50, 62, 45), f(52, 62, 45), f(55, 60, 45), f(58, 55, 45)], t: T([0.2, 0.2, 0.9], [0.05, 0.55, 0.8], [-0.1, 0.85, 0.5]) },
   'flatO': { f: [f(40, 55, 20), f(42, 55, 20), f(44, 55, 20), f(46, 55, 20)], t: T([0.5, 0.6, 0.4], [0.1, 0.85, 0.45], [-0.3, 0.7, 0.55]) },
   'baby-O': { f: [f(60, 70, 40), FIST, FIST, FIST], t: T([0.3, 0.55, 0.6], [-0.25, 0.8, 0.5], [-0.5, 0.65, 0.5]) },
   '1': { f: [ST, FIST, FIST, FIST], t: TACROSS },
@@ -67,8 +67,8 @@ export const SHAPES: Record<string, Shape> = {
   'R': { f: [f(0, 0, 0, -9, 0), f(0, 0, 0, 9, 2), FIST, FIST], t: TACROSS },
   'W': { f: [f(0, 0, 0, 12), ST, f(0, 0, 0, -12), FIST], t: T([-0.35, 0.3, 0.8], [-0.9, 0.2, 0.55], [-1, 0.25, 0.3]) },
   '3': { f: [ST, f(0, 0, 0, -4), FIST, FIST], t: TOUT },
-  '8': { f: [f(0, 0, 0, 8), f(60, 70, 40, 0), f(0, 0, 0, -8), f(0, 0, 0, -18)], t: T([0.45, 0.5, 0.45], [0.05, 0.75, 0.6], [-0.35, 0.65, 0.6]) },
-  '7': { f: [f(0, 0, 0, 8), f(0, 0, 0, -2), f(60, 70, 40, 0), f(0, 0, 0, -18)], t: T([0.45, 0.5, 0.45], [0.05, 0.75, 0.6], [-0.35, 0.65, 0.6]) },
+  '8': { f: [f(0, 0, 0, 8), f(60, 70, 40, 0), f(0, 0, 0, -8), f(0, 0, 0, -18)], t: T([-0.1, 0.5, 0.85], [-0.3, 0.55, 0.8], [-0.6, 0.5, 0.6]) },
+  '7': { f: [f(0, 0, 0, 8), f(0, 0, 0, -2), f(60, 70, 40, 0), f(0, 0, 0, -18)], t: T([-0.2, 0.6, 0.7], [-0.9, 0.4, 0.6], [-0.6, 0.5, 0.3]) },
   'F': { f: [f(55, 65, 45), ST, f(0, 0, 0, -6), f(0, 0, 0, -16)], t: T([0.45, 0.55, 0.5], [0.0, 0.75, 0.6], [-0.35, 0.65, 0.55]) },
   'X': { f: [f(15, 95, 35), FIST, FIST, FIST], t: TACROSS },
   'K': { f: [ST, f(0, 0, 0, -22, 0), FIST, FIST], t: T([0.1, 0.8, 0.45], [-0.25, 0.9, 0.35], [-0.35, 0.9, 0.2]) },
@@ -77,6 +77,10 @@ export const SHAPES: Record<string, Shape> = {
   'bentB': { f: [f(90, 0, 0), f(90, 0, 0), f(90, 0, 0), f(90, 0, 0)], t: TACROSS },
   'bentV': { f: [f(15, 80, 25, 14), f(15, 80, 25, -10), FIST, FIST], t: TACROSS },
   'bentL': { f: [f(10, 85, 20), FIST, FIST, FIST], t: TOUT },
+  '4': { f: SP([8, 2, -4, -12]), t: TACROSS },
+  '6': { f: [f(0, 0, 0, 8), f(0, 0, 0, -2), f(0, 0, 0, -12), f(55, 65, 40, 0)], t: T([-0.4, 0.6, 0.7], [-1, 0.4, 0.6], [-1, 0.5, 0.3]) },
+  'bent5': { f: [f(35, 50, 25, 8), f(35, 50, 25, 2), f(35, 50, 25, -6), f(35, 50, 25, -16)], t: T([0.8, 0.4, 0.3], [0.7, 0.5, 0.4], [0.5, 0.5, 0.5]) },
+  'Wb': { f: [f(0, 0, 0, 12), ST, f(0, 0, 0, -12), FIST], t: TACROSS },
   'open8': { f: [f(0, 0, 0, 8), f(55, 65, 40), f(0, 0, 0, -8), f(0, 0, 0, -18)], t: TOUT },
 };
 // Letters that share a handshape with another letter differ by orientation only (G/Q, K/P): see FS below.
@@ -174,11 +178,11 @@ export function drawHand(g: HandGeom, s: number, tx: number, ty: number, opts: {
 
 // ── Fingerspelling: standard chart pose for each letter (palm and finger direction, as signed to a viewer). ──
 export const FS: Record<string, { shape: string; o: [Dir, Dir]; path?: string; yaw?: number; note?: string }> = {
-  A: { shape: 'A', o: ['out', 'up'] }, B: { shape: 'B', o: ['out', 'up'] }, C: { shape: 'C', o: ['left', 'up'] },
+  A: { shape: 'A', o: ['out', 'up'] }, B: { shape: 'B', o: ['out', 'up'] }, C: { shape: 'C', o: ['right', 'up'] },
   D: { shape: 'D', o: ['out', 'up'], yaw: -28 }, E: { shape: 'E', o: ['out', 'up'], yaw: -18 }, F: { shape: 'F', o: ['out', 'up'], yaw: -62 },
-  G: { shape: 'G', o: ['out', 'left'] }, H: { shape: 'H', o: ['out', 'left'] }, I: { shape: 'I', o: ['out', 'up'] },
+  G: { shape: 'G', o: ['in', 'right'] }, H: { shape: 'H', o: ['in', 'right'] }, I: { shape: 'I', o: ['out', 'up'] },
   J: { shape: 'I', o: ['out', 'up'], path: 'J' }, K: { shape: 'K', o: ['out', 'up'] }, L: { shape: 'L', o: ['out', 'up'] },
-  M: { shape: 'M', o: ['out', 'up'] }, N: { shape: 'N', o: ['out', 'up'] }, O: { shape: 'O', o: ['left', 'up'] },
+  M: { shape: 'M', o: ['out', 'up'] }, N: { shape: 'N', o: ['out', 'up'] }, O: { shape: 'O', o: ['right', 'up'] },
   P: { shape: 'P', o: ['out', 'down'] }, Q: { shape: 'Q', o: ['out', 'down'] }, R: { shape: 'R', o: ['out', 'up'] },
   S: { shape: 'S', o: ['out', 'up'] }, T: { shape: 'T', o: ['out', 'up'] }, U: { shape: 'U', o: ['out', 'up'] },
   V: { shape: 'V', o: ['out', 'up'] }, W: { shape: 'W', o: ['out', 'up'] }, X: { shape: 'X', o: ['out', 'up'], yaw: -62 },
