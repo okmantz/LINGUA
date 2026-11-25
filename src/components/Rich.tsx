@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react';
+import { SignFigure } from './SignFigure';
+/** Inline text: **bold**, and {{sign figure spec}} (used by sign-language lessons, e.g. {{nm=brows-up+tilt}} for a face). */
 export function Rich({ text }: { text: string }) {
-  const parts = text.split(/(\*\*[^*]+\*\*)/g);
-  return <>{parts.map((p, i) => (p.startsWith('**') ? <strong key={i}>{p.slice(2, -2)}</strong> : <span key={i}>{p}</span>))}</>;
+  const parts = text.split(/(\*\*[^*]+\*\*|\{\{[^}]+\}\})/g);
+  return <>{parts.map((p, i) => (p.startsWith('**') ? <strong key={i}>{p.slice(2, -2)}</strong> : p.startsWith('{{') ? <span key={i} className="m-1 inline-block align-middle"><SignFigure spec={p.slice(2, -2).trim()} size={150} compact /></span> : <span key={i}>{p}</span>))}</>;
 }
 export const Table = ({ rows, caption }: { rows: string[][]; caption?: string }) => (
   <div className="overflow-x-auto rounded-xl border border-line">
