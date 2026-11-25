@@ -11,7 +11,7 @@ import { Icon, type IconName } from '../components/Icon';
 import { Btn, Card, Chip, Note, cx } from '../components/ui';
 
 const MINUTES: [number, string][] = [[5, 'Quick'], [10, 'Light'], [15, 'Steady'], [20, 'Sweet spot'], [30, 'Focused'], [45, 'Serious'], [60, 'Intense'], [90, '30-day sprint'], [120, 'Full sprint']];
-const HELLO: Record<string, string> = { es: '¡Hola!', fr: 'Bonjour !', de: 'Hallo!', it: 'Ciao!', pl: 'Cześć!', ru: 'Привет!', ko: '안녕!', ja: 'やあ', zh: '你好', ar: 'مرحبا', sw: 'Hujambo!' };
+const HELLO: Record<string, string> = { es: '¡Hola!', fr: 'Bonjour !', de: 'Hallo!', it: 'Ciao!', pl: 'Cześć!', ru: 'Привет!', ko: '안녕!', ja: 'やあ', zh: '你好', ar: 'مرحبا', sw: 'Hujambo!', asl: '👋 HELLO' };
 
 function Say({ children, mood = 'wave' }: { children: ReactNode; mood?: 'wave' | 'happy' | 'think' | 'cheer' }) {
   return (
