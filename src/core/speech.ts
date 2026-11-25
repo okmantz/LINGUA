@@ -3,10 +3,13 @@
 //  • recognizer()      = speech RECOGNITION (SpeechRecognition API): converts the user's voice to text.
 //                        Chrome/Edge/Safari only; Chrome sends audio to a cloud service. Not available offline.
 //  • recorder()        = MediaRecorder: records your voice for self-comparison. No analysis happens.
-export const hasTTS = () => typeof window !== 'undefined' && 'speechSynthesis' in window;
+// Sign languages have no audio: the app turns every speaker button and voice feature off while one is active.
+let audioOff = false;
+export const setAudioOff = (off: boolean) => { audioOff = off; if (off && typeof window !== 'undefined' && 'speechSynthesis' in window) speechSynthesis.cancel(); };
+export const hasTTS = () => !audioOff && typeof window !== 'undefined' && 'speechSynthesis' in window;
 export const SR: any = typeof window !== 'undefined' ? (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition : null;
-export const hasRecognition = () => !!SR;
-export const hasRecorder = () => typeof navigator !== 'undefined' && !!navigator.mediaDevices?.getUserMedia && typeof MediaRecorder !== 'undefined';
+export const hasRecognition = () => !!SR && !audioOff;
+export const hasRecorder = () => !audioOff && typeof navigator !== 'undefined' && !!navigator.mediaDevices?.getUserMedia && typeof MediaRecorder !== 'undefined';
 
 let voicesCache: SpeechSynthesisVoice[] = [];
 export function loadVoices(): Promise<SpeechSynthesisVoice[]> {
@@ -20,6 +23,7 @@ export function loadVoices(): Promise<SpeechSynthesisVoice[]> {
   });
 }
 export const voiceFor = (lang: string) => {
+  if (!lang || audioOff) return null;
   const base = lang.slice(0, 2).toLowerCase();
   const all = voicesCache.length ? voicesCache : hasTTS() ? speechSynthesis.getVoices() : [];
   const exact = all.filter((v) => v.lang.replace('_', '-').toLowerCase() === lang.toLowerCase());

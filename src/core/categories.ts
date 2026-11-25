@@ -19,5 +19,6 @@ export const VOCAB_CATEGORIES: { id: string; label: string; icon: string }[] = [
   { id: 'verbs', label: 'Essential verbs', icon: '⚙️' },
   { id: 'adjectives', label: 'Adjectives & adverbs', icon: '🎚️' },
   { id: 'connectors', label: 'Connectors & phrases', icon: '🔗' },
+  { id: 'society', label: 'Society, ideas & abstract words', icon: '🏛️' },
 ];
 export const catLabel = (id: string) => VOCAB_CATEGORIES.find((c) => c.id === id)?.label ?? id;

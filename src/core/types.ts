@@ -21,6 +21,7 @@ export interface VocabEntry {
   level: Cefr;
   note?: string;        // grammar / usage note
   related?: string[];   // related vocab ids
+  fig?: string;         // sign-language figure spec (see components/SignFigure.tsx); only used by sign languages
 }
 
 export type Exercise =
@@ -69,7 +70,13 @@ export interface WritingPrompt {
   requires: { label: string; any: string[] }[]; model: string; modelN: string;
 }
 export interface CheatSection { id: string; title: string; tags: string[]; rows: string[][]; note?: string; }
-export interface PlacementItem { id: string; skill: Skill; level: Cefr; ex: Exercise; audio?: string; }
+export interface PlacementItem {
+  id: string; skill: Skill; level: Cefr; ex: Exercise; audio?: string;
+  /** Optional fine-tuning of difficulty on the CEFR scale (A1 = 0 … C2 = 5). Typed answers are harder than recognising the same word. */
+  shift?: number;
+  /** Sign-language figure spec shown with the question. */
+  fig?: string;
+}
 
 export interface LanguageUI { // target-language interface strings used by Immersion mode
   choose: string; check: string; next: string; correct: string; wrong: string; listen: string;
@@ -102,6 +109,10 @@ export interface LanguageConfig {
   fsi?: { category: 1 | 2 | 3 | 4; hours: number };
   /** The honest, realistic 30-day outcome for this language at the recommended daily time. */
   outcome?: string;
+  /** Per-level overrides of the minimum material the content tests demand (only for languages where a level is deliberately lighter). */
+  depth?: Partial<Record<Cefr, Partial<{ vocab: number; grammar: number; conv: number; reading: number; listening: number; writing: number }>>>;
+  /** Sign language: no audio, no spoken pronunciation; vocabulary is shown as sign figures. */
+  sign?: boolean;
 }
 
 // ── User data ──
@@ -117,6 +128,8 @@ export type ThemeMode = 'system' | 'light' | 'dark';
 export interface PlacementResult {
   takenAt: number; overall: Cefr; bySkill: Partial<Record<Skill, Cefr>>; weaknesses: Skill[];
   startDay: number; skipProgram: boolean; answered: number; correct: number;
+  /** Ability estimate on the CEFR scale (A1 = 0 … C2 = 5), its standard error and how much to trust it. */
+  theta?: number; sd?: number; confidence?: 'low' | 'medium' | 'high'; range?: [Cefr, Cefr]; skipped?: number;
 }
 export interface DayRecord { completedAt: number; score: number; }
 export interface LangState {

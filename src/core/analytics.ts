@@ -1,8 +1,9 @@
 // Derives every progress number from real review/exercise history — nothing is self-reported.
 import type { Card, Cefr, EventRec, LangState, LanguageContent, Skill } from './types';
 import { CEFR_ORDER, SKILLS, cefrIndex } from './types';
-import { stageCounts, type Stage } from './mastery';
+import { stageCounts, stageOf, type Stage } from './mastery';
 import { dayKey } from './fsrs';
+import { levelProgress } from './progression';
 
 export const LEVEL_VOCAB: Record<Cefr, number> = { A1: 0, A2: 600, B1: 1500, B2: 3000, C1: 6000, C2: 10000 };
 export const TIERS = [
@@ -62,6 +63,16 @@ export function computeStats(state: LangState, content: LanguageContent, cards: 
   const eff = retainedPlus + (state.placement ? LEVEL_VOCAB[base] : 0);
   let est: Cefr = base;
   for (const l of CEFR_ORDER) if (eff >= LEVEL_VOCAB[l] && LEVEL_VOCAB[l] > 0 && cefrIndex(l) > cefrIndex(est)) est = l;
+  // The app's word lists are a core, not a full CEFR vocabulary, so also credit levels whose lessons AND words have been worked through:
+  // level L counts once every level up to L has ≥ 75 % of its lessons passed and ≥ 60 % of its words retained.
+  const retainedIds = new Set(vocabCards.filter((c) => { const st = stageOf(c, now); return st === 'retained' || st === 'mastered'; }).map((c) => c.itemId));
+  let covered: Cefr | null = null;
+  for (const l of CEFR_ORDER) {
+    const lp = levelProgress(state, content, l); const words = content.vocab.filter((v) => v.level === l);
+    const wordRatio = words.length ? words.filter((w) => retainedIds.has(w.id)).length / words.length : 1;
+    if ((lp.total === 0 && words.length === 0) || (lp.ratio >= 0.75 && wordRatio >= 0.6 && (lp.total > 0 || words.length > 0))) covered = l; else break;
+  }
+  if (covered && cefrIndex(covered) > cefrIndex(est)) est = covered;
   const core = (['grammar', 'reading', 'listening', 'vocabulary'] as Skill[]).map((s) => skills[s]).filter((s) => s.n >= 10 && s.score !== null);
   const avg = core.length ? core.reduce((a, s) => a + (s.score as number), 0) / core.length : null;
   if (avg !== null && avg < 0.55 && cefrIndex(est) > 0) est = CEFR_ORDER[cefrIndex(est) - 1];
