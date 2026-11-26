@@ -58,7 +58,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid gap-5 lg:grid-cols-5">
-        <div className="space-y-5 lg:col-span-3">
+        <div className="min-w-0 space-y-5 lg:col-span-3">
           {/* Today's plan */}
           {plan.blocks.length > 0 && (
             <section>
@@ -89,7 +89,7 @@ export default function Dashboard() {
           )}
         </div>
 
-        <div className="space-y-5 lg:col-span-2">
+        <div className="min-w-0 space-y-5 lg:col-span-2">
           <TeacherNote mood={goalMet ? 'cheer' : due > 0 ? 'think' : 'happy'} title={goalMet ? 'You hit your goal!' : due > 0 ? `${due} word${due === 1 ? '' : 's'} due for review` : 'Keep it small and steady'} action={{ label: next.cta, to: next.to }}>
             {goalMet ? 'That is exactly how a language gets learned: a little, every day. Anything extra is a bonus.' : due > 0 ? 'Reviewing right before you forget makes memories last. Today\'s session starts with these.' : 'Ten focused minutes a day beats a two-hour cram once a week. Tap the big button whenever you are ready.'}
           </TeacherNote>

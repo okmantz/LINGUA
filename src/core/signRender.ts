@@ -79,7 +79,7 @@ function movement(tok: string, x: number, y: number, k = 1): { svg: string; end:
 
 /** Face tokens for `nm=` — facial grammar and mouth morphemes that carry meaning in ASL. */
 export const FACE_TOKENS = ['brows-up', 'brows-down', 'wide', 'squint', 'tilt', 'nod', 'shake', 'puff', 'mm', 'th', 'cha', 'oo', 'frown', 'smile', 'lean', 'neutral'] as const;
-const face = (nm: string[] = [], bodyOnly = false) => {
+const face = (nm: string[] = [], bodyOnly = false, animId = '') => {
   const has = (t: string) => nm.includes(t);
   const up = has('brows-up') || has('wide'), down = has('brows-down') || has('squint');
   const tilt = has('tilt') ? -9 : 0;
@@ -108,7 +108,7 @@ const face = (nm: string[] = [], bodyOnly = false) => {
   return `
 <path d="M24 270C24 206 52 170 96 160L144 160C188 170 216 206 216 270Z" fill="${BODY}" stroke="${LINE}" stroke-width="2.4" stroke-linejoin="round"/>
 <rect x="107" y="116" width="26" height="48" rx="10" fill="${SKIN_SHADE}" stroke="${LINE}" stroke-width="2.4"/>
-<g transform="rotate(${tilt} 120 150)">${head}</g>${arrows}`;
+<g transform="rotate(${tilt} 120 150)"><g${animId && (has('nod') || has('shake')) ? ` class="hd-${animId}"` : ''}>${head}</g></g>${arrows}`;
 };
 
 interface HandSpec { h: string; o: [Dir, Dir]; l: string; a: string; left: boolean; dx: number; dy: number; yaw: number; pitch: number; to?: string; eo?: [Dir, Dir]; eh?: string; ea?: string; curve?: string }
@@ -158,7 +158,87 @@ function drawOne(hs: HandSpec, scale: number): { svg: string; end: [number, numb
   return { svg: start.svg + end.svg, end: [ex, ey], arrow };
 }
 
-export function signSvg(spec: string): string {
+
+// ───────────────────────── Animation ─────────────────────────
+// Each figure can play as a short loop: the dominant hand starts at pose ① (shown as a faint ghost), travels along the arrow to
+// pose ② (also a ghost), then performs the movement marks (circle, tap, wiggle…). Numbered badges and a plain-English caption
+// (see describeMotion) say which way to move, so nobody has to decode an arrow.
+let animCount = 0;
+interface Pose { t: number; x: number; y: number; r: number; sx: number; sy: number; op: number }
+type Seg = (u: number) => Partial<Pose>;
+const smooth = (u: number) => u * u * (3 - 2 * u);
+const FINGER_VEC: Record<Dir, [number, number]> = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0], out: [0, 0], in: [0, 0] };
+/** One movement token → a function of progress u∈[0,1] returning the pose change, relative to where the previous token ended. */
+function segFor(tok: string, k: number, finger: Dir): { seg: Seg; end: [number, number]; weight: number } | null {
+  const L = 34 * k; const v = VEC[tok];
+  if (v) return { seg: (u) => ({ x: v[0] * L * smooth(u), y: v[1] * L * smooth(u) }), end: [v[0] * L, v[1] * L], weight: 1 };
+  const osc = (ax: number, ay: number, n: number): Seg => (u) => { const w = Math.sin(u * Math.PI * 2 * n); return { x: ax * w, y: ay * w }; };
+  switch (tok) {
+    case 'circle': case 'circle-ccw': { const r = 17, cw = tok === 'circle'; return { seg: (u) => { const a = u * Math.PI * 2; return { x: (cw ? -1 : 1) * r * Math.sin(a), y: -r + r * Math.cos(a) }; }, end: [0, 0], weight: 1.6 }; }
+    case 'tap': { const [fx, fy] = FINGER_VEC[finger]; const f = fx || fy ? 1 : 0; return { seg: (u) => { const w = Math.abs(Math.sin(u * Math.PI * 2)); return f ? { x: fx * 9 * w, y: fy * 9 * w } : { sx: 1 + 0.1 * w, sy: 1 + 0.1 * w }; }, end: [0, 0], weight: 1.3 }; }
+    case 'wiggle': return { seg: osc(7, 0, 3), end: [0, 0], weight: 1.3 };
+    case 'shake': return { seg: osc(12, 0, 2), end: [0, 0], weight: 1.2 };
+    case 'bounce': return { seg: (u) => ({ y: 14 * Math.abs(Math.sin(u * Math.PI * 2)) }), end: [0, 0], weight: 1.2 };
+    case 'twist': return { seg: (u) => ({ r: 26 * Math.sin(u * Math.PI * 2) }), end: [0, 0], weight: 1.2 };
+    case 'flip': return { seg: (u) => ({ sy: Math.cos(smooth(u) * Math.PI) }), end: [0, 0], weight: 1 };
+    case 'arc': return { seg: (u) => ({ x: 44 * smooth(u), y: -52 * smooth(u) * (1 - smooth(u)) }), end: [44, 0], weight: 1 };
+    case 'close': return { seg: (u) => ({ sx: 1 - 0.2 * Math.sin(u * Math.PI) }), end: [0, 0], weight: 0.8 };
+    case 'open': return { seg: (u) => ({ sx: 1 + 0.2 * Math.sin(u * Math.PI) }), end: [0, 0], weight: 0.8 };
+    case 'out': case 'fwd': return { seg: (u) => ({ sx: 1 + 0.16 * Math.sin(u * Math.PI), sy: 1 + 0.16 * Math.sin(u * Math.PI) }), end: [0, 0], weight: 0.9 };
+    case 'in': case 'back': return { seg: (u) => ({ sx: 1 - 0.14 * Math.sin(u * Math.PI), sy: 1 - 0.14 * Math.sin(u * Math.PI) }), end: [0, 0], weight: 0.9 };
+    default: return null;
+  }
+}
+/** Sampled timeline: hold at ①, travel to ②, perform the movement marks, hold, fade, restart. */
+function timeline(d: [number, number] | null, tokens: string[], k: number, finger: Dir): Pose[] {
+  const P: Pose[] = []; const N = 3;
+  const push = (t: number, x: number, y: number, extra: Partial<Pose> = {}) => P.push({ t, x, y, r: 0, sx: 1, sy: 1, op: 1, ...extra });
+  push(0, 0, 0); push(0.1, 0, 0);
+  let t = 0.1; let bx = 0, by = 0;
+  const parts = tokens.map((tk) => segFor(tk, k, finger)).filter(Boolean) as NonNullable<ReturnType<typeof segFor>>[];
+  const totalW = (d ? 1.4 : 0) + parts.reduce((a, p) => a + p.weight, 0) || 1; const span = 0.78 - 0.1;
+  if (d) { const dt = (1.4 / totalW) * span; for (let i = 1; i <= 12; i++) { const u = smooth(i / 12); push(t + dt * (i / 12), d[0] * u, d[1] * u, { op: 1 }); } t += dt; bx = d[0]; by = d[1]; }
+  for (const p of parts) {
+    const dt = (p.weight / totalW) * span;
+    for (let i = 1; i <= 16; i++) { const o = p.seg(i / 16); push(t + dt * (i / 16), bx + (o.x ?? 0), by + (o.y ?? 0), { r: o.r ?? 0, sx: o.sx ?? 1, sy: o.sy ?? 1 }); }
+    t += dt; bx += p.end[0]; by += p.end[1];
+  }
+  const last = P[P.length - 1]; push(0.94, last.x, last.y, { r: last.r, sx: last.sx, sy: last.sy });
+  push(0.98, last.x, last.y, { r: last.r, sx: last.sx, sy: last.sy, op: 0 }); push(1, 0, 0, { op: 0 });
+  void N; return P;
+}
+const f1 = (n: number) => Math.round(n * 10) / 10;
+function keyframes(name: string, P: Pose[], shift: [number, number] = [0, 0], fade?: 'out' | 'in', dPath?: [number, number] | null): string {
+  const frames = P.map((q) => {
+    let op = q.op;
+    if (fade && dPath) { const prog = Math.min(1, Math.hypot(q.x, q.y) / (Math.hypot(dPath[0], dPath[1]) || 1)); const mid = smooth(Math.min(1, Math.max(0, (prog - 0.35) / 0.4))); op = q.op * (fade === 'out' ? 1 - mid : mid); }
+    return `${f1(q.t * 100)}%{transform:translate(${f1(q.x + shift[0])}px,${f1(q.y + shift[1])}px) rotate(${f1(q.r)}deg) scale(${f1(q.sx)},${f1(q.sy)});opacity:${f1(op)}}`;
+  });
+  return `@keyframes ${name}{${frames.join('')}}`;
+}
+const NAMES: Record<string, string> = { forehead: 'your forehead', temple: 'your temple', eye: 'your eye', nose: 'your nose', mouth: 'your mouth', lip: 'your lips', chin: 'your chin', cheek: 'your cheek', ear: 'your ear', jaw: 'your jaw', neck: 'your neck', shoulder: 'your shoulder', chest: 'your chest', center: 'the centre of your chest', heart: 'your heart side', stomach: 'your stomach', neutral: 'in front of you', neutral2: 'in front of you (left)', high: 'high in front', front: 'in front of you', low: 'low in front', side: 'out to the side', above: 'above your head', 'front-high': 'in front, high', 'front-mid': 'in front, middle height', 'wave-left': 'out to the side, shoulder height', 'wave-right': 'out to the other side', 'head-top': 'the top of your head', 'cheek-low': 'low on your cheek' };
+const place_ = (k: string) => NAMES[k] ?? k.replace(/-/g, ' ');
+const MOVE_TEXT: Record<string, string> = { up: 'up', down: 'down', left: 'to the left (your left as you face the screen: the signer’s right)', right: 'to the right', ul: 'up and to the left', ur: 'up and to the right', dl: 'down and to the left', dr: 'down and to the right', out: 'forward, away from the signer’s body', fwd: 'forward', in: 'back toward the signer’s body', back: 'back toward the body', circle: 'in a small circle (clockwise as you see it)', 'circle-ccw': 'in a small circle (counter-clockwise as you see it)', tap: 'tap twice', wiggle: 'wiggle the fingers', shake: 'shake side to side', twist: 'twist the wrist', arc: 'in an arc', flip: 'flip the hand over', bounce: 'bounce down and up', close: 'squeeze closed', open: 'open out' };
+/** Plain-English description of what the hands do and which way they move, derived from the spec. */
+export function describeMotion(spec: string): { move: string; face: string } {
+  const p = parseSpec(spec); if (p.fs || p.num) return { move: p.fs === 'J' ? 'Draw a J: down, then curve toward the signer’s body.' : p.fs === 'Z' ? 'Draw a Z: across, diagonal down, across.' : '', face: '' };
+  const bits: string[] = [];
+  if (p.h) {
+    const o = (p.o ?? 'out,up').split(',')[0]; const palm = ({ out: 'palm facing out (toward you)', in: 'palm facing the signer', up: 'palm up', down: 'palm down', left: 'palm to the side', right: 'palm to the side', mid: 'palm toward the body', lat: 'palm away from the body' } as Record<string, string>)[o];
+    bits.push(`Start ${place_(p.l ?? 'neutral')}${palm ? `, ${palm}` : ''}.`);
+    if (p.to) bits.push(`Move to ${place_(p.to)}.`);
+    const mv = (p.m ?? '').split('+').filter(Boolean).map((m) => MOVE_TEXT[m]).filter(Boolean);
+    if (mv.length) bits.push(`Then ${mv.join(', then ')}.`);
+    if (!p.to && !mv.length) bits.push('Hold the position (no movement).');
+    if (p.r) bits.push(`Repeat ${p.r} times.`);
+  }
+  if (p.h2) bits.push(p.to2 ? 'The other hand moves too.' : 'The other hand stays still as a base.');
+  const FACE: Record<string, string> = { 'brows-up': 'eyebrows up', 'brows-down': 'eyebrows down', wide: 'eyes wide', squint: 'eyes squinted', tilt: 'head tilted', nod: 'nod', shake: 'shake your head', puff: 'puff the cheeks', mm: 'lips pressed (“mm”)', th: 'tongue out (“th”)', cha: 'mouth open wide (“cha”)', oo: 'lips rounded (“oo”)', frown: 'frown', smile: 'smile', lean: 'lean in', neutral: 'neutral face' };
+  const face = (p.nm ?? '').split('+').filter(Boolean).map((t) => FACE[t] ?? t).join(', ');
+  return { move: bits.join(' '), face };
+}
+
+export function signSvg(spec: string, opts: { animate?: boolean } = {}): string {
   const p = parseSpec(spec);
   const wrap = (w: number, h: number, inner: string) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"><rect x="1" y="1" width="${w - 2}" height="${h - 2}" rx="16" fill="${BG}" stroke="#DDD6CB" stroke-width="2"/>${inner}</svg>`;
   const card = (shape: string, o: [Dir, Dir], yaw: number | undefined, pathKind?: string) => {
@@ -182,19 +262,52 @@ export function signSvg(spec: string): string {
   const nm = (p.nm ?? '').split('+').filter(Boolean);
   const hs = handSpec(p, ''), hs2 = handSpec(p, '2');
   const scale = p.s ? Number(p.s) : SCALE;
-  let out = face(nm);
-  let arrows = '';
+  const badge = (n: number, bb: [number, number, number, number]) => `<g><circle cx="${f1(bb[0] - 2)}" cy="${f1(bb[1] - 2)}" r="10" fill="${ACCENT}" stroke="${HALO}" stroke-width="2"/><text x="${f1(bb[0] - 2)}" y="${f1(bb[1] + 2)}" text-anchor="middle" font-size="12" font-weight="800" font-family="system-ui,sans-serif" fill="#fff">${n}</text></g>`;
+  const tokens = (p.m ?? '').split('+').filter(Boolean);
+  const id = `a${++animCount}`;
+  const animate = !!opts.animate && !!hs && (!!hs.to || tokens.some((t) => segFor(t, 1, 'up')));
+  let out = face(nm, false, animate ? id : '');
+  let arrows = ''; let css = '';
   if (hs2) { const d = drawOne(hs2, scale); out += d.svg; arrows += d.arrow; }
-  if (hs) {
-    const d = drawOne(hs, scale); out += d.svg; arrows += d.arrow;
-    let [cx, cy] = d.end;
-    // trailing movement glyphs (repeat marks, circles, taps…) are drawn from the end of the path
-    for (const tok of (p.m ?? '').split('+').filter(Boolean)) {
-      const mv = movement(tok, cx, cy, p.k ? Number(p.k) : 1); arrows += mv.svg; [cx, cy] = mv.end;
+  if (hs && animate) {
+    const finger = hs.o[1];
+    const startPl = place(hs, scale), startGhost = place(hs, scale, true);
+    let d: [number, number] | null = null; let endSolid = '', endGhost = '', end: [number, number] = startPl.at;
+    let shape = false; let numbered = '';
+    if (hs.to) {
+      const es: HandSpec = { ...hs, l: hs.to, o: hs.eo ?? hs.o, h: hs.eh ?? hs.h, a: hs.ea ?? hs.a, dx: 0, dy: 0, to: undefined };
+      const e = place(es, scale); const eg = place(es, scale, true);
+      d = [e.center[0] - startPl.center[0], e.center[1] - startPl.center[1]]; end = e.center; endSolid = e.svg; endGhost = eg.svg;
+      shape = es.h !== hs.h || es.o[0] !== hs.o[0] || es.o[1] !== hs.o[1];
+      arrows += hs.curve ? curved(startPl.center[0], startPl.center[1], e.center[0], e.center[1], hs.curve) : line(startPl.center[0], startPl.center[1], e.center[0], e.center[1]);
+      numbered = badge(1, startPl.bbox) + badge(2, e.bbox);
     }
+    // marks (circle, tap, wiggle…) are drawn from the end of the path, exactly as in the static figure
+    let [cx, cy] = hs.to ? end : startPl.center;
+    for (const tok of tokens) { const mv = movement(tok, cx, cy, p.k ? Number(p.k) : 1); arrows += mv.svg; [cx, cy] = mv.end; }
     if (p.r) arrows += `<text x="${Math.min(222, cx + 14)}" y="${Math.max(24, cy - 12)}" font-size="15" font-weight="800" font-family="system-ui,sans-serif" fill="${ACCENT}" stroke="${HALO}" stroke-width="3" paint-order="stroke">×${p.r}</text>`;
+    const P = timeline(d, tokens, p.k ? Number(p.k) : 1, finger);
+    // layer order: ghosts and arrows underneath, moving hand on top
+    out += (hs.to ? startGhost.svg + endGhost : '');
+    const guide = arrows + numbered; arrows = '';
+    css += keyframes(`k${id}`, P, [0, 0], shape ? 'out' : undefined, d);
+    out += `<g class="mv-${id}">${startPl.svg}</g>`;
+    if (shape && d) { css += keyframes(`k${id}b`, P, [-d[0], -d[1]], 'in', d); out += `<g class="mv-${id} mb-${id}">${endSolid}</g>`; }
+    out += guide;                                   // arrows and badges sit on top of the moving hand so they are never hidden by it
+    css += `.mv-${id}{transform-box:fill-box;transform-origin:50% 50%;animation:k${id} calc(4.2s * var(--sign-speed,1)) linear infinite}${shape ? `.mb-${id}{animation-name:k${id}b}` : ''}`;
+    if (nm.includes('nod')) css += `@keyframes hdn${id}{0%,100%{transform:translateY(0)}25%,75%{transform:translateY(5px)}50%{transform:translateY(0)}}.hd-${id}{animation:hdn${id} 1.4s ease-in-out infinite}`;
+    if (nm.includes('shake')) css += `@keyframes hds${id}{0%,100%{transform:rotate(0)}25%{transform:rotate(-9deg)}75%{transform:rotate(9deg)}}.hd-${id}{transform-box:fill-box;transform-origin:50% 90%;animation:hds${id} 1.4s ease-in-out infinite}`;
+  } else {
+    if (hs) {
+      const d = drawOne(hs, scale); out += d.svg; arrows += d.arrow;
+      let [cx, cy] = d.end;
+      // trailing movement glyphs (repeat marks, circles, taps…) are drawn from the end of the path
+      for (const tok of tokens) { const mv = movement(tok, cx, cy, p.k ? Number(p.k) : 1); arrows += mv.svg; [cx, cy] = mv.end; }
+      if (p.r) arrows += `<text x="${Math.min(222, cx + 14)}" y="${Math.max(24, cy - 12)}" font-size="15" font-weight="800" font-family="system-ui,sans-serif" fill="${ACCENT}" stroke="${HALO}" stroke-width="3" paint-order="stroke">×${p.r}</text>`;
+      if (hs.to) { const st = place(hs, scale, true); const en = place({ ...hs, l: hs.to, o: hs.eo ?? hs.o, h: hs.eh ?? hs.h, a: hs.ea ?? hs.a, dx: 0, dy: 0, to: undefined }, scale); arrows += badge(1, st.bbox) + badge(2, en.bbox); }
+    }
   }
-  return wrap(280, 270, `<g transform="translate(20 0)">${out}${arrows}</g>`);
+  return wrap(280, 270, `${css ? `<style>${css}</style>` : ''}<g transform="translate(20 0)">${out}${arrows}</g>`);
 }
 
 /** Number cards 1–10. Dictionaries draw them palm-to-viewer so every finger can be counted; in conversation signers vary. */

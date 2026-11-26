@@ -6,10 +6,13 @@ import { PL_READING, PL_LISTENING, PL_WRITING, PL_PRON, PL_CHEATS, PL_PLACEMENT,
 import { PL_VOCAB_EXT, PL_GRAMMAR_EXT, PL_CONVS_EXT, PL_READING_EXT, PL_LISTENING_EXT, PL_WRITING_EXT, PL_PLACEMENT_EXT } from './ext';
 import { PL_VOCAB_ADV, PL_GRAMMAR_ADV, PL_CONVS_ADV, PL_READING_ADV, PL_LISTENING_ADV, PL_WRITING_ADV, PL_PLACEMENT_ADV } from './adv';
 import { PL_VOCAB_DEEP, PL_GRAMMAR_DEEP } from './deep'; import { PL_CONVS_DEEP, PL_READING_DEEP, PL_LISTENING_DEEP, PL_WRITING_DEEP, PL_PLACEMENT_DEEP, PL_CHEATS_DEEP, PL_PRON_DEEP } from './deep2';
+import { PL_MORE_VOCAB, PL_MORE_READING, PL_MORE_LISTENING, PL_MORE_CONVS } from './more';
+import { parseVocab as pvM, parseReading as prM, parseListening as plM, parseConvs as pcM } from '../dsl';
 const content: LanguageContent = {
   vocab: parseVocab(PL_VOCAB + PL_VOCAB_ADV + PL_VOCAB_EXT + PL_VOCAB_DEEP), grammar: parseGrammar(PL_GRAMMAR + PL_GRAMMAR_ADV + PL_GRAMMAR_EXT + PL_GRAMMAR_DEEP), conversations: parseConvs(PL_CONVS + PL_CONVS_ADV + PL_CONVS_EXT + PL_CONVS_DEEP),
   reading: parseReading(PL_READING + PL_READING_ADV + PL_READING_EXT + PL_READING_DEEP), listening: parseListening(PL_LISTENING + PL_LISTENING_ADV + PL_LISTENING_EXT + PL_LISTENING_DEEP), pronunciation: parsePron(PL_PRON + PL_PRON_DEEP),
   writing: parseWriting(PL_WRITING + PL_WRITING_ADV + PL_WRITING_EXT + PL_WRITING_DEEP), cheats: parseCheats(PL_CHEATS + PL_CHEATS_DEEP), placement: parsePlacement(PL_PLACEMENT + PL_PLACEMENT_ADV + PL_PLACEMENT_EXT + PL_PLACEMENT_DEEP),
   ui: PL_UI, grammarLevels: {},
 };
+content.vocab.push(...pvM(PL_MORE_VOCAB)); content.reading.push(...prM(PL_MORE_READING)); content.listening.push(...plM(PL_MORE_LISTENING)); content.conversations.push(...pcM(PL_MORE_CONVS));
 export default content;

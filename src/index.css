@@ -71,6 +71,14 @@
 @layer base {
 /* ───────────────────────── Base ───────────────────────── */
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+/* Mobile safety net: nothing may make the page wider than the screen (that is what shrinks/cuts off fixed bars on phones). */
+html, body { max-width: 100%; overflow-x: clip; }
+/* Grid and flex children default to min-width:auto, so one long unbroken line widens the whole grid. Let them shrink. */
+[class*="grid"] > *, .card { min-width: 0; }
+img, svg, video, canvas { max-width: 100%; }
+p, li, h1, h2, h3, h4, td, th, label, summary { overflow-wrap: break-word; }
+table { max-width: 100%; }
+@supports (overflow: clip) { html, body { overflow-x: clip; } }
 html, body, #root { min-height: 100%; }
 body {
   background: var(--bg); color: var(--ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.5;
@@ -145,7 +153,7 @@ summary { list-style: none; } summary::-webkit-details-marker { display: none; }
 .hero .muted { color: rgb(255 255 255 / .74); }
 
 .glass { background: color-mix(in srgb, var(--surface) 80%, transparent); backdrop-filter: saturate(170%) blur(16px); -webkit-backdrop-filter: saturate(170%) blur(16px); }
-.dock { box-shadow: 0 10px 40px -12px rgb(12 19 34 / .35), 0 0 0 1px var(--line); }
+.dock { background: color-mix(in srgb, var(--surface) 95%, transparent); box-shadow: 0 10px 40px -12px rgb(12 19 34 / .35), 0 0 0 1px var(--line); }
 
 .skeleton { background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 37%, var(--surface2) 63%); background-size: 400% 100%; animation: shimmer 1.4s ease infinite; border-radius: .75rem; }
 }
@@ -170,3 +178,6 @@ summary { list-style: none; } summary::-webkit-details-marker { display: none; }
 @keyframes celebrate { 0% { transform: scale(.6) rotate(-8deg); opacity: 0 } 60% { transform: scale(1.08) rotate(2deg); opacity: 1 } 100% { transform: scale(1) rotate(0) } }
 .celebrate { animation: celebrate .5s cubic-bezier(.2,.9,.3,1.2) both; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* ASL figures: the pause button freezes the loop. */
+.sign-paused *, .sign-paused { animation-play-state: paused !important; }

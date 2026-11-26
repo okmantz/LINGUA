@@ -5,6 +5,9 @@ import { StoreProvider } from './state/store';
 import App from './App';
 import './index.css';
 import { registerSW } from 'virtual:pwa-register';
+import { initSpeech } from './core/speech';
+import { SpeechNotice } from './components/SpeechNotice';
 
 registerSW({ immediate: true });
-createRoot(document.getElementById('root')!).render(<StrictMode><HashRouter><StoreProvider><App /></StoreProvider></HashRouter></StrictMode>);
+initSpeech();
+createRoot(document.getElementById('root')!).render(<StrictMode><HashRouter><StoreProvider><App /><SpeechNotice /></StoreProvider></HashRouter></StrictMode>);

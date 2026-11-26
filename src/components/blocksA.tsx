@@ -2,7 +2,7 @@
 import { useMemo, useRef, useState } from 'react';
 import type { Exercise, VocabEntry } from '../core/types';
 import { makeExercise, pickMode, type CardExercise } from '../core/exercises';
-import { speak, hasTTS, hasVoiceFor, stopSpeaking } from '../core/speech';
+import { speak, hasTTS, canSpeakLang, stopSpeaking, useSpeechState } from '../core/speech';
 import { ExerciseView, gradeFor, type ExResult } from './ExerciseView';
 import { Btn, Card, Chip, Note, Progress, Speak, cx } from './ui';
 import { Icon } from './Icon';
@@ -14,7 +14,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export function ReviewBlock({ ids, onDone }: { ids: string[]; onDone: (score: number) => void }) {
   const { store, cfg, content, ui, rate, rnd, flags } = useCtx(); const stop = useStudyClock();
-  const [queue, setQueue] = useState<CardExercise[]>(() => ids.map((id) => content.vocab.find((v) => v.id === id)).filter(Boolean).map((v) => makeExercise(v as VocabEntry, pickMode(store.cardMap.get(`${cfg.code}:${v!.id}`), rnd, hasTTS() && hasVoiceFor(cfg.tts)), content.vocab, rnd)));
+  const [queue, setQueue] = useState<CardExercise[]>(() => ids.map((id) => content.vocab.find((v) => v.id === id)).filter(Boolean).map((v) => makeExercise(v as VocabEntry, pickMode(store.cardMap.get(`${cfg.code}:${v!.id}`), rnd, canSpeakLang(cfg.tts)), content.vocab, rnd)));
   const [i, setI] = useState(0); const [first, setFirst] = useState<Record<string, boolean>>({});
   const total = ids.length;
   const cur = queue[i];
@@ -169,10 +169,11 @@ export function ReadingBlock({ id, onDone }: { id: string; onDone: (score: numbe
 export function ListeningBlock({ id, onDone }: { id: string; onDone: (score: number) => void }) {
   const { content, flags, cfg, rate, store } = useCtx(); const stop = useStudyClock();
   const l = content.listening.find((x) => x.id === id)!;
-  const sign = !!cfg.sign; const audio = !sign && hasTTS() && hasVoiceFor(cfg.tts);
+  useSpeechState();   // re-render when voices finish loading or a play attempt fails
+  const sign = !!cfg.sign; const audio = !sign && canSpeakLang(cfg.tts);
   const [phase, setPhase] = useState<'listen' | 'quiz' | 'after'>('listen'); const [score, setScore] = useState(0); const [slow, setSlow] = useState(false); const [playing, setPlaying] = useState(false); const [plays, setPlays] = useState(0);
   const [showT, setShowT] = useState(!audio); const cancel = useRef(false);
-  const play = async () => { if (playing) { cancel.current = true; stopSpeaking(); setPlaying(false); return; } cancel.current = false; setPlaying(true); setPlays((p) => p + 1); for (const ln of l.lines) { if (cancel.current) break; await speak(ln.t, cfg.tts, slow ? Math.min(rate, 0.7) : rate); await sleep(280); } setPlaying(false); };
+  const play = async () => { if (playing) { cancel.current = true; stopSpeaking(); setPlaying(false); return; } cancel.current = false; setPlaying(true); setPlays((p) => p + 1); for (const ln of l.lines) { if (cancel.current) break; const ok = await speak(ln.t, cfg.tts, slow ? Math.min(rate, 0.7) : rate); if (!ok && !cancel.current) break; await sleep(280); } setPlaying(false); };
   const transcript = (
     <ul className="space-y-1.5">{l.lines.map((ln, i) => <li key={i}><b>{ln.spk}:</b> {ln.t}{(flags.translations === 'always' || phase === 'after') && flags.translations !== 'never' && <span className="block text-sm text-muted">{ln.n}</span>}</li>)}</ul>
   );

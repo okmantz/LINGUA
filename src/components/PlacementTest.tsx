@@ -4,10 +4,10 @@ import { loadContent, getLang } from '../content/registry';
 import { buildPlacementPool, initPlacement, nextItem, placementResult, submit, MAX_ITEMS, type PState } from '../core/placement';
 import { cefrIndex } from '../core/types';
 import { SignFigure } from './SignFigure';
-import { hasTTS, hasVoiceFor, speak } from '../core/speech';
+import { canSpeakLang, loadVoices, useSpeechState } from '../core/speech';
 import { mulberry32 } from '../core/text';
 import { ExerciseView } from './ExerciseView';
-import { Btn, Card, Chip, Note, Progress, Speak } from './ui';
+import { Btn, Card, Chip, Note, Progress } from './ui';
 import { Icon } from './Icon';
 
 const BASE_UI = { choose: 'Choose the correct answer', check: 'Check', next: 'Continue', correct: 'Correct', wrong: 'Not quite', listen: 'Listen', translate: 'Translate', fill: 'Fill in the blank', order: 'Put the words in order', answer: 'Your answer', well: 'Well done', again: 'Try again', read: 'Read', speak: 'Speak' };
@@ -15,9 +15,12 @@ const BASE_UI = { choose: 'Choose the correct answer', check: 'Check', next: 'Co
 export function PlacementTest({ code, onFinish, onCancel }: { code: string; onFinish: (r: PlacementResult) => void; onCancel: () => void }) {
   const cfg = getLang(code)!; const [content, setContent] = useState<LanguageContent | null>(null);
   const rnd = useMemo(() => mulberry32((Date.now() ^ 0x9e3779b9) >>> 0), []);
-  const canSpeak = !cfg.sign && hasTTS() && hasVoiceFor(cfg.tts);
+  useSpeechState();   // re-render when voices arrive or a play attempt fails
+  const [noAudio, setNoAudio] = useState(false);                 // the learner (or a failed play) switched listening questions off
+  const canSpeak = !cfg.sign && !noAudio && canSpeakLang(cfg.tts);
   const [pool, setPool] = useState<PlacementItem[]>([]); const [st, setSt] = useState<PState>(initPlacement()); const [item, setItem] = useState<PlacementItem | null>(null); const [result, setResult] = useState<PlacementResult | null>(null);
-  useEffect(() => { loadContent(code).then((c) => { setContent(c); const p = buildPlacementPool(c.placement, c.vocab, rnd, { sign: cfg.sign }); setPool(p); setItem(nextItem(p, initPlacement(), rnd, canSpeak)); }); /* eslint-disable-next-line */ }, [code]);
+  // Wait for the browser's voice list (empty for the first moments on Android) before deciding whether listening questions can be asked.
+  useEffect(() => { Promise.all([loadContent(code), loadVoices(2500)]).then(([c]) => { setContent(c); const p = buildPlacementPool(c.placement, c.vocab, rnd, { sign: cfg.sign }); setPool(p); setItem(nextItem(p, initPlacement(), rnd, !cfg.sign && canSpeakLang(cfg.tts))); }); /* eslint-disable-next-line */ }, [code]);
   if (!content) return <div className="flex items-center gap-3 py-10 text-muted"><span className="h-5 w-5 animate-spin rounded-full border-2 border-line-strong border-t-accent" />Loading test…</div>;
   const finishWith = (s: PState) => setResult(placementResult(s, Date.now()));
   if (result) return <PlacementSummary r={result} lang={cfg.name} onUse={() => onFinish(result)} />;
@@ -35,9 +38,10 @@ export function PlacementTest({ code, onFinish, onCancel }: { code: string; onFi
       <div className="mb-3 flex flex-wrap items-center gap-2"><Chip tone="accent"><Icon name="target" size={12} />Placement · {cfg.name}</Chip><span className="tabular text-sm text-muted">Question {answered + 1} · adapts to you</span><button className="ml-auto rounded-lg px-2 py-1 text-sm font-semibold text-muted transition hover:bg-surface2 hover:text-ink" onClick={onCancel}>Cancel</button></div>
       <Progress value={sure} className="mb-5" label="Placement progress" />
       {answered === 0 && <div className="mb-5"><Note>Answer what you know. <b>Don't guess</b>: if you aren't sure, press "I don't know". Guesses make the result less accurate, and not knowing is useful information. Expect about 15–25 questions that get harder as you succeed and easier if you struggle.</Note></div>}
-      {item.audio && <div className="mb-3 flex items-center gap-2"><Speak label="Play the audio" onClick={() => void speak(item.audio!, cfg.tts, 0.9)} /><span className="text-sm text-muted">Listen, then answer.</span></div>}
       {item.fig && <div className="mb-3 flex justify-center"><SignFigure spec={item.fig} size={200} /></div>}
+      {item.audio && <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-accent-strong"><Icon name="headphones" size={16} />Listening question: tap the speaker to hear it, then answer. You can replay it as often as you like.</p>}
       <ExerciseView key={item.id} ex={item.ex} cfg={cfg} ui={BASE_UI} speakText={item.audio} autoSpeak={!!item.audio} onDone={(r) => advance(r.correct)} />
+      {item.audio && <div className="mt-4 text-center"><button className="text-sm font-semibold text-muted underline-offset-2 hover:text-ink hover:underline" onClick={() => { setNoAudio(true); const nx = nextItem(pool, st, rnd, false); if (nx) setItem(nx); else finishWith(st); }}>I can't hear anything: skip listening questions</button></div>}
       <div className="mt-5 text-center"><button className="min-h-10 rounded-full border border-line-strong bg-surface px-5 text-sm font-semibold text-muted shadow-[var(--shadow-xs)] transition hover:bg-surface2 hover:text-ink" onClick={() => advance('skip')}>I don't know</button></div>
     </div>
   );

@@ -55,9 +55,10 @@ export function ExerciseView({ ex, cfg, ui, speakText, autoSpeak, rate = 0.9, on
   return (
     <div className="pop mx-auto w-full max-w-2xl">
       {fig && <div className="mb-5 flex justify-center"><SignFigure spec={fig} size={230} /></div>}
+      {speakText && hasTTS() && autoSpeak && <div className="mb-4"><Speak wide size={56} label="Play audio" onClick={() => say(speakText)} /></div>}
       <div className="mb-5 flex items-start gap-3">
-        <p className="flex-1 text-[1.4rem] font-extrabold leading-snug tracking-[-0.02em] sm:text-[1.7rem]">{ex.prompt}</p>
-        {speakText && hasTTS() && <Speak size={44} onClick={() => say(speakText)} />}
+        <p className="min-w-0 flex-1 break-words text-[1.4rem] font-extrabold leading-snug tracking-[-0.02em] sm:text-[1.7rem]">{ex.prompt}</p>
+        {speakText && hasTTS() && !autoSpeak && <Speak size={44} onClick={() => say(speakText)} />}
       </div>
       {ex.kind === 'fill' && ex.hint && !immersive && <p className="mb-4 flex items-center gap-2 text-sm text-muted"><Icon name="bulb" size={16} className="text-warn" />Hint: {ex.hint}</p>}
 

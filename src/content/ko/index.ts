@@ -6,6 +6,8 @@ import { KO_READING, KO_LISTENING, KO_WRITING, KO_PRON, KO_CHEATS, KO_PLACEMENT,
 import { KO_VOCAB_EXT, KO_GRAMMAR_EXT, KO_CONVS_EXT, KO_READING_EXT, KO_LISTENING_EXT, KO_WRITING_EXT, KO_PLACEMENT_EXT } from './ext';
 import { KO_VOCAB_ADV, KO_GRAMMAR_ADV, KO_CONVS_ADV, KO_READING_ADV, KO_LISTENING_ADV, KO_WRITING_ADV, KO_PLACEMENT_ADV } from './adv';
 import { KO_VOCAB_DEEP, KO_GRAMMAR_DEEP } from './deep'; import { KO_CONVS_DEEP, KO_READING_DEEP, KO_LISTENING_DEEP, KO_WRITING_DEEP, KO_PLACEMENT_DEEP, KO_CHEATS_DEEP, KO_PRON_DEEP } from './deep2';
+import { KO_MORE_VOCAB, KO_MORE_READING, KO_MORE_LISTENING, KO_MORE_CONVS } from './more';
+import { parseVocab as pvM, parseReading as prM, parseListening as plM, parseConvs as pcM } from '../dsl';
 const content: LanguageContent = {
   vocab: parseVocab(KO_VOCAB + KO_VOCAB_ADV + KO_VOCAB_EXT + KO_VOCAB_DEEP), grammar: parseGrammar(KO_GRAMMAR + KO_GRAMMAR_ADV + KO_GRAMMAR_EXT + KO_GRAMMAR_DEEP), conversations: parseConvs(KO_CONVS + KO_CONVS_ADV + KO_CONVS_EXT + KO_CONVS_DEEP),
   reading: parseReading(KO_READING + KO_READING_ADV + KO_READING_EXT + KO_READING_DEEP), listening: parseListening(KO_LISTENING + KO_LISTENING_ADV + KO_LISTENING_EXT + KO_LISTENING_DEEP), pronunciation: parsePron(KO_PRON + KO_PRON_DEEP),
@@ -13,4 +15,5 @@ const content: LanguageContent = {
   ui: KO_UI, grammarLevels: {},
   pace: { 1: { cats: ['script', 'greetings'], newWords: 18 }, 2: { cats: ['script', 'numbers', 'pronouns'], newWords: 14 }, 3: { cats: ['script', 'objects'], newWords: 14 } },
 };
+content.vocab.push(...pvM(KO_MORE_VOCAB)); content.reading.push(...prM(KO_MORE_READING)); content.listening.push(...plM(KO_MORE_LISTENING)); content.conversations.push(...pcM(KO_MORE_CONVS));
 export default content;

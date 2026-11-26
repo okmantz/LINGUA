@@ -1,4 +1,5 @@
-import { useEffect, useRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
+import { stopSpeaking, useSpeechState } from '../core/speech';
 import { Icon, type IconName } from './Icon';
 
 export const cx = (...a: (string | false | null | undefined)[]) => a.filter(Boolean).join(' ');
@@ -102,9 +103,25 @@ export const Select = ({ className, children, ...r }: React.SelectHTMLAttributes
 export const Skeleton = ({ className }: { className?: string }) => <div className={cx('skeleton', className)} aria-hidden />;
 export const Kbd = ({ children }: { children: ReactNode }) => <kbd className="inline-grid h-5 min-w-5 place-items-center rounded-md border border-line-strong bg-surface2 px-1 text-[11px] font-semibold text-muted">{children}</kbd>;
 
-export const Speak = ({ onClick, label = 'Play audio', size = 40 }: { onClick: () => void; label?: string; size?: number }) => (
-  <button onClick={onClick} aria-label={label} title={label} style={{ width: size, height: size }} className="inline-grid shrink-0 place-items-center rounded-full bg-accent/15 text-accent-strong transition hover:bg-accent/25 active:scale-95"><Icon name="volume" size={Math.round(size * 0.48)} /></button>
-);
+/** Speaker button. Shows a pulsing "playing" state while its own audio is on, and stops it when tapped again. */
+export function Speak({ onClick, label = 'Play audio', size = 40, wide = false }: { onClick: () => void; label?: string; size?: number; wide?: boolean }) {
+  const { playing } = useSpeechState(); const [mine, setMine] = useState(false); const live = useRef(playing); live.current = playing;
+  useEffect(() => { if (!playing) setMine(false); }, [playing]);
+  const on = mine && playing;
+  const tap = () => {
+    if (on) { stopSpeaking(); setMine(false); return; }
+    setMine(true); onClick();
+    setTimeout(() => { if (!live.current) setMine(false); }, 1800);
+  };
+  return (
+    <button type="button" onClick={tap} aria-label={on ? 'Stop audio' : label} title={on ? 'Stop audio' : label} aria-pressed={on} style={wide ? { minHeight: size } : { width: size, height: size }}
+      className={cx('relative shrink-0 transition active:scale-95', wide ? 'inline-flex items-center justify-center gap-2.5 rounded-2xl px-5 text-base font-bold' : 'inline-grid place-items-center rounded-full', on ? 'bg-accent text-accent-ink' : 'bg-accent/15 text-accent-strong hover:bg-accent/25')}>
+      {on && !wide && <span className="ping-soft absolute inset-0 rounded-full bg-accent/50" aria-hidden />}
+      <Icon name={on ? 'stop' : 'volume'} size={wide ? 22 : Math.round(size * 0.48)} className="relative" />
+      {wide && <span className="relative">{on ? 'Playing… tap to stop' : label}</span>}
+    </button>
+  );
+}
 
 /** Rounded icon tile used on list rows. */
 export const IconBadge = ({ name, tone = 'accent', size = 40 }: { name: IconName; tone?: 'accent' | 'plain' | 'good' | 'warn' | 'solid'; size?: number }) => (

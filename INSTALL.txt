@@ -1,5 +1,9 @@
-LINGUA UI upgrade — install
-1. In your repo, DELETE the old docs/ folder contents (keep docs/ADDING_CONTENT.md).
-2. Unzip this over the repo root, allowing overwrite. Paste src/, public/, docs/, index.html, vite.config.ts.
+LINGUA update: audio fix, mobile fit, ASL animation, deeper content
+
+1. In your repo, DELETE the old contents of docs/ (keep docs/ADDING_CONTENT.md).
+2. Unzip this over the repo root, allowing overwrite. It contains src/, docs/ and index.html.
 3. Commit and push EVERYTHING, including every file in docs/assets/.
-Pages serves main -> /docs. Hard-refresh once (or clear the old service worker) to see the new design.
+4. On your phone, hard-refresh once (or clear site data) so the old service worker is replaced.
+
+No sound? Check media volume, then Profile -> Learning -> "Test voice". If it says no voice,
+install a voice for that language (Android: Settings -> Language -> Text-to-speech) or switch on "Online voice backup".

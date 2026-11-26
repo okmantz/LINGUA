@@ -8,6 +8,10 @@ import { CharacterPicker } from '../components/CharacterPicker';
 import { Icon, type IconName } from '../components/Icon';
 import { Btn, Card, Chip, H1, IconBadge, Note, Segmented, Switch, Tabs, cx } from '../components/ui';
 import { TEACHER } from '../core/teacher';
+import { LANGUAGES as LANGS } from '../content/registry';
+import { onlineVoiceEnabled, setOnlineVoice, speak, useSpeechState, voicesFor } from '../core/speech';
+import { VoiceHelp } from '../components/SpeechNotice';
+import { Speak } from '../components/ui';
 
 const MINUTES = [5, 10, 15, 20, 30, 45, 60, 90, 120];
 const Row = ({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) => (
@@ -16,6 +20,20 @@ const Row = ({ title, hint, children }: { title: string; hint?: string; children
 const Section = ({ icon, title, sub, children }: { icon: IconName; title: string; sub?: string; children: React.ReactNode }) => (
   <Card><div className="mb-4 flex items-center gap-3"><IconBadge name={icon} size={38} /><div className="min-w-0"><h2 className="text-lg font-extrabold leading-tight tracking-tight">{title}</h2>{sub && <p className="text-sm text-muted">{sub}</p>}</div></div>{children}</Card>
 );
+
+const SAMPLE: Record<string, string> = { es: 'Hola, ¿cómo estás?', fr: 'Bonjour, comment allez-vous ?', de: 'Hallo, wie geht es dir?', it: 'Ciao, come stai?', pl: 'Cześć, jak się masz?', ru: 'Привет, как дела?', ko: '안녕하세요, 잘 지내세요?', ja: 'こんにちは、お元気ですか。', zh: '你好，你好吗？', ar: 'مرحبا، كيف حالك؟', sw: 'Habari, hujambo?' };
+/** Voice check: which voice the phone would use for the active language, a test button, the online backup switch and fix-it tips. */
+function VoiceCheck({ code }: { code: string }) {
+  useSpeechState(); const cfg = LANGS.find((l) => l.code === code); const [open, setOpen] = useState(false); const [online, setOnline] = useState(onlineVoiceEnabled());
+  if (!cfg || cfg.sign) return <Row title="Voice check" hint="American Sign Language has no audio, so there is nothing to test."><Chip>Not needed</Chip></Row>;
+  const vs = voicesFor(cfg.tts);
+  return (<>
+    <Row title={`${cfg.name} voice`} hint={vs.length ? `Using “${vs[0].name}” (${vs[0].lang}${vs[0].localService ? ', on this device' : ', needs internet'}).` : 'No voice for this language was reported by your browser. The test below still tries, and the online voice can cover it.'}>
+      <div className="flex items-center gap-2.5"><Speak wide size={46} label="Test voice" onClick={() => void speak(SAMPLE[cfg.code] ?? 'Hello', cfg.tts, 0.9)} /></div></Row>
+    <Row title="Online voice backup" hint="If the device has no voice or stays silent, read aloud with Google's text-to-speech instead. This sends the sentence over the internet, so it is off by default."><Switch on={online} onChange={(v) => { setOnlineVoice(v); setOnline(v); }} label="Online voice backup" /></Row>
+    <div className="pt-1"><button onClick={() => setOpen((o) => !o)} className="text-sm font-semibold text-accent-strong hover:underline">{open ? 'Hide' : 'No sound? How to fix it'}</button>{open && <div className="mt-2"><VoiceHelp lang={cfg.name} /></div>}</div>
+  </>);
+}
 
 export default function ProfilePage() {
   const store = useStore(); const { profile, state, stats, lang } = store; const file = useRef<HTMLInputElement>(null);
@@ -43,6 +61,7 @@ export default function ProfilePage() {
       {tab === 'learning' && <div className="stagger space-y-4">
         <Section icon="volume" title="Audio & display">
           <Row title={`Speech speed: ${s.ttsRate.toFixed(2)}×`} hint="How fast the computer voice speaks."><input aria-label="Speech speed" type="range" min={0.5} max={1.2} step={0.05} value={s.ttsRate} onChange={(e) => store.updateSettings({ ttsRate: Number(e.target.value) })} className="w-44" /></Row>
+          <VoiceCheck code={lang ?? ''} />
           <Row title="Pronunciation respelling" hint="Show the 'how to say it' line on word cards."><Switch on={s.showRomanization} onChange={(v) => store.updateSettings({ showRomanization: v })} label="Show pronunciation respelling" /></Row></Section>
         {Object.values(p.languages).map((l) => { const cfg = LANGUAGES.find((x) => x.code === l.code)!; return (
           <Card key={l.code}><div className="mb-4 flex items-center gap-2.5"><IconBadge name="globe" size={38} /><h2 className="text-lg font-extrabold tracking-tight">{cfg.name}</h2>{lang === l.code && <Chip tone="accent">Active</Chip>}</div>

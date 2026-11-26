@@ -6,10 +6,13 @@ import { FR_READING, FR_LISTENING, FR_WRITING, FR_PRON, FR_CHEATS, FR_PLACEMENT,
 import { FR_VOCAB_EXT, FR_GRAMMAR_EXT, FR_CONVS_EXT, FR_READING_EXT, FR_LISTENING_EXT, FR_WRITING_EXT, FR_PLACEMENT_EXT } from './ext';
 import { FR_VOCAB_ADV, FR_GRAMMAR_ADV, FR_CONVS_ADV, FR_READING_ADV, FR_LISTENING_ADV, FR_WRITING_ADV, FR_PLACEMENT_ADV } from './adv';
 import { FR_VOCAB_DEEP, FR_GRAMMAR_DEEP } from './deep'; import { FR_CONVS_DEEP, FR_READING_DEEP, FR_LISTENING_DEEP, FR_WRITING_DEEP, FR_PLACEMENT_DEEP, FR_CHEATS_DEEP, FR_PRON_DEEP } from './deep2';
+import { FR_MORE_VOCAB, FR_MORE_READING, FR_MORE_LISTENING, FR_MORE_CONVS } from './more';
+import { parseVocab as pvM, parseReading as prM, parseListening as plM, parseConvs as pcM } from '../dsl';
 const content: LanguageContent = {
   vocab: parseVocab(FR_VOCAB + FR_VOCAB_ADV + FR_VOCAB_EXT + FR_VOCAB_DEEP), grammar: parseGrammar(FR_GRAMMAR + FR_GRAMMAR_ADV + FR_GRAMMAR_EXT + FR_GRAMMAR_DEEP), conversations: parseConvs(FR_CONVS + FR_CONVS_ADV + FR_CONVS_EXT + FR_CONVS_DEEP),
   reading: parseReading(FR_READING + FR_READING_ADV + FR_READING_EXT + FR_READING_DEEP), listening: parseListening(FR_LISTENING + FR_LISTENING_ADV + FR_LISTENING_EXT + FR_LISTENING_DEEP), pronunciation: parsePron(FR_PRON + FR_PRON_DEEP),
   writing: parseWriting(FR_WRITING + FR_WRITING_ADV + FR_WRITING_EXT + FR_WRITING_DEEP), cheats: parseCheats(FR_CHEATS + FR_CHEATS_DEEP), placement: parsePlacement(FR_PLACEMENT + FR_PLACEMENT_ADV + FR_PLACEMENT_EXT + FR_PLACEMENT_DEEP),
   ui: FR_UI, grammarLevels: {},
 };
+content.vocab.push(...pvM(FR_MORE_VOCAB)); content.reading.push(...prM(FR_MORE_READING)); content.listening.push(...plM(FR_MORE_LISTENING)); content.conversations.push(...pcM(FR_MORE_CONVS));
 export default content;
