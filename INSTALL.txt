@@ -1,54 +1,5 @@
-Delete the whole docs/ folder in your repo first, then paste this zip over the repo root. Old hashed docs/assets files must go (list below).
-docs/assets/Achievements-CDCJYMpq.js
-docs/assets/Achievements-DXJyLTvq.js
-docs/assets/Assessment-BYQ86pXa.js
-docs/assets/Assessment-D0rZR_DR.js
-docs/assets/BlockRunner--8L3Z-m1.js
-docs/assets/BlockRunner-Bk-kB1jc.js
-docs/assets/Cheats-B9pE_kNX.js
-docs/assets/Cheats-BbUSxW9y.js
-docs/assets/Daily-3eglFJBe.js
-docs/assets/Daily-Sf8gHiBN.js
-docs/assets/Languages-DqjL6tqJ.js
-docs/assets/Languages-Dtc0ur5Y.js
-docs/assets/Library-DFygWQo-.js
-docs/assets/Library-DUgmFhmn.js
-docs/assets/Path-CHtuidhB.js
-docs/assets/Path-DPop8g3U.js
-docs/assets/Profile-B8jv_pHT.js
-docs/assets/Profile-DYhFnmyP.js
-docs/assets/Progress-C1ZqkXL3.js
-docs/assets/Progress-Vws6ySH1.js
-docs/assets/Rich-BG1TZ-gS.js
-docs/assets/Rich-Zkh1jw_S.js
-docs/assets/Vocabulary-Bok8FPlY.js
-docs/assets/Vocabulary-CPxQj8Rz.js
-docs/assets/ar-C_BsFZh1.js
-docs/assets/ar-o2JLrbqk.js
-docs/assets/blocksA-BD6gB6ku.js
-docs/assets/blocksA-Ctoj7G89.js
-docs/assets/de-BNLjVg6t.js
-docs/assets/de-CsEpYA1U.js
-docs/assets/dsl-CqPQ2RVQ.js
-docs/assets/es-BDNp822i.js
-docs/assets/es-DNjgQi9e.js
-docs/assets/fr-7hA4C99I.js
-docs/assets/fr-COy-Lq1q.js
-docs/assets/index-BZzbz-RB.css
-docs/assets/index-C7KvKxQw.js
-docs/assets/index-D1kylrYi.js
-docs/assets/index-DyvkUuf2.css
-docs/assets/it-BMLe9d-u.js
-docs/assets/it-CzI5nvdY.js
-docs/assets/ja-FGVGmHLF.js
-docs/assets/ja-TwBbZP_e.js
-docs/assets/ko-DfhzodwW.js
-docs/assets/ko-tHhwrEii.js
-docs/assets/pl-CYevu8wW.js
-docs/assets/pl-DAjWvtVt.js
-docs/assets/ru-BFybNEL9.js
-docs/assets/ru-CfkSkueO.js
-docs/assets/ui-BMRtNpZv.js
-docs/assets/ui-qpfEoVOi.js
-docs/assets/zh-DvohQOor.js
-docs/assets/zh-lngja2VX.js
+LINGUA UI upgrade — install
+1. In your repo, DELETE the old docs/ folder contents (keep docs/ADDING_CONTENT.md).
+2. Unzip this over the repo root, allowing overwrite. Paste src/, public/, docs/, index.html, vite.config.ts.
+3. Commit and push EVERYTHING, including every file in docs/assets/.
+Pages serves main -> /docs. Hard-refresh once (or clear the old service worker) to see the new design.
