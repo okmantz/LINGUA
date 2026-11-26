@@ -5,7 +5,8 @@ import { stageOf, STAGE_LABEL, STAGE_RULE, STAGES, type Stage } from '../core/ma
 import { fold } from '../core/text';
 import { ReviewBlock, WordCard } from '../components/blocksA';
 import { StageBar } from '../components/Charts';
-import { Btn, Card, Chip, Empty, H1, Note, Tabs } from '../components/ui';
+import { Icon } from '../components/Icon';
+import { Btn, Card, Chip, Empty, H1, Note, SearchInput, Select, Tabs, cx } from '../components/ui';
 
 const TONE: Record<Stage, 'plain' | 'accent' | 'good' | 'warn'> = { unseen: 'plain', encountered: 'plain', recognized: 'accent', recalled: 'accent', retained: 'good', mastered: 'good' };
 
@@ -17,27 +18,27 @@ export default function Vocabulary() {
   const due = store.cards.filter((c) => c.kind === 'vocab' && c.due <= now).sort((a, b) => a.due - b.due);
   const rows = useMemo(() => content.vocab.filter((v) => (cat === 'all' || v.cat === cat) && (!q || fold(`${v.t} ${v.n}`).includes(fold(q))) && (stage === 'all' || stageOf(store.cardMap.get(`${state.code}:${v.id}`), now) === stage)), [content, q, cat, stage, store.cardMap]); // eslint-disable-line
   const cats = VOCAB_CATEGORIES.filter((c) => content.vocab.some((v) => v.cat === c.id));
-  if (rev) return <div><button className="mb-3 text-sm underline text-muted" onClick={() => setRev(null)}>← Back to vocabulary</button><ReviewBlock ids={rev} onDone={() => { setRev(null); store.evaluate(); }} /></div>;
+  if (rev) return <div><button className="mb-5 inline-flex min-h-9 items-center gap-1.5 rounded-lg pr-3 text-sm font-semibold text-muted transition hover:text-ink" onClick={() => setRev(null)}><Icon name="back" size={16} />Back to vocabulary</button><ReviewBlock ids={rev} onDone={() => { setRev(null); store.evaluate(); }} /></div>;
   return (
     <div>
-      <H1 sub={`${content.vocab.length} words in this course · ${stats.retainedPlus} retained · ${due.length} due now`}>Vocabulary academy</H1>
+      <H1 eyebrow="Vocabulary academy" sub={<><b className="tabular text-ink">{content.vocab.length}</b> words in this course · <b className="tabular text-ink">{stats.retainedPlus}</b> retained · <b className="tabular text-ink">{due.length}</b> due now</>}>Vocabulary</H1>
       <Tabs value={tab} onChange={setTab} items={[{ id: 'browse', label: 'Browse' }, { id: 'review', label: `Review (${due.length})` }, { id: 'stages', label: 'How mastery works' }]} />
       {tab === 'browse' && <>
-        <div className="mb-4 flex flex-wrap gap-2">
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search words or meanings…" aria-label="Search vocabulary" className="min-w-0 flex-1 rounded-xl border border-line bg-surface px-3 py-2 outline-none focus:border-accent" />
-          <select value={cat} onChange={(e) => setCat(e.target.value)} aria-label="Category" className="rounded-xl border border-line bg-surface px-2 py-2"><option value="all">All categories</option>{cats.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}</select>
-          <select value={stage} onChange={(e) => setStage(e.target.value as any)} aria-label="Mastery stage" className="rounded-xl border border-line bg-surface px-2 py-2"><option value="all">Any stage</option>{STAGES.map((s) => <option key={s} value={s}>{STAGE_LABEL[s]}</option>)}</select>
+        <div className="mb-4 grid gap-2.5 sm:grid-cols-[1fr_auto_auto]">
+          <SearchInput value={q} onChange={setQ} placeholder="Search words or meanings…" label="Search vocabulary" />
+          <Select value={cat} onChange={(e) => setCat(e.target.value)} aria-label="Category"><option value="all">All categories</option>{cats.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}</Select>
+          <Select value={stage} onChange={(e) => setStage(e.target.value as any)} aria-label="Mastery stage"><option value="all">Any stage</option>{STAGES.map((s) => <option key={s} value={s}>{STAGE_LABEL[s]}</option>)}</Select>
         </div>
-        <p className="mb-2 text-sm text-muted">{rows.length} words</p>
-        <div className="space-y-2">{rows.slice(0, 150).map((v) => { const c = store.cardMap.get(`${state.code}:${v.id}`); const sg = stageOf(c, now); return (
-          <Card key={v.id} className="!p-3"><button className="flex w-full items-center gap-3 text-left" onClick={() => setOpen(open === v.id ? null : v.id)} aria-expanded={open === v.id}>
-            <div className="flex-1"><span className="text-lg font-semibold">{v.t}</span> <span className="text-muted">— {v.n}</span></div><Chip tone={TONE[sg]}>{sg === 'unseen' ? 'New' : STAGE_LABEL[sg]}</Chip></button>
-            {open === v.id && <div className="mt-3"><WordCard e={v} rate={rate} />{c && c.reps > 0 && <p className="mt-2 text-xs text-muted">{c.reps} reviews · {c.lapses} lapses · memory stability ≈ {c.stability.toFixed(1)} days · next due {new Date(c.due).toLocaleDateString()}</p>}</div>}</Card>); })}
-          {rows.length > 150 && <p className="text-sm text-muted">Showing the first 150 — refine your search.</p>}{!rows.length && <Empty>No words match.</Empty>}</div>
+        <p className="tabular mb-3 px-0.5 text-sm font-semibold text-muted">{rows.length} words</p>
+        <div className="space-y-2">{rows.slice(0, 150).map((v) => { const c = store.cardMap.get(`${state.code}:${v.id}`); const sg = stageOf(c, now); const isOpen = open === v.id; return (
+          <Card key={v.id} className={cx('!p-0 transition', isOpen && 'border-accent/40')}><button className="flex min-h-14 w-full items-center gap-3 px-4 py-3 text-left" onClick={() => setOpen(isOpen ? null : v.id)} aria-expanded={isOpen}>
+            <div className="min-w-0 flex-1"><span className="text-lg font-bold tracking-tight">{v.t}</span> <span className="text-muted">· {v.n}</span></div><Chip tone={TONE[sg]}>{sg === 'unseen' ? 'New' : STAGE_LABEL[sg]}</Chip><Icon name="down" size={16} className={cx('shrink-0 text-faint transition-transform', isOpen && 'rotate-180')} /></button>
+            {isOpen && <div className="border-t border-line p-4"><WordCard e={v} rate={rate} />{c && c.reps > 0 && <p className="tabular mt-3 text-xs text-muted">{c.reps} reviews · {c.lapses} lapses · memory stability ≈ {c.stability.toFixed(1)} days · next due {new Date(c.due).toLocaleDateString()}</p>}</div>}</Card>); })}
+          {rows.length > 150 && <p className="py-2 text-center text-sm text-muted">Showing the first 150. Refine your search to see more.</p>}{!rows.length && <Empty icon="search" title="No words match">Try a different search or clear the filters.</Empty>}</div>
       </>}
-      {tab === 'review' && (due.length ? <Card><h2 className="text-lg font-semibold">{due.length} words are due</h2><p className="mt-1 text-sm text-muted">Reviewing right when you are about to forget is the most efficient way to build long-term memory.</p><div className="mt-3 flex flex-wrap gap-2">{[10, 20, 40].filter((n) => n < due.length).concat([Math.min(due.length, 60)]).filter((v, i, a) => a.indexOf(v) === i).map((n) => <Btn key={n} onClick={() => setRev(due.slice(0, n).map((c) => c.itemId))}>Review {n}</Btn>)}</div></Card> : <Empty>Nothing is due right now. 🎉 New reviews appear automatically as your memory needs them.</Empty>)}
-      {tab === 'stages' && <div className="space-y-4"><Card><h2 className="mb-2 text-lg font-semibold">Your vocabulary</h2><StageBar counts={stats.stages} /></Card>
-        <Card><h2 className="mb-2 text-lg font-semibold">What each stage means</h2><dl className="space-y-2.5">{STAGES.map((s) => <div key={s}><dt className="font-medium">{STAGE_LABEL[s]}</dt><dd className="text-sm text-muted">{STAGE_RULE[s]}</dd></div>)}</dl></Card>
+      {tab === 'review' && (due.length ? <section className="hero p-6 sm:p-8"><div className="relative"><span className="inline-flex items-center gap-1.5 rounded-full bg-white/14 px-3 py-1 text-xs font-bold"><Icon name="repeat" size={13} />Spaced review</span><h2 className="tabular mt-3 text-3xl font-extrabold tracking-tight">{due.length} word{due.length === 1 ? ' is' : 's are'} due</h2><p className="mt-1.5 max-w-lg muted">Reviewing right when you are about to forget is the most efficient way to build long-term memory.</p><div className="mt-5 flex flex-wrap gap-2.5">{[10, 20, 40].filter((n) => n < due.length).concat([Math.min(due.length, 60)]).filter((v, i, a) => a.indexOf(v) === i).map((n, k) => <Btn key={n} size="lg" variant={k === 0 ? 'primary' : 'ghost'} className={k === 0 ? '' : '!border-white/25 !bg-white/10 !text-white hover:!bg-white/20'} onClick={() => setRev(due.slice(0, n).map((c) => c.itemId))}>Review {n}</Btn>)}</div></div></section> : <Empty icon="check" title="Nothing is due right now">New reviews appear automatically as your memory needs them. Come back later, or browse words you want to look at again.</Empty>)}
+      {tab === 'stages' && <div className="space-y-4"><Card><h2 className="mb-4 text-lg font-extrabold tracking-tight">Your vocabulary</h2><StageBar counts={stats.stages} /></Card>
+        <Card><h2 className="mb-3 text-lg font-extrabold tracking-tight">What each stage means</h2><dl className="divide-y divide-line">{STAGES.map((s) => <div key={s} className="py-3 first:pt-0 last:pb-0"><dt className="font-bold">{STAGE_LABEL[s]}</dt><dd className="mt-0.5 text-sm text-muted">{STAGE_RULE[s]}</dd></div>)}</dl></Card>
         <Note>A word never becomes "mastered" from one correct answer. Spaced repetition (FSRS) schedules each word just before you'd forget it, and the stage rises only when you keep recalling it across days.</Note></div>}
     </div>
   );

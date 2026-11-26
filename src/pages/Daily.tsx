@@ -7,7 +7,7 @@ import { useFocusMode, useGuide } from '../state/hooks';
 import { BlockView, convModeFor } from '../components/BlockRunner';
 import { Icon, type IconName } from '../components/Icon';
 import { TeacherNote } from '../components/Teacher';
-import { Btn, Card, Chip, H1, IconBadge, Progress, cx } from '../components/ui';
+import { Btn, Card, Chip, Empty, H1, IconBadge, Progress, cx } from '../components/ui';
 
 const ICON: Record<string, IconName> = { review: 'repeat', newvocab: 'sparkles', grammar: 'puzzle', conversation: 'chat', reading: 'book', listening: 'headphones', pronunciation: 'mic', writing: 'pen', recap: 'check' };
 
@@ -24,19 +24,19 @@ export default function Daily() {
     const p = preview; const progActive = p.day !== null;
     return (
       <div>
-        <H1 sub={progActive ? `Programme day ${p.day} of ${PROGRAM_LENGTH}` : 'Adaptive practice at your level'}>Today's session</H1>
-        <Card className="mb-4 !p-4">
-          <div className="flex flex-wrap items-center gap-2"><Chip tone="accent">{p.focus}</Chip><Chip><Icon name="clock" size={12} />{p.minutes} min</Chip>{p.dueTotal > 0 && <Chip tone="warn">{p.dueTotal} words due</Chip>}</div>
-          <p className="mb-2 mt-4 text-sm font-medium">How much time do you have?</p>
-          <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1">{[5, 10, 15, 20, 30, 45, 60, 90, 120].map((m) => <Link key={m} to={`/daily?m=${m}`} replace className={cx('grid h-11 min-w-16 shrink-0 place-items-center whitespace-nowrap rounded-xl px-3 text-sm font-semibold transition', m === minutes ? 'bg-accent text-accent-ink shadow-sm' : 'bg-surface2 text-muted hover:text-ink')}>{m} min</Link>)}</div>
-          <Btn size="lg" className="mt-4 w-full" disabled={!p.blocks.length} onClick={start}>Start session<Icon name="arrow" size={18} /></Btn>
+        <H1 eyebrow={progActive ? `Programme day ${p.day} of ${PROGRAM_LENGTH}` : 'Adaptive practice at your level'} sub="A guided session built from what you need most right now.">Today's session</H1>
+        <Card className="mb-8 !p-5">
+          <div className="flex flex-wrap items-center gap-2"><Chip tone="accent">{p.focus}</Chip><Chip><Icon name="clock" size={12} />{p.minutes} min</Chip>{p.dueTotal > 0 && <Chip tone="warn"><Icon name="repeat" size={12} />{p.dueTotal} words due</Chip>}</div>
+          <p className="mb-2.5 mt-5 text-sm font-bold">How much time do you have?</p>
+          <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1">{[5, 10, 15, 20, 30, 45, 60, 90, 120].map((m) => <Link key={m} to={`/daily?m=${m}`} replace aria-current={m === minutes} className={cx('tabular grid h-11 min-w-[4.25rem] shrink-0 place-items-center whitespace-nowrap rounded-xl px-3 text-sm font-bold transition', m === minutes ? 'btn-primary' : 'bg-surface2 text-muted hover:bg-surface3 hover:text-ink')}>{m} min</Link>)}</div>
+          <Btn size="lg" className="mt-5 w-full" disabled={!p.blocks.length} onClick={start}>Start session<Icon name="arrow" size={18} /></Btn>
         </Card>
         {p.blocks.length > 0 && <>
-          <p className="mb-2 px-0.5 text-[0.8rem] font-bold uppercase tracking-wider text-muted">What we'll do, in order</p>
-          <ol className="space-y-2">{p.blocks.map((b, i) => (
-            <li key={b.key}><Card className="flex items-center gap-3 !p-3"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-surface2 text-xs font-bold text-muted">{i + 1}</span><IconBadge name={ICON[b.type] ?? 'check'} size={38} /><div className="min-w-0 flex-1"><p className="font-semibold leading-snug">{b.title}</p><p className="text-sm text-muted">{b.why}</p></div><span className="text-xs font-medium text-muted">{b.minutes} min</span></Card></li>
+          <p className="eyebrow mb-3 px-0.5">What we'll do, in order</p>
+          <ol className="relative space-y-2.5 before:absolute before:bottom-6 before:left-[27px] before:top-6 before:w-0.5 before:rounded-full before:bg-line-strong">{p.blocks.map((b, i) => (
+            <li key={b.key} className="relative"><Card className="flex items-center gap-3.5 !p-3.5"><span className="relative z-10 grid shrink-0 place-items-center rounded-xl ring-4 ring-surface"><IconBadge name={ICON[b.type] ?? 'check'} size={42} /></span><div className="min-w-0 flex-1"><p className="font-semibold leading-snug"><span className="tabular mr-1.5 text-faint">{i + 1}</span>{b.title}</p><p className="text-sm text-muted">{b.why}</p></div><span className="tabular shrink-0 rounded-full bg-surface2 px-2.5 py-1 text-xs font-semibold text-muted">{b.minutes} min</span></Card></li>
           ))}</ol></>}
-        {!p.blocks.length && <Card>Nothing is scheduled yet. Add a language or finish onboarding.</Card>}
+        {!p.blocks.length && <Empty icon="sparkles" title="Nothing is scheduled yet">Add a language or finish onboarding to get a session.</Empty>}
       </div>
     );
   }
@@ -47,16 +47,16 @@ export default function Daily() {
     const c = reviewComment(avg, 'session'); const dayDone = plan.day && state.programDay > plan.day;
     return (
       <div className="pop mx-auto max-w-lg space-y-4">
-        <Card className="text-center">
-          <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-good/15 text-good"><Icon name="check" size={34} strokeWidth={2.6} /></div>
-          <h1 className="mt-3 text-2xl font-extrabold">Session complete</h1>
-          <div className="mt-4 grid grid-cols-3 gap-3"><div><p className="text-2xl font-extrabold">{Math.round(avg * 100)}%</p><p className="text-xs text-muted">accuracy</p></div><div><p className="text-2xl font-extrabold">+{state.xp - startXp}</p><p className="text-xs text-muted">XP</p></div><div><p className="text-2xl font-extrabold">{state.streak.current}</p><p className="text-xs text-muted">day streak</p></div></div>
-          <p className="mt-3 text-sm text-muted">{Math.max(1, Math.round(total / 60000))} min of active study logged.</p>
-          {state.programDay <= PROGRAM_LENGTH && !state.placement?.skipProgram && <p className="mt-3 rounded-xl bg-surface2 px-3 py-2 text-sm">{dayDone ? <>Day {plan.day} is complete. <b>Day {state.programDay} is unlocked.</b></> : `Programme: day ${state.programDay} of ${PROGRAM_LENGTH}. Finish the required steps to unlock the next day.`}</p>}
+        <Card className="py-8 text-center">
+          <div className="celebrate mx-auto grid h-20 w-20 place-items-center rounded-full bg-good/14 text-good"><Icon name="check" size={40} strokeWidth={2.6} /></div>
+          <h1 className="mt-4 text-3xl font-extrabold tracking-tight">Session complete</h1>
+          <div className="mt-6 grid grid-cols-3 gap-3"><div className="rounded-2xl bg-surface2 px-2 py-3.5"><p className="tabular text-2xl font-extrabold leading-none">{Math.round(avg * 100)}%</p><p className="mt-1.5 text-xs font-semibold text-muted">accuracy</p></div><div className="rounded-2xl bg-surface2 px-2 py-3.5"><p className="tabular text-2xl font-extrabold leading-none">+{state.xp - startXp}</p><p className="mt-1.5 text-xs font-semibold text-muted">XP</p></div><div className="rounded-2xl bg-surface2 px-2 py-3.5"><p className="tabular flex items-center justify-center gap-1 text-2xl font-extrabold leading-none"><Icon name="flame" size={20} className="text-warn" />{state.streak.current}</p><p className="mt-1.5 text-xs font-semibold text-muted">day streak</p></div></div>
+          <p className="mt-4 text-sm text-muted">{Math.max(1, Math.round(total / 60000))} min of active study logged.</p>
+          {state.programDay <= PROGRAM_LENGTH && !state.placement?.skipProgram && <p className="mt-4 rounded-xl bg-accent/10 px-3.5 py-2.5 text-sm">{dayDone ? <>Day {plan.day} is complete. <b>Day {state.programDay} is unlocked.</b></> : `Programme: day ${state.programDay} of ${PROGRAM_LENGTH}. Finish the required steps to unlock the next day.`}</p>}
         </Card>
         <TeacherNote mood={c.mood} title={c.title}>{c.text}</TeacherNote>
-        <Card className="!p-4"><p className="text-xs font-bold uppercase tracking-wider text-muted">What next?</p><p className="mt-1 font-semibold">{g.next.title}</p><p className="text-sm text-muted">{g.next.body}</p>
-          <div className="mt-3 flex flex-wrap gap-2"><Link to={g.next.to === '/daily' ? '/' : g.next.to}><Btn>{g.next.to === '/daily' ? 'Back to Home' : g.next.cta}</Btn></Link>{g.next.to === '/daily' && <Btn variant="ghost" onClick={() => { setPlan(null); setIdx(-1); }}>Another session</Btn>}<Link to="/path"><Btn variant="ghost">See my path</Btn></Link></div></Card>
+        <Card className="!p-4"><p className="eyebrow">What next?</p><p className="mt-1.5 font-bold tracking-tight">{g.next.title}</p><p className="text-sm text-muted">{g.next.body}</p>
+          <div className="mt-4 flex flex-wrap gap-2"><Link to={g.next.to === '/daily' ? '/' : g.next.to}><Btn>{g.next.to === '/daily' ? 'Back to Home' : g.next.cta}</Btn></Link>{g.next.to === '/daily' && <Btn variant="ghost" onClick={() => { setPlan(null); setIdx(-1); }}>Another session</Btn>}<Link to="/path"><Btn variant="ghost">See my path</Btn></Link></div></Card>
       </div>
     );
   }
@@ -70,10 +70,10 @@ export default function Daily() {
   };
   return (
     <div>
-      <div className="mb-5 flex items-center gap-3">
-        <IconBadge name={ICON[block.type] ?? 'check'} size={40} />
-        <div className="min-w-0 flex-1"><p className="truncate font-semibold leading-tight">{block.title}</p><div className="mt-1.5 flex items-center gap-2"><Progress value={idx / plan.blocks.length} label="Session progress" className="flex-1" /><span className="text-xs font-medium text-muted">{idx + 1}/{plan.blocks.length}</span></div></div>
-        <button aria-label="Quit session" className="grid h-10 w-10 place-items-center rounded-full bg-surface2 text-muted hover:text-ink" onClick={() => { if (confirm('Leave this session? Progress on finished blocks is saved.')) { setPlan(null); setIdx(-1); } }}><Icon name="x" size={18} /></button>
+      <div className="mb-6 flex items-center gap-3">
+        <IconBadge name={ICON[block.type] ?? 'check'} size={42} />
+        <div className="min-w-0 flex-1"><p className="truncate font-bold leading-tight tracking-tight">{block.title}</p><div className="mt-2 flex items-center gap-2.5"><Progress value={idx / plan.blocks.length} label="Session progress" className="flex-1" /><span className="tabular text-xs font-bold text-muted">{idx + 1}/{plan.blocks.length}</span></div></div>
+        <button aria-label="Quit session" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-surface2 text-muted transition hover:bg-surface3 hover:text-ink" onClick={() => { if (confirm('Leave this session? Progress on finished blocks is saved.')) { setPlan(null); setIdx(-1); } }}><Icon name="x" size={18} /></button>
       </div>
       <BlockView block={block} convMode={convModeFor(state)} onDone={finish} />
     </div>

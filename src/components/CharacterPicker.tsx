@@ -8,9 +8,9 @@ export function CharacterPicker({ value, onChange, ctx }: { value: string; onCha
   const cur = CHARACTERS.find((c) => c.id === value) ?? CHARACTERS[0];
   return (
     <div>
-      <div className="mb-4 flex items-center gap-4 rounded-2xl bg-surface2 p-3.5">
+      <div className="mb-4 flex items-center gap-4 rounded-2xl bg-gradient-to-br from-accent/12 to-surface2 p-4">
         <Avatar cfg={{ char: cur.id }} size={76} tier={ctx.tier} />
-        <div className="min-w-0"><p className="text-lg font-bold leading-tight">{cur.name}</p><p className="text-sm text-muted">{cur.blurb}</p></div>
+        <div className="min-w-0"><p className="text-lg font-extrabold leading-tight tracking-tight">{cur.name}</p><p className="text-sm text-muted">{cur.blurb}</p></div>
       </div>
       <div className="grid grid-cols-5 gap-1.5 sm:gap-2.5" role="radiogroup" aria-label="Choose your character">
         {CHARACTERS.map((c) => {

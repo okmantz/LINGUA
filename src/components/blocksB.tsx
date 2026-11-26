@@ -6,6 +6,8 @@ import { speak, hasTTS, hasRecognition, hasRecorder, listenOnce, startRecording 
 import { Btn, Card, Chip, Note, Progress, Speak, cx } from './ui';
 import { Finish } from './blocksA';
 import { useCtx, useStudyClock } from '../state/hooks';
+import { Icon } from './Icon';
+import { TeacherAvatar } from './Avatar';
 
 export type ConvMode = 'guided' | 'semi' | 'open';
 const hit = (text: string, alts: string[]) => { const f = fold(text); return alts.some((a) => f.includes(fold(a))); };
@@ -41,34 +43,37 @@ export function ConversationBlock({ id, mode, onDone }: { id: string; mode: Conv
   const hints = step.keywords.map((g) => g[0]);
   return (
     <div>
-      <div className="mb-3 flex flex-wrap items-center gap-2"><Chip tone="accent">{conv.level}</Chip><Chip>{mode === 'guided' ? 'Guided' : mode === 'semi' ? 'Semi-open' : 'Open'}</Chip><span className="text-sm text-muted">{conv.scenario}</span></div>
-      <Progress value={i / conv.steps.length} className="mb-4" label="Conversation progress" />
-      <div className="mb-4 space-y-2.5" aria-live="polite">
+      <div className="mx-auto max-w-2xl">
+      <div className="mb-4 flex flex-wrap items-center gap-2"><Chip tone="accent">{conv.level}</Chip><Chip>{mode === 'guided' ? 'Guided' : mode === 'semi' ? 'Semi-open' : 'Open'}</Chip><span className="text-sm text-muted">{conv.scenario}</span></div>
+      <div className="mb-5 flex items-center gap-3"><Progress value={i / conv.steps.length} className="flex-1" label="Conversation progress" /><span className="tabular text-xs font-bold text-muted">{Math.min(i + 1, conv.steps.length)}/{conv.steps.length}</span></div>
+      <div className="mb-5 space-y-3" aria-live="polite">
         {log.map((m, k) => (
-          <div key={k} className={cx('flex', m.who === 'me' ? 'justify-end' : 'justify-start')}>
-            <div className={cx('max-w-[85%] rounded-2xl px-4 py-2.5', m.who === 'me' ? (m.ok === false ? 'bg-bad/15' : 'bg-accent/20') : 'bg-surface2')}>
-              <p>{m.t}</p>{(showN || (flags.translations === 'tap' && false)) && m.n && <p className="text-xs text-muted">{m.n}</p>}
+          <div key={k} className={cx('flex items-end gap-2.5', m.who === 'me' ? 'justify-end' : 'justify-start')}>
+            {m.who === 'npc' && <TeacherAvatar size={32} className="mb-0.5 rounded-full" />}
+            <div className={cx('max-w-[82%] rounded-2xl px-4 py-2.5 text-[1.02rem] leading-snug shadow-[var(--shadow-xs)]', m.who === 'me' ? cx('rounded-br-md', m.ok === false ? 'bg-bad/15' : 'bg-accent text-accent-ink') : 'rounded-bl-md border border-line bg-surface')}>
+              <p>{m.t}</p>{(showN || (flags.translations === 'tap' && false)) && m.n && <p className={cx('mt-0.5 text-xs', m.who === 'me' && m.ok !== false ? 'opacity-75' : 'text-muted')}>{m.n}</p>}
             </div>
           </div>
         ))}
         <div ref={bottom} />
       </div>
-      {!stepDone && mode === 'guided' && <div className="grid gap-2">{opts.map((o, k) => <button key={k} onClick={() => chooseOpt(k)} className="rounded-xl border border-line bg-surface px-4 py-3 text-left hover:border-accent hover:bg-surface2"><span>{o.t}</span>{flags.translations !== 'never' && flags.translations !== 'after' && <span className="block text-xs text-muted">{o.n}</span>}</button>)}</div>}
+      {!stepDone && mode === 'guided' && <div className="grid gap-2.5">{opts.map((o, k) => <button key={k} onClick={() => chooseOpt(k)} className="rounded-2xl border-2 border-line bg-surface px-4 py-3.5 text-left font-medium transition hover:border-accent hover:bg-accent/[.06] active:scale-[.99]"><span>{o.t}</span>{flags.translations !== 'never' && flags.translations !== 'after' && <span className="block text-xs text-muted">{o.n}</span>}</button>)}</div>}
       {!stepDone && mode !== 'guided' && (
         <div>
-          {mode === 'semi' && <p className="mb-2 text-sm text-muted">Useful words: {hints.join(' · ')}</p>}
-          <div className="flex gap-2"><input value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submitText()} placeholder="Type your reply…" autoCapitalize="off" spellCheck={false} aria-label="Your reply" className="flex-1 rounded-xl border border-line bg-surface px-4 py-3 outline-none focus:border-accent" /><Btn onClick={submitText}>Send</Btn></div>
-          <div className="mt-2 flex flex-wrap gap-1.5">{cfg.accents.map((a) => <button key={a} className="h-8 min-w-8 rounded-lg border border-line bg-surface px-2 hover:bg-surface2" onClick={() => setText((t) => t + a)}>{a}</button>)}</div>
-          <p className="mt-2 text-xs text-muted">Checked against key words, not by AI — there are many correct ways to answer. Always compare with the model reply.</p>
+          {mode === 'semi' && <p className="mb-2.5 flex flex-wrap items-center gap-1.5 text-sm text-muted"><Icon name="bulb" size={15} className="text-warn" />Useful words: {hints.map((h) => <Chip key={h} tone="accent">{h}</Chip>)}</p>}
+          <div className="flex gap-2"><input value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submitText()} placeholder="Type your reply…" autoCapitalize="off" spellCheck={false} aria-label="Your reply" className="h-12 min-w-0 flex-1 rounded-2xl border-2 border-line-strong bg-surface px-4 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/15" /><Btn className="h-12 !rounded-2xl" onClick={submitText}>Send<Icon name="arrow" size={16} /></Btn></div>
+          {cfg.accents.length > 0 && <div className="mt-2.5 flex flex-wrap gap-1.5">{cfg.accents.map((a) => <button key={a} className="h-9 min-w-9 rounded-xl border border-line-strong bg-surface px-2 font-medium transition hover:bg-surface2 active:scale-95" onClick={() => setText((t) => t + a)}>{a}</button>)}</div>}
+          <p className="mt-3 text-xs text-muted">Checked against key words, not by AI — there are many correct ways to answer. Always compare with the model reply.</p>
         </div>
       )}
       {stepDone && (
-        <div className={cx('pop rounded-2xl border p-4', mode === 'guided' ? (opts[picked ?? 0]?.good ? 'border-good/50 bg-good/10' : 'border-bad/50 bg-bad/10') : (picked ?? 0) >= 50 ? 'border-good/50 bg-good/10' : 'border-bad/50 bg-bad/10')}>
-          <p className="font-semibold">{feedback}</p>
+        <div className={cx('pop sticky bottom-3 z-20 rounded-2xl border-2 p-4 shadow-[var(--shadow-lg)] backdrop-blur-md', mode === 'guided' ? (opts[picked ?? 0]?.good ? 'border-good/60 bg-good/[.12]' : 'border-bad/60 bg-bad/[.12]') : (picked ?? 0) >= 50 ? 'border-good/60 bg-good/[.12]' : 'border-bad/60 bg-bad/[.12]')}>
+          <p className="font-extrabold tracking-tight">{feedback}</p>
           {(mode !== 'guided' || !opts[picked ?? 0]?.good) && <p className="mt-1 text-sm">Model reply: <b>{step.model.t}</b>{flags.translations !== 'never' && <span className="text-muted"> — {step.model.n}</span>}</p>}
-          <Btn className="mt-3" onClick={() => advance(mode === 'guided' ? (opts[picked ?? 0]?.good ? 1 : 0) : (picked ?? 0) / 100)}>{ui.next}</Btn>
+          <Btn size="lg" className="mt-3 w-full" onClick={() => advance(mode === 'guided' ? (opts[picked ?? 0]?.good ? 1 : 0) : (picked ?? 0) / 100)}>{ui.next}<Icon name="arrow" size={18} /></Btn>
         </div>
       )}
+      </div>
     </div>
   );
 }
@@ -96,8 +101,8 @@ export function PronBlock({ id, onDone }: { id: string; onDone: (score: number) 
   if (phase === 'learn') return (
     <div className="space-y-4">
       <Card><div className="mb-2 flex gap-2"><Chip tone="accent">{p.level}</Chip><Chip>Pronunciation</Chip></div><h2 className="text-2xl font-bold">{p.title}</h2><p className="mt-2 text-muted">{p.intro}</p>
-        <Note>🔊 Example audio is your browser's synthetic voice, not a native speaker. Use it as a guide, and trust the written descriptions for how to shape the sound.</Note></Card>
-      <Card><div className="space-y-3">{p.sounds.map((s, i) => <div key={i} className="border-b border-line pb-3 last:border-0 last:pb-0"><div className="flex items-baseline gap-2"><b className="text-lg">{s.sym}</b><span className="text-muted">{s.tip}</span></div><div className="mt-1 flex flex-wrap gap-2">{s.examples.map(([w, m]) => <button key={w} onClick={() => say(w)} className="rounded-lg bg-surface2 px-2.5 py-1 text-sm hover:brightness-95">🔊 {w} <span className="text-muted">({m})</span></button>)}</div></div>)}</div></Card>
+        <Note>Example audio is your browser's synthetic voice, not a native speaker. Use it as a guide, and trust the written descriptions for how to shape the sound.</Note></Card>
+      <Card><div className="space-y-3">{p.sounds.map((s, i) => <div key={i} className="border-b border-line pb-3 last:border-0 last:pb-0"><div className="flex items-baseline gap-2"><b className="text-lg">{s.sym}</b><span className="text-muted">{s.tip}</span></div><div className="mt-1 flex flex-wrap gap-2">{s.examples.map(([w, m]) => <button key={w} onClick={() => say(w)} className="inline-flex items-center gap-1.5 rounded-xl bg-surface2 px-3 py-1.5 text-sm font-semibold transition hover:bg-accent/15 active:scale-95"><Icon name="volume" size={15} className="text-accent-strong" />{w} <span className="font-normal text-muted">({m})</span></button>)}</div></div>)}</div></Card>
       <Card><h3 className="mb-2 font-semibold">Common mistakes</h3><ul className="list-disc space-y-1 pl-5 text-sm">{p.mistakes.map((m, i) => <li key={i}>{m}</li>)}</ul></Card>
       <Btn size="lg" className="w-full" onClick={() => setPhase(p.minimalPairs.length && hasTTS() ? 'pairs' : 'drill')}>{p.minimalPairs.length && hasTTS() ? 'Train your ear: minimal pairs' : 'Practise saying it'}</Btn>
     </div>
@@ -109,8 +114,8 @@ export function PronBlock({ id, onDone }: { id: string; onDone: (score: number) 
       <Card>
         <p className="text-sm text-muted">Pair {pairI + 1} of {p.minimalPairs.length} — {pr[2]}</p>
         <p className="my-3 text-lg">Which word do you hear?</p>
-        <Btn variant="soft" onClick={() => say(pr[target])}>🔊 Play</Btn>
-        <div className="mt-4 grid grid-cols-2 gap-3">{[0, 1].map((k) => <button key={k} disabled={pairAns !== null} onClick={() => { setPairAns(k); store.logEvent({ type: 'exercise', skill: 'listening', itemId: p.id, correct: k === target }); }} className={cx('rounded-xl border px-4 py-4 text-xl', pairAns === null ? 'border-line hover:border-accent' : k === target ? 'border-good bg-good/10' : pairAns === k ? 'border-bad bg-bad/10' : 'border-line opacity-60')}>{pr[k]}</button>)}</div>
+        <Btn variant="soft" onClick={() => say(pr[target])}><Icon name="volume" size={17} />Play</Btn>
+        <div className="mt-4 grid grid-cols-2 gap-3">{[0, 1].map((k) => <button key={k} disabled={pairAns !== null} onClick={() => { setPairAns(k); store.logEvent({ type: 'exercise', skill: 'listening', itemId: p.id, correct: k === target }); }} className={cx('rounded-2xl border-2 px-4 py-5 text-xl font-bold transition', pairAns === null ? 'border-line hover:border-accent hover:bg-accent/[.06]' : k === target ? 'border-good bg-good/10' : pairAns === k ? 'border-bad bg-bad/10' : 'border-line opacity-60')}>{pr[k]}</button>)}</div>
         {pairAns !== null && <Btn className="mt-4" onClick={() => { setPairOk((o) => [...o, pairAns === target]); setPairAns(null); setPairI((x) => x + 1); }}>Next</Btn>}
       </Card>
     );
@@ -132,8 +137,8 @@ export function PronBlock({ id, onDone }: { id: string; onDone: (score: number) 
       <p className="text-sm text-muted">Sentence {d + 1} of {p.drills.length}</p>
       <div className="my-3 flex items-center gap-3"><p className="flex-1 text-2xl font-semibold">{drill}</p><Speak onClick={() => say(drill)} /></div>
       <div className="flex flex-wrap gap-2">
-        {hasRecorder() && (rec ? <Btn variant="danger" onClick={() => void stopRec()}>⏹ Stop recording</Btn> : <Btn variant="soft" disabled={busy} onClick={() => void startRec()}>🎙 Record yourself</Btn>)}
-        {hasRecognition() && <Btn variant="soft" disabled={busy || !!rec} onClick={() => void recognise()}>{busy ? 'Listening…' : '🗣 Check with speech recognition'}</Btn>}
+        {hasRecorder() && (rec ? <Btn variant="danger" onClick={() => void stopRec()}><Icon name="stop" size={16} />Stop recording</Btn> : <Btn variant="soft" disabled={busy} onClick={() => void startRec()}><Icon name="record" size={17} className="text-bad" />Record yourself</Btn>)}
+        {hasRecognition() && <Btn variant="soft" disabled={busy || !!rec} onClick={() => void recognise()}><Icon name="mic" size={17} />{busy ? 'Listening…' : 'Check with speech recognition'}</Btn>}
       </div>
       {audioUrl[d] && <div className="mt-3"><p className="mb-1 text-sm text-muted">Play yours, then the voice above, and compare:</p><audio controls src={audioUrl[d]} className="w-full" /></div>}
       {h && ('error' in h ? <Note tone="warn">{h.error}</Note> : <div className="mt-3 rounded-xl bg-surface2 p-3"><p className="text-sm text-muted">Recogniser heard:</p><p className="text-lg">"{h.transcript}"</p><p className={cx('text-sm font-medium', h.sim >= 0.8 ? 'text-good' : h.sim >= 0.5 ? 'text-warn' : 'text-bad')}>{Math.round(h.sim * 100)}% match with the target</p></div>)}
@@ -157,15 +162,15 @@ export function WritingBlock({ id, onDone }: { id: string; onDone: (score: numbe
     <div className="space-y-4">
       <Card>
         <div className="mb-2 flex gap-2"><Chip tone="accent">{w.level}</Chip><Chip>Writing</Chip></div>
-        <h2 className="text-xl font-bold">{w.title}</h2><p className="mt-2">{w.task}</p><p className="mt-1 text-sm text-muted">Aim for at least {w.minWords} {cfg.script === 'han' || cfg.script === 'kana' ? 'characters' : 'words'}.</p>
-        <textarea value={text} onChange={(e) => setText(e.target.value)} disabled={!!res} rows={6} spellCheck={false} aria-label="Your writing" className="mt-3 w-full rounded-xl border border-line bg-surface p-3 text-lg outline-none focus:border-accent" placeholder={`Write in ${cfg.name}…`} />
+        <h2 className="text-[1.5rem] font-extrabold leading-tight tracking-[-0.02em]">{w.title}</h2><p className="mt-2.5 text-[1.02rem]">{w.task}</p><p className="mt-1 text-sm text-muted">Aim for at least {w.minWords} {cfg.script === 'han' || cfg.script === 'kana' ? 'characters' : 'words'}.</p>
+        <textarea value={text} onChange={(e) => setText(e.target.value)} disabled={!!res} rows={6} spellCheck={false} aria-label="Your writing" className="mt-4 w-full rounded-2xl border-2 border-line-strong bg-surface p-4 text-lg outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/15" placeholder={`Write in ${cfg.name}…`} />
         <div className="mt-2 flex flex-wrap items-center gap-1.5">{cfg.accents.map((a) => <button key={a} disabled={!!res} className="h-8 min-w-8 rounded-lg border border-line bg-surface px-2 hover:bg-surface2" onClick={() => setText((t) => t + a)}>{a}</button>)}<span className="ml-auto text-sm text-muted">{countWords(text)} words</span></div>
         {!res && <Btn className="mt-3" disabled={countWords(text) < 3} onClick={check}>Check my writing</Btn>}
       </Card>
       {res && (
         <Card className="pop">
-          <h3 className="font-semibold">Checklist</h3>
-          <ul className="mt-2 space-y-1">{res.items.map((it) => <li key={it.label} className="flex items-center gap-2"><span className={it.ok ? 'text-good' : 'text-bad'}>{it.ok ? '✓' : '✗'}</span>{it.label}</li>)}<li className="flex items-center gap-2"><span className={res.words >= w.minWords ? 'text-good' : 'text-warn'}>{res.words >= w.minWords ? '✓' : '!'}</span>{res.words} words (target {w.minWords}+)</li></ul>
+          <h3 className="font-extrabold tracking-tight">Checklist</h3>
+          <ul className="mt-3 space-y-2">{res.items.map((it) => <li key={it.label} className="flex items-center gap-2.5"><span className={cx('grid h-5 w-5 shrink-0 place-items-center rounded-full text-white', it.ok ? 'bg-good' : 'bg-bad')}><Icon name={it.ok ? 'check' : 'x'} size={12} strokeWidth={3.2} /></span>{it.label}</li>)}<li className="flex items-center gap-2.5"><span className={cx('grid h-5 w-5 shrink-0 place-items-center rounded-full text-white', res.words >= w.minWords ? 'bg-good' : 'bg-warn')}><Icon name={res.words >= w.minWords ? 'check' : 'alert'} size={12} strokeWidth={3.2} /></span>{res.words} words (target {w.minWords}+)</li></ul>
           <Note>This is a keyword and length checklist, <b>not</b> a grammar or style grader — it can't tell whether your sentences are correct. Compare yours with the model below and fix anything that differs.</Note>
           <div className="mt-3 rounded-xl bg-surface2 p-3"><p className="text-sm text-muted">Model answer</p><p>{w.model}</p>{flags.translations !== 'never' && <p className="text-sm text-muted">{w.modelN}</p>}</div>
           <p className="mt-3 text-sm font-medium">Self-edit: check verb endings, noun gender/articles, word order and accents.</p>

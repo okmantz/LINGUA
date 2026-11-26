@@ -11,13 +11,13 @@ import { Icon } from './Icon';
 /** Inline Teacher card used inside pages (dashboard, session summaries). */
 export function TeacherNote({ mood = 'happy', title, children, action, className }: { mood?: Mood; title?: string; children: React.ReactNode; action?: { label: string; to: string }; className?: string }) {
   return (
-    <div className={cx('flex items-start gap-3 rounded-2xl border border-line bg-surface p-3.5 shadow-[var(--shadow)] sm:p-4', className)}>
+    <div className={cx('flex items-start gap-3.5 rounded-2xl border border-line bg-gradient-to-br from-accent/[.08] via-surface to-surface p-4 shadow-[var(--shadow)]', className)}>
       <TeacherAvatar size={48} mood={mood} className="rounded-full ring-2 ring-accent/30" />
       <div className="min-w-0 flex-1">
-        <p className="text-xs font-semibold text-accent">{TEACHER.name}</p>
-        {title && <p className="mt-0.5 font-semibold leading-snug">{title}</p>}
+        <p className="text-xs font-bold text-accent-strong">{TEACHER.name}</p>
+        {title && <p className="mt-0.5 font-bold leading-snug tracking-tight">{title}</p>}
         <div className="mt-0.5 text-[0.93rem] leading-relaxed text-muted">{children}</div>
-        {action && <Link to={action.to} className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-accent hover:underline">{action.label}<Icon name="arrow" size={15} /></Link>}
+        {action && <Link to={action.to} className="mt-2.5 inline-flex items-center gap-1 text-sm font-bold text-accent-strong hover:underline">{action.label}<Icon name="arrow" size={15} /></Link>}
       </div>
     </div>
   );
@@ -59,14 +59,14 @@ export function TeacherDock() {
   const close = () => { if (tip.id !== 'next') store.markTipSeen(tip.id); setOpen(false); };
   const go = (to: string) => { close(); nav(to); };
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(4.9rem+env(safe-area-inset-bottom))] z-40 flex flex-col items-end gap-2 px-3 lg:bottom-6 lg:right-6 lg:left-auto lg:px-0 lg:pr-0">
+    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(6rem+env(safe-area-inset-bottom))] z-40 flex flex-col items-end gap-2 px-3 lg:bottom-6 lg:right-6 lg:left-auto lg:px-0 lg:pr-0">
       {open && (
-        <div role="dialog" aria-label={`${TEACHER.name} tip`} onPointerDown={() => setAuto(false)} className="pointer-events-auto pop w-[min(20rem,calc(100vw-1.5rem))] rounded-2xl border border-line bg-surface p-3.5 shadow-[var(--shadow-lg)] sm:p-4">
+        <div role="dialog" aria-label={`${TEACHER.name} tip`} onPointerDown={() => setAuto(false)} className="pointer-events-auto pop w-[min(21rem,calc(100vw-1.5rem))] rounded-3xl border border-line bg-surface p-4 shadow-[var(--shadow-lg)]">
           <div className="flex items-start gap-3">
             <TeacherAvatar size={46} mood={isTour ? 'wave' : tip.mood} className="rounded-full ring-2 ring-accent/30" />
             <div className="min-w-0 flex-1">
-              <div className="flex items-center justify-between gap-2"><p className="text-xs font-semibold text-accent">{TEACHER.name}</p><button onClick={close} aria-label="Close tip" className="-mr-1 grid h-8 w-8 place-items-center rounded-full text-muted hover:bg-surface2"><Icon name="x" size={16} /></button></div>
-              {(step || tip.title) && <p className="font-semibold leading-snug">{step ? step.title : tip.title}</p>}
+              <div className="flex items-center justify-between gap-2"><p className="text-xs font-bold text-accent-strong">{TEACHER.name}</p><button onClick={close} aria-label="Close tip" className="-mr-1 grid h-8 w-8 place-items-center rounded-full text-muted hover:bg-surface2"><Icon name="x" size={16} /></button></div>
+              {(step || tip.title) && <p className="font-bold leading-snug tracking-tight">{step ? step.title : tip.title}</p>}
               <p className="mt-0.5 text-[0.88rem] leading-relaxed text-muted">{step ? step.text : tip.text}</p>
             </div>
           </div>
@@ -80,11 +80,11 @@ export function TeacherDock() {
               {tips.length > 1 && <Btn size="sm" variant="ghost" onClick={() => setIdx((idx + 1) % tips.length)}>Another tip ({Math.min(idx, tips.length - 1) + 1}/{tips.length})</Btn>}
             </>}
           </div>
-          <button onClick={() => { store.setTeacherOff(true); setOpen(false); }} className="mt-2.5 text-xs text-muted underline">Hide Teacher (turn back on in Settings)</button></>}
+          <button onClick={() => { store.setTeacherOff(true); setOpen(false); }} className="mt-3 text-xs font-medium text-faint underline-offset-2 hover:text-muted hover:underline">Hide Teacher (turn back on in Settings)</button></>}
         </div>
       )}
       <button onClick={() => { setOpen((o) => !o); if (!open && unseen[0]) setIdx(tips.indexOf(unseen[0])); }} aria-expanded={open} aria-label={open ? 'Close Teacher' : 'Ask your Teacher'}
-        className="pointer-events-auto relative rounded-full shadow-[var(--shadow-lg)] ring-2 ring-surface transition active:scale-95">
+        className="pointer-events-auto relative rounded-full shadow-[var(--shadow-lg)] ring-[3px] ring-surface transition hover:scale-105 active:scale-95">
         <TeacherAvatar size={52} mood={tip.mood} className={cx('rounded-full', !open && unseen.length > 0 && 'bob')} />
         {!open && unseen.length > 0 && <><span className="ping-soft absolute right-0 top-0 h-3.5 w-3.5 rounded-full bg-accent" /><span className="absolute right-0 top-0 h-3.5 w-3.5 rounded-full border-2 border-surface bg-accent" /></>}
       </button>

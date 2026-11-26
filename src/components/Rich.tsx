@@ -9,8 +9,8 @@ export const Table = ({ rows, caption }: { rows: string[][]; caption?: string })
   <div className="overflow-x-auto rounded-xl border border-line">
     <table className="w-full min-w-max border-collapse text-left text-sm">
       {caption && <caption className="p-2 text-left text-muted">{caption}</caption>}
-      <thead><tr className="bg-surface2">{rows[0].map((c, i) => <th key={i} className="px-3 py-2 font-semibold">{c}</th>)}</tr></thead>
-      <tbody>{rows.slice(1).map((r, i) => <tr key={i} className="border-t border-line">{r.map((c, j) => <td key={j} className={j === 0 ? 'px-3 py-2 font-medium' : 'px-3 py-2'}>{c}</td>)}</tr>)}</tbody>
+      <thead><tr className="bg-surface2">{rows[0].map((c, i) => <th key={i} className="px-3.5 py-2.5 text-xs font-bold uppercase tracking-wide text-muted">{c}</th>)}</tr></thead>
+      <tbody>{rows.slice(1).map((r, i) => <tr key={i} className="border-t border-line odd:bg-surface2/30">{r.map((c, j) => <td key={j} className={j === 0 ? 'px-3.5 py-2.5 font-semibold' : 'px-3.5 py-2.5'}>{c}</td>)}</tr>)}</tbody>
     </table>
   </div>
 );

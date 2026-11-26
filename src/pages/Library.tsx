@@ -12,6 +12,8 @@ import { Icon, type IconName } from '../components/Icon';
 import { TeacherNote } from '../components/Teacher';
 import { Btn, Card, Chip, H1, IconBadge, Note, Progress, Tabs, cx } from '../components/ui';
 
+const LEVEL_NAME: Record<string, string> = { A1: 'Beginner', A2: 'Elementary', B1: 'Intermediate', B2: 'Upper intermediate', C1: 'Advanced', C2: 'Mastery' };
+
 type Kind = 'grammar' | 'conversations' | 'listening' | 'reading' | 'writing' | 'pronunciation';
 const META: Record<Kind, { title: string; sub: string; icon: IconName; key: (id: string) => string }> = {
   grammar: { title: 'Grammar', sub: 'Learn a pattern, see it in use, then pass a short mastery check.', icon: 'puzzle', key: (id) => `grammar:${id}` },
@@ -39,7 +41,7 @@ export default function Library({ kind }: { kind: Kind }) {
   if (open) {
     return (
       <div>
-        <button className="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-ink" onClick={() => setOpen(null)}><Icon name="back" size={16} />Back to {m.title}</button>
+        <button className="mb-5 inline-flex min-h-9 items-center gap-1.5 rounded-lg pr-3 text-sm font-semibold text-muted transition hover:text-ink" onClick={() => setOpen(null)}><Icon name="back" size={16} />Back to {m.title}</button>
         {kind === 'grammar' && <GrammarBlock id={open} onDone={done} />}
         {kind === 'conversations' && <ConversationBlock key={open + mode} id={open} mode={mode} onDone={done} />}
         {kind === 'listening' && <ListeningBlock id={open} onDone={done} />}
@@ -55,42 +57,45 @@ export default function Library({ kind }: { kind: Kind }) {
     const c = reviewComment(result.score, 'lesson'); const passed = result.score >= PASS;
     return (
       <div className="pop mx-auto max-w-lg space-y-4">
-        <Card className="text-center"><div className={cx('mx-auto grid h-16 w-16 place-items-center rounded-full', passed ? 'bg-good/15 text-good' : 'bg-warn/15 text-warn')}><Icon name={passed ? 'check' : 'repeat'} size={32} strokeWidth={2.4} /></div>
-          <p className="mt-3 text-sm text-muted">{result.title}</p><h1 className="text-3xl font-extrabold">{Math.round(result.score * 100)}%</h1><p className="text-sm text-muted">{passed ? 'Passed. This lesson counts toward your progress.' : `Pass mark is ${Math.round(PASS * 100)}%. You can retry any time.`}</p></Card>
+        <Card className="py-8 text-center"><div className={cx('celebrate mx-auto grid h-20 w-20 place-items-center rounded-full', passed ? 'bg-good/14 text-good' : 'bg-warn/14 text-warn')}><Icon name={passed ? 'check' : 'repeat'} size={38} strokeWidth={2.4} /></div>
+          <p className="mt-4 text-sm font-semibold text-muted">{result.title}</p><h1 className="tabular mt-1 text-5xl font-extrabold tracking-tight">{Math.round(result.score * 100)}%</h1><p className="mx-auto mt-2 max-w-xs text-sm text-muted">{passed ? 'Passed. This lesson counts toward your progress.' : `Pass mark is ${Math.round(PASS * 100)}%. You can retry any time.`}</p></Card>
         <TeacherNote mood={c.mood} title={c.title}>{c.text}</TeacherNote>
-        <Card className="!p-4"><p className="text-xs font-bold uppercase tracking-wider text-muted">What next?</p>
-          <div className="mt-2 flex flex-col gap-2">
-            {!passed && <Btn onClick={() => { setOpen(result.id); setResult(null); }}>Retry this lesson</Btn>}
-            {recItem ? <Btn variant={passed ? 'primary' : 'ghost'} onClick={() => { setOpen(recItem.id); setResult(null); }}>Next: {recItem.title}<Icon name="arrow" size={17} /></Btn> : <Note>You've done everything available here. Nice! Try another skill.</Note>}
-            <Btn variant="ghost" onClick={() => setResult(null)}>Back to {m.title}</Btn>
-            <Link to="/" className="text-center text-sm font-medium text-accent">Back to Home</Link>
+        <Card className="!p-4"><p className="eyebrow">What next?</p>
+          <div className="mt-3 flex flex-col gap-2">
+            {!passed && <Btn size="lg" onClick={() => { setOpen(result.id); setResult(null); }}>Retry this lesson</Btn>}
+            {recItem ? <Btn size="lg" variant={passed ? 'primary' : 'ghost'} onClick={() => { setOpen(recItem.id); setResult(null); }}>Next: {recItem.title}<Icon name="arrow" size={17} /></Btn> : <Note>You've done everything available here. Nice! Try another skill.</Note>}
+            <Btn variant="quiet" onClick={() => setResult(null)}>Back to {m.title}</Btn>
+            <Link to="/" className="text-center text-sm font-bold text-accent-strong hover:underline">Back to Home</Link>
           </div></Card>
       </div>
     );
   }
   return (
     <div>
-      <H1 sub={m.sub} right={<IconBadge name={m.icon} size={46} />}>{m.title}</H1>
-      <Card className="mb-4 !p-3.5"><div className="flex items-center justify-between text-sm"><span className="font-medium">Your progress</span><span className="text-muted">{prog.done} of {prog.total} passed</span></div><Progress value={prog.total ? prog.done / prog.total : 0} className="mt-2" label="Passed lessons" /></Card>
+      <H1 eyebrow="Practise" sub={m.sub} right={<IconBadge name={m.icon} size={48} />}>{m.title}</H1>
+      <Card className="mb-5 flex items-center gap-4 !p-4"><div className="min-w-0 flex-1"><div className="flex items-baseline justify-between text-sm"><span className="font-bold">Your progress</span><span className="tabular text-xs font-semibold text-muted">{prog.done} of {prog.total} passed</span></div><Progress value={prog.total ? prog.done / prog.total : 0} className="mt-2.5" label="Passed lessons" /></div></Card>
       {recItem && (
-        <Card className="mb-5 border-accent/50 bg-gradient-to-br from-accent/10 to-transparent">
-          <Chip tone="accent"><Icon name="sparkles" size={12} />Recommended next</Chip><p className="mt-2 text-lg font-bold leading-snug">{recItem.title}</p>{recItem.extra && <p className="mt-0.5 line-clamp-2 text-sm text-muted">{recItem.extra}</p>}
-          <Btn className="mt-3" onClick={() => setOpen(recItem.id)}>Start<Icon name="arrow" size={17} /></Btn>
-        </Card>
+        <section className="hero mb-7 p-5 sm:p-6" aria-label="Recommended next">
+          <div className="relative"><span className="inline-flex items-center gap-1.5 rounded-full bg-white/14 px-3 py-1 text-xs font-bold backdrop-blur"><Icon name="sparkles" size={13} />Recommended next</span><p className="mt-3 text-xl font-extrabold leading-snug tracking-tight sm:text-2xl">{recItem.title}</p>{recItem.extra && <p className="mt-1 line-clamp-2 max-w-xl text-sm muted">{recItem.extra}</p>}
+            <Btn className="mt-5" size="lg" onClick={() => setOpen(recItem.id)}>Start<Icon name="arrow" size={17} /></Btn></div>
+        </section>
       )}
       {kind === 'conversations' && <><Tabs value={mode} onChange={setMode} items={[{ id: 'guided', label: 'Guided' }, { id: 'semi', label: 'Semi-open' }, { id: 'open', label: 'Open' }]} />
-        <p className="mb-4 text-sm text-muted">{mode === 'guided' ? 'Pick the best reply from options.' : mode === 'semi' ? 'Type your own reply with key words suggested.' : 'Type your reply with no hints. Checked by key words, not by AI.'}{mode === convModeFor(state) && <b className="text-accent"> Recommended for you right now.</b>}</p></>}
-      {kind === 'pronunciation' && <div className="mb-4"><Note>Example audio is browser text-to-speech (synthetic). Speech recognition, when supported, comes from your browser and is only a rough guide.</Note></div>}
+        <p className="-mt-2 mb-5 text-sm text-muted">{mode === 'guided' ? 'Pick the best reply from options.' : mode === 'semi' ? 'Type your own reply with key words suggested.' : 'Type your reply with no hints. Checked by key words, not by AI.'}{mode === convModeFor(state) && <b className="text-accent-strong"> Recommended for you right now.</b>}</p></>}
+      {kind === 'pronunciation' && <div className="mb-5"><Note>Example audio is browser text-to-speech (synthetic). Speech recognition, when supported, comes from your browser and is only a rough guide.</Note></div>}
       {CEFR_ORDER.map((lvl) => {
         const here = items.filter((i) => i.level === lvl);
-        if (!here.length) return lvl === 'A1' || lvl === 'A2' ? null : <div key={lvl} className="mb-5"><h2 className="mb-1 flex items-center gap-2 text-lg font-bold">{lvl}<Chip>No material yet</Chip></h2><p className="text-sm text-muted">This starter core has no {kind} content at {lvl} yet. It will not pretend otherwise. See docs/ADDING_CONTENT.md to add some.</p></div>;
+        if (!here.length) return lvl === 'A1' || lvl === 'A2' ? null : <div key={lvl} className="mb-6"><h2 className="mb-1 flex items-center gap-2 text-lg font-extrabold tracking-tight">{lvl}<Chip>No material yet</Chip></h2><p className="text-sm text-muted">This starter core has no {kind} content at {lvl} yet. It will not pretend otherwise. See docs/ADDING_CONTENT.md to add some.</p></div>;
+        const passedN = here.filter((i) => (state.lessons[m.key(i.id)]?.best ?? 0) >= PASS).length;
         return (
-          <div key={lvl} className="mb-6"><h2 className="mb-2 text-[0.8rem] font-bold uppercase tracking-wider text-muted">Level {lvl}</h2>
-            <div className="grid gap-2.5">{here.map((i) => { const r = state.lessons[m.key(i.id)]; const passed = (r?.best ?? 0) >= PASS; return (
-              <Card key={i.id} className={cx('!p-0', i.id === rec && 'border-accent/60')}><button className="flex w-full items-center gap-3 p-3.5 text-left" onClick={() => setOpen(i.id)}>
-                <span className={cx('grid h-9 w-9 shrink-0 place-items-center rounded-full', passed ? 'bg-good/15 text-good' : 'bg-surface2 text-muted')}><Icon name={passed ? 'check' : m.icon} size={17} strokeWidth={passed ? 2.6 : 1.8} /></span>
-                <div className="min-w-0 flex-1"><p className="font-semibold leading-snug">{i.title}</p>{i.extra && <p className="line-clamp-2 text-sm text-muted">{i.extra}</p>}</div>
-                {r ? <Chip tone={passed ? 'good' : 'warn'}>{Math.round(r.best * 100)}%</Chip> : i.id === rec ? <Chip tone="accent">Next</Chip> : <Chip>New</Chip>}<Icon name="right" size={17} className="text-muted" /></button></Card>); })}</div></div>);
+          <section key={lvl} className="mb-8" aria-label={`Level ${lvl}`}>
+            <div className="mb-3 flex items-center gap-2.5 px-0.5"><span className="tabular grid h-7 min-w-9 place-items-center rounded-lg bg-ink px-2 text-xs font-extrabold text-bg">{lvl}</span><h2 className="font-extrabold tracking-tight">{LEVEL_NAME[lvl]}</h2><span className="tabular ml-auto text-xs font-semibold text-muted">{passedN}/{here.length}</span></div>
+            <Card className="divide-y divide-line !p-0">{here.map((i) => { const r = state.lessons[m.key(i.id)]; const passed = (r?.best ?? 0) >= PASS; return (
+              <button key={i.id} className={cx('flex w-full items-center gap-3.5 p-3.5 text-left transition first:rounded-t-[1.25rem] last:rounded-b-[1.25rem] hover:bg-surface2/60 sm:px-4', i.id === rec && 'bg-accent/[.06]')} onClick={() => setOpen(i.id)}>
+                <span className={cx('grid h-10 w-10 shrink-0 place-items-center rounded-full', passed ? 'bg-good/14 text-good' : i.id === rec ? 'bg-accent/18 text-accent-strong' : 'bg-surface2 text-muted')}><Icon name={passed ? 'check' : m.icon} size={18} strokeWidth={passed ? 2.6 : 1.8} /></span>
+                <div className="min-w-0 flex-1"><p className="font-semibold leading-snug">{i.title}</p>{i.extra && <p className="mt-0.5 line-clamp-1 text-sm text-muted">{i.extra}</p>}</div>
+                {r ? <Chip tone={passed ? 'good' : 'warn'}><span className="tabular">{Math.round(r.best * 100)}%</span></Chip> : i.id === rec ? <Chip tone="accent">Next</Chip> : <Chip>New</Chip>}<Icon name="right" size={16} className="shrink-0 text-faint" /></button>); })}</Card>
+          </section>);
       })}
     </div>
   );
