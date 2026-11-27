@@ -41,13 +41,25 @@ export function resolveProgram(content: LanguageContent): DayContent[] {
   });
 }
 
-/** After the programme: everything at/below a level, ordered by level. */
+/** How far a level is from the learner's level, as a sort key: the learner's own level first, then one step up (a stretch),
+ *  then one step down (a refresher), then two up, two down, and so on. Everything else keeps its authored order. */
+export function levelDistance(item: Cefr, level: Cefr): number {
+  const d = cefrIndex(item) - cefrIndex(level);
+  return d === 0 ? 0 : d > 0 ? d * 2 - 1 : -d * 2;
+}
+/** Stable sort of any levelled list so the learner's level comes first. Array.prototype.sort is stable, so authored order is kept within a level. */
+export function rankForLevel<T extends { level: Cefr }>(list: T[], level: Cefr): T[] {
+  return list.map((x, i) => ({ x, i, k: levelDistance(x.level, level) })).sort((a, b) => a.k - b.k || a.i - b.i).map((r) => r.x);
+}
+
+/** The learner's pathway: every item, ordered so that material AT their level comes first, then the next level up, then easier levels.
+ *  Previously this returned "everything at or below the level in file order", which put A1 greetings in front of a B2 learner.
+ *  Easier levels stay available (they are never removed) but only come up once the level itself has nothing left to offer. */
 export function pathwayItems(content: LanguageContent, level: Cefr) {
-  const ok = (l: Cefr) => cefrIndex(l) <= cefrIndex(level);
   return {
-    grammar: content.grammar.filter((g) => ok(g.level)), conversations: content.conversations.filter((c) => ok(c.level)),
-    reading: content.reading.filter((r) => ok(r.level)), listening: content.listening.filter((l) => ok(l.level)),
-    writing: content.writing.filter((w) => ok(w.level)), pron: content.pronunciation.filter((p) => ok(p.level)),
-    vocab: content.vocab.filter((v) => ok(v.level)),
+    grammar: rankForLevel(content.grammar, level), conversations: rankForLevel(content.conversations, level),
+    reading: rankForLevel(content.reading, level), listening: rankForLevel(content.listening, level),
+    writing: rankForLevel(content.writing, level), pron: rankForLevel(content.pronunciation, level),
+    vocab: rankForLevel(content.vocab, level),
   };
 }

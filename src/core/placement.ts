@@ -147,11 +147,21 @@ export function placementResult(st: PState, now: number): PlacementResult {
   }
   const weaknesses = (Object.entries(bySkill) as [Skill, Cefr][]).filter(([s, l]) => (skillN[s] ?? 0) >= 3 && cefrIndex(l) < cefrIndex(overall)).map(([s]) => s);
   const confidence: PlacementResult['confidence'] = sd <= 0.4 && st.served.length >= MIN_ITEMS ? 'high' : sd <= 0.6 ? 'medium' : 'low';
-  // Learners who place A2 skip the first foundation block; B1 and above skip the beginner programme (offered, not forced).
-  const startDay = overall === 'A1' ? 1 : overall === 'A2' ? 11 : 31;
+  // The 30-day programme is a beginner (A1) course. Anyone who places above A1 goes straight to a pathway that starts at THEIR level.
+  const startDay = overall === 'A1' ? 1 : 31;
   return {
-    takenAt: now, overall, bySkill, weaknesses, startDay, skipProgram: cefrIndex(overall) >= 2,
+    takenAt: now, overall, bySkill, weaknesses, startDay, skipProgram: cefrIndex(overall) >= 1,
     answered: st.served.length, correct: st.served.filter((s) => s.correct).length,
     theta, sd, confidence, range: [lo, hi], skipped: st.served.filter((s) => s.skipped).length,
   };
+}
+
+/** The same result, but starting at a level the learner picked (e.g. "my result looks too low, I am a native speaker"). */
+export function withLevel(r: PlacementResult, level: Cefr): PlacementResult {
+  const skip = cefrIndex(level) >= 1;
+  return { ...r, overall: level, skipProgram: skip, startDay: skip ? 31 : 1 };
+}
+/** A placement the learner chose by hand, without taking the test. */
+export function manualPlacement(level: Cefr, now = Date.now()): PlacementResult {
+  return withLevel({ takenAt: now, overall: level, bySkill: {}, weaknesses: [], startDay: 1, skipProgram: false, answered: 0, correct: 0, confidence: 'low', manual: true }, level);
 }

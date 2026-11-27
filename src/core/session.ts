@@ -51,7 +51,9 @@ export function planSession(inp: PlanInput): SessionPlan {
     const d = today.def;
     // 2) New words for today's theme (only the ones not yet introduced)
     // Words from earlier days that a short session never reached come first, so nothing in the plan is silently skipped.
-    const carry = days.slice(0, state.programDay - 1).flatMap((x) => x.words).filter((w) => !vocabCards.has(w.id)).slice(0, 12);
+    // (Never from days a placement test let the learner skip: those words are below their level.)
+    const firstDay = Math.max(1, Math.min(state.placement?.startDay ?? 1, PROGRAM_LENGTH));
+    const carry = days.slice(firstDay - 1, state.programDay - 1).flatMap((x) => x.words).filter((w) => !vocabCards.has(w.id)).slice(0, 12);
     // Sprint (≥45 min): add extra high-frequency words from today's themes, beyond the standard daily quota.
     const claimedAll = new Set(days.flatMap((x) => x.words.map((w) => w.id)));
     const bonus = inp.minutes >= 45 ? dayWords({ ...d, newWords: Math.min(20, Math.floor(inp.minutes / 6)) }, content, claimedAll) : [];
@@ -95,8 +97,11 @@ export function planSession(inp: PlanInput): SessionPlan {
     const items = pathwayItems(content, lvl);
     const doneKey = (k: string) => (state.lessons[k]?.best ?? 0) >= 0.8;
     const cand: Block[] = [];
-    const fresh = items.vocab.filter((v) => !vocabCards.has(v.id)).slice(0, 8);
-    if (fresh.length) cand.push({ key: `path-words-${fresh[0].id}`, type: 'newvocab', title: `${fresh.length} new words (${lvl})`, why: 'Next most useful unseen vocabulary at your level', ids: fresh.map((w) => w.id), minutes: 0, skill: 'vocabulary' });
+    // `items.vocab` is ranked: words AT the learner's level come first, so a B2 learner never starts on "hello" and "goodbye".
+    const unseen = items.vocab.filter((v) => !vocabCards.has(v.id));
+    const nNew = Math.max(5, Math.min(unseen.length, Math.floor((left() * 0.35) / SEC.newWord), 24));
+    const fresh = unseen.slice(0, nNew);
+    if (fresh.length) cand.push({ key: `path-words-${fresh[0].id}`, type: 'newvocab', title: `${fresh.length} new ${fresh.every((w) => w.level === lvl) ? lvl + ' ' : ''}words`, why: 'Next most useful unseen vocabulary at your level', ids: fresh.map((w) => w.id), minutes: 0, skill: 'vocabulary' });
     const g = items.grammar.find((x) => !doneKey(`grammar:${x.id}`)); if (g) cand.push({ key: `grammar:${g.id}`, type: 'grammar', title: `Grammar: ${g.title}`, why: weakest === 'grammar' ? 'Your grammar is the weakest skill right now' : 'Next grammar topic', ids: [g.id], minutes: 0, skill: 'grammar' });
     const c = items.conversations.find((x) => !doneKey(`conv:${x.id}`)) ?? items.conversations[0]; if (c) cand.push({ key: `conv:${c.id}`, type: 'conversation', title: `Conversation: ${c.title}`, why: 'Speaking/writing practice', ids: [c.id], minutes: 0, skill: 'conversation' });
     const l = items.listening.find((x) => !doneKey(`listening:${x.id}`)); if (l) cand.push({ key: `listening:${l.id}`, type: 'listening', title: `Listening: ${l.title}`, why: weakest === 'listening' ? 'Weakest skill' : 'Input practice', ids: [l.id], minutes: 0, skill: 'listening' });
@@ -108,6 +113,8 @@ export function planSession(inp: PlanInput): SessionPlan {
     const order = (b: Block) => (b.skill === weakest ? -10 : 0) + ((hash(b.key) + dayIdx) % 7);
     cand.sort((a, b) => order(a) - order(b));
     const secOf = (b: Block) => b.type === 'newvocab' ? b.ids.length * SEC.newWord : b.type === 'grammar' ? SEC.grammar : b.type === 'conversation' ? SEC.conversation : b.type === 'listening' ? SEC.listening : b.type === 'reading' ? SEC.reading : b.type === 'writing' ? SEC.writing : SEC.pronunciation;
+    // New words are the heart of a pathway session, so they get their slot first; the other blocks then fill whatever time is left.
+    cand.sort((a, b) => (a.type === 'newvocab' ? -1 : 0) - (b.type === 'newvocab' ? -1 : 0));
     for (const b of cand) { const s = secOf(b); if (left() >= s * 0.85) push(b, s); }
   }
 

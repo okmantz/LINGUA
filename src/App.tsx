@@ -3,14 +3,15 @@ import { Link, NavLink, Navigate, Route, Routes, useLocation } from 'react-route
 import { useStore } from './state/store';
 import { useGuide } from './state/hooks';
 import { LANGUAGES, getLang } from './content/registry';
-import { Avatar } from './components/Avatar';
+import { Avatar, TeacherAvatar } from './components/Avatar';
 import { Logo, LogoMark } from './components/Logo';
 import { Icon, type IconName } from './components/Icon';
 import { TeacherDock } from './components/Teacher';
 import { dayKey } from './core/fsrs';
-import { SKILL_ROUTE } from './core/guide';
+import { SKILL_ROUTE, currentLevel } from './core/guide';
+import { applyUpdate, useUpdateReady } from './core/update';
 import { TIERS } from './core/analytics';
-import { cx, Sheet, Skeleton } from './components/ui';
+import { Btn, cx, LEVEL_NAME, LevelBadge, Sheet, Skeleton } from './components/ui';
 import Onboarding from './pages/Onboarding';
 import Dashboard from './pages/Dashboard';
 
@@ -75,7 +76,8 @@ function LangSelect({ compact = false }: { compact?: boolean }) {
     <label className="group relative flex h-12 w-full items-center gap-2.5 rounded-2xl border border-line bg-surface2/60 pl-2.5 pr-3 transition hover:border-line-strong hover:bg-surface2">
       <span className="sr-only">Active language</span>
       <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-accent/15 text-accent-strong"><Icon name="globe" size={17} /></span>
-      <span className="min-w-0 flex-1 leading-tight"><span className="block text-[10px] font-semibold uppercase tracking-wider text-muted">Learning</span><span className="block truncate text-[0.92rem] font-bold">{label(cur)} <span className="font-medium text-muted">{find(cur)?.name !== label(cur) ? find(cur)?.name : ''}</span></span></span>
+      <span className="min-w-0 flex-1 leading-tight"><span className="block text-[10px] font-semibold uppercase tracking-wider text-muted">Learning</span><span className="block truncate text-[0.95rem] font-bold">{label(cur)}</span></span>
+      {p.languages[cur] && <LevelBadge level={currentLevel(p.languages[cur])} size="sm" />}
       <Icon name="down" size={16} className="shrink-0 text-muted" />
       <select value={cur} onChange={(e) => setActiveLang(e.target.value)} aria-label="Active language" className="absolute inset-0 cursor-pointer opacity-0">{codes.map((c) => <option key={c} value={c}>{label(c)}{find(c)?.name !== label(c) ? ` · ${find(c)?.name}` : ''}</option>)}</select>
     </label>
@@ -128,6 +130,11 @@ function Sidebar() {
 
 const TITLES: Record<string, string> = { '/': 'Home', '/daily': "Today's session", '/path': 'Your path', '/vocabulary': 'Vocabulary', '/grammar': 'Grammar', '/reading': 'Reading', '/listening': 'Listening', '/conversations': 'Conversations', '/pronunciation': 'Pronunciation', '/writing': 'Writing', '/progress': 'Progress', '/achievements': 'Achievements', '/cheats': 'Cheat sheets', '/languages': 'My languages', '/settings': 'Profile & settings', '/assessment': 'Final assessment' };
 
+function SaveDot() {
+  const { saveStatus, persisted } = useStore();
+  if (saveStatus.state === 'error') return <Link to="/settings" className="inline-flex h-9 items-center gap-1.5 rounded-full bg-bad/12 px-3 text-xs font-bold text-bad" title={saveStatus.error}><Icon name="alert" size={14} />Not saved</Link>;
+  return <span className="hidden h-9 items-center gap-1.5 px-1 text-xs font-semibold text-muted md:inline-flex" title={persisted ? 'Saved on this device. The browser has promised not to clear it.' : 'Saved on this device. Export a backup now and then.'}><span className={cx('h-1.5 w-1.5 rounded-full', saveStatus.state === 'saving' ? 'animate-pulse bg-warn' : 'bg-good')} />{saveStatus.state === 'saving' ? 'Saving…' : 'Saved'}</span>;
+}
 function TopBar() {
   const { profile, state, stats } = useStore(); const p = profile!; const { pathname } = useLocation(); const { due } = useGuide();
   return (
@@ -136,10 +143,12 @@ function TopBar() {
         <Link to="/" className="flex items-center gap-2 lg:hidden" aria-label="LINGUA home"><LogoMark size={30} /><span className="text-[1.1rem] font-extrabold tracking-[-0.03em]">Lingua</span></Link>
         <p className="hidden text-[0.95rem] font-bold text-muted lg:block">{TITLES[pathname] ?? ''}</p>
         <div className="ml-auto flex items-center gap-2">
+          <SaveDot />
           {due > 0 && <Link to="/vocabulary" className="hidden h-9 items-center gap-1.5 rounded-full bg-accent/14 px-3 text-sm font-bold text-accent-strong transition hover:bg-accent/22 sm:inline-flex" title="Words due for review"><Icon name="repeat" size={15} /><span className="tabular">{due}</span> due</Link>}
           <span className="tabular inline-flex h-9 items-center gap-1 rounded-full bg-warn/12 px-3 text-sm font-bold text-warn" title={`${state?.streak.current ?? 0}-day streak`}><Icon name="flame" size={16} />{state?.streak.current ?? 0}</span>
           <span className="tabular hidden h-9 items-center gap-1 rounded-full bg-surface2 px-3 text-sm font-bold sm:inline-flex" title="Experience points"><Icon name="star" size={15} className="text-accent-strong" />{state?.xp ?? 0}</span>
           <div className="lg:hidden"><LangSelect compact /></div>
+          {!p.teacher?.off && <button onClick={() => window.dispatchEvent(new Event('lingua:teacher'))} aria-label="Ask your Teacher" className="rounded-full ring-2 ring-accent/30 transition active:scale-95 lg:hidden"><TeacherAvatar size={34} className="rounded-full" /></button>}
           <NavLink to="/settings" aria-label="Profile and settings" className="lg:hidden"><Avatar cfg={p.avatar} size={36} tier={stats?.tier.index} /></NavLink>
         </div>
       </div>
@@ -194,9 +203,37 @@ export default function App() {
   const [sheet, setSheet] = useState<null | 'practice' | 'more'>(null);
   useScriptAttrs(lang); useReminders(); useEffect(() => { setSheet(null); window.scrollTo(0, 0); }, [loc.pathname]);
   if (!ready) return <Splash text="Loading…" />;
+  if (store.loadError) return <StorageProblem />;
   if (!profile) return <Onboarding />;
   if (!content) return <Splash text={`Loading ${lang}…`} />;
   return <Shell sheet={sheet} setSheet={setSheet} toasts={toasts} />;
+}
+
+/** Saved data exists but could not be opened. We never fall through to onboarding here, because starting a blank profile would overwrite it. */
+function StorageProblem() {
+  const { retryLoad, startFresh, loadError } = useStore();
+  return (
+    <div className="app-min-h grid place-items-center px-5">
+      <div className="card w-full max-w-md p-6 text-center">
+        <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-warn/14 text-warn"><Icon name="alert" size={28} /></span>
+        <h1 className="mt-4 text-2xl font-extrabold tracking-tight">Your saved progress couldn't be opened</h1>
+        <p className="mt-2 text-sm text-muted">Your browser would not give LINGUA access to its storage just now. This is usually temporary (a private window, a full disk, or another LINGUA tab updating). Your data has not been touched.</p>
+        <div className="mt-5 flex flex-col gap-2.5"><Btn size="lg" onClick={retryLoad}>Try again</Btn><Btn size="lg" variant="ghost" onClick={() => { if (confirm('Start with a new empty profile? If your old data comes back later it may be replaced.')) startFresh(); }}>Start fresh anyway</Btn></div>
+        {loadError && <p className="mt-4 break-words text-xs text-faint">{loadError}</p>}
+      </div>
+    </div>
+  );
+}
+
+/** "A new version is ready" — applied only when the learner taps it, never in the middle of a lesson. */
+function UpdateBanner() {
+  const ready = useUpdateReady();
+  if (!ready) return null;
+  return (
+    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(6.25rem+env(safe-area-inset-bottom))] z-[65] flex justify-center px-4 lg:bottom-6">
+      <div className="pop pointer-events-auto flex items-center gap-3 rounded-full border border-line bg-surface py-2 pl-4 pr-2 shadow-[var(--shadow-lg)]"><span className="text-sm font-semibold">A new version is ready</span><Btn size="sm" onClick={applyUpdate}>Update</Btn></div>
+    </div>
+  );
 }
 
 function Splash({ text }: { text: string }) {
@@ -237,6 +274,7 @@ function Shell({ sheet, setSheet, toasts }: { sheet: null | 'practice' | 'more';
         {!store.focus && <BottomBar onPractice={() => setSheet('practice')} onMore={() => setSheet('more')} />}
       </div>
       <TeacherDock />
+      <UpdateBanner />
       <Sheet open={sheet === 'practice'} onClose={() => setSheet(null)} title="Practise a skill">
         {groupsFor(store.lang).slice(1, 3).map((g) => <div key={g.label} className="mb-4"><p className="eyebrow mb-2 px-0.5">{g.label}</p><div className="grid grid-cols-3 gap-2.5">{g.items.map(tile)}</div></div>)}
         <p className="mt-1 rounded-xl bg-surface2 px-3 py-2.5 text-center text-xs text-muted">Not sure where to start? Tap <b className="text-ink">Today</b> and your Teacher will pick for you.</p>

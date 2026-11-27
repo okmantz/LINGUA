@@ -1,6 +1,9 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { AvatarConfig, PlacementResult } from '../core/types';
+import type { AvatarConfig, Cefr, PlacementResult } from '../core/types';
+import { manualPlacement } from '../core/placement';
+import { loadDraft, saveDraft } from '../core/drafts';
+import { LevelList } from '../components/LevelPicker';
 import { LANGUAGES } from '../content/registry';
 import { useStore, DEFAULT_AVATAR } from '../state/store';
 import { PlacementTest } from '../components/PlacementTest';
@@ -8,7 +11,7 @@ import { Avatar, TeacherAvatar } from '../components/Avatar';
 import { CharacterPicker } from '../components/CharacterPicker';
 import { LogoMark } from '../components/Logo';
 import { Icon, type IconName } from '../components/Icon';
-import { Btn, Chip, Note, cx } from '../components/ui';
+import { Btn, Chip, LEVEL_NAME, Note, SearchInput, cx } from '../components/ui';
 
 const MINUTES: [number, string][] = [[5, 'Quick'], [10, 'Light'], [15, 'Steady'], [20, 'Sweet spot'], [30, 'Focused'], [45, 'Serious'], [60, 'Intense'], [90, '30-day sprint'], [120, 'Full sprint']];
 const HELLO: Record<string, string> = { es: '¡Hola!', fr: 'Bonjour', de: 'Hallo', it: 'Ciao', pl: 'Cześć', ru: 'Привет', ko: '안녕', ja: 'やあ', zh: '你好', ar: 'مرحبا', sw: 'Hujambo', asl: '👋' };
@@ -28,12 +31,19 @@ const Choice = ({ on, onClick, children, className }: { on: boolean; onClick: ()
   <button onClick={onClick} aria-pressed={on} className={cx('rounded-2xl border-2 text-left transition duration-150 active:scale-[.99]', on ? 'border-accent bg-accent/10 shadow-[0_0_0_4px_color-mix(in_srgb,var(--accent)_14%,transparent)]' : 'border-line bg-surface hover:border-line-strong hover:bg-surface2/60', className)}>{children}</button>
 );
 
+interface Draft { step: number; name: string; avatar: AvatarConfig; langs: string[]; minutes: number; results: Record<string, PlacementResult | undefined>; li: number; testing: boolean }
 export default function Onboarding() {
-  const { createProfile } = useStore(); const nav = useNavigate();
-  const [step, setStep] = useState(0); const [name, setName] = useState(''); const [avatar, setAvatar] = useState<AvatarConfig>(DEFAULT_AVATAR);
-  const [langs, setLangs] = useState<string[]>([]); const [minutes, setMinutes] = useState(15);
-  const [results, setResults] = useState<Record<string, PlacementResult | undefined>>({}); const [li, setLi] = useState(0); const [testing, setTesting] = useState(false);
-  const finish = async (res = results) => { await createProfile({ username: name.trim(), avatar, langs: langs.map((c) => ({ code: c, minutes, placement: res[c] })) }); nav('/'); };
+  const { createProfile, saveStatus } = useStore(); const nav = useNavigate();
+  // Everything entered so far is saved as the learner goes, so a reload, an app update or a killed tab never sends them back to the start.
+  const [d0] = useState(() => loadDraft<Draft>('onboarding'));
+  const [step, setStep] = useState(d0?.step ?? 0); const [name, setName] = useState(d0?.name ?? ''); const [avatar, setAvatar] = useState<AvatarConfig>(d0?.avatar ?? DEFAULT_AVATAR);
+  const [langs, setLangs] = useState<string[]>(d0?.langs ?? []); const [minutes, setMinutes] = useState(d0?.minutes ?? 15);
+  const [results, setResults] = useState<Record<string, PlacementResult | undefined>>(d0?.results ?? {}); const [li, setLi] = useState(d0?.li ?? 0); const [testing, setTesting] = useState(d0?.testing ?? false);
+  const [q, setQ] = useState(''); const [band, setBand] = useState<'all' | 'easy' | 'mid' | 'hard'>('all'); const [pickLevel, setPickLevel] = useState<Cefr | null>(null); const [saving, setSaving] = useState(false);
+  useEffect(() => { if (step > 0 || name) saveDraft<Draft>('onboarding', { step, name, avatar, langs, minutes, results, li, testing }); }, [step, name, avatar, langs, minutes, results, li, testing]);
+  const finish = async (res = results) => { if (saving) return; setSaving(true); await createProfile({ username: name.trim(), avatar, langs: langs.map((c) => ({ code: c, minutes, placement: res[c] })) }); nav('/'); };
+  const shown = useMemo(() => LANGUAGES.filter((l) => (band === 'all' || (band === 'easy' ? (l.fsi?.category ?? 2) <= 1 : band === 'mid' ? (l.fsi?.category ?? 2) === 2 || (l.fsi?.category ?? 2) === 3 : (l.fsi?.category ?? 2) >= 4)) && (!q.trim() || `${l.name} ${l.endonym}`.toLowerCase().includes(q.trim().toLowerCase()))), [q, band]);
+  void saveStatus;
 
   return (
     <div className="app-min-h lg:grid lg:grid-cols-[5fr_6fr]">
@@ -81,18 +91,21 @@ export default function Onboarding() {
             )}
             {step === 2 && (
               <div className="rise"><Say mood="think">Which language shall we start with? Each one keeps its own progress. Starting just one is the best way to make fast progress.</Say>
-                <div className="grid gap-3 sm:grid-cols-2">{LANGUAGES.map((l) => { const on = langs.includes(l.code); return (
-                  <Choice key={l.code} on={on} onClick={() => setLangs((x) => (on ? x.filter((c) => c !== l.code) : [...x, l.code]))} className="relative flex flex-col gap-3 p-4">
-                    <div className="flex items-center gap-3">
-                      <span className={cx('grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-surface2 font-extrabold leading-none', (HELLO[l.code] ?? l.endonym.slice(0, 2)).length > 5 ? 'text-[0.66rem]' : (HELLO[l.code] ?? l.endonym.slice(0, 2)).length > 3 ? 'text-[0.8rem]' : 'text-[1.05rem]')}>{HELLO[l.code] ?? l.endonym.slice(0, 2)}</span>
-                      <div className="min-w-0 flex-1 leading-tight"><p className="truncate text-lg font-extrabold tracking-tight">{l.endonym}</p><p className="text-sm text-muted">{l.name}</p></div>
-                      <span className={cx('grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition', on ? 'border-accent bg-accent text-accent-ink' : 'border-line-strong')}>{on && <Icon name="check" size={14} strokeWidth={3} />}</span>
-                    </div>
-                    <p className="text-sm leading-snug text-muted">{l.blurb}</p>
-                    {l.fsi && <p className="mt-auto"><Chip tone={l.fsi.category <= 1 ? 'good' : l.fsi.category === 2 ? 'accent' : 'warn'}>{['', 'Easier', 'Moderate', 'Hard', 'Hardest'][l.fsi.category]} · ~{l.fsi.hours} h</Chip></p>}
+                <div className="mb-3 space-y-2.5">
+                  <SearchInput value={q} onChange={setQ} placeholder="Search languages…" label="Search languages" />
+                  <div className="no-scrollbar -mx-1 flex gap-1.5 overflow-x-auto px-1 pb-0.5" role="tablist" aria-label="Difficulty">{([['all', 'All'], ['easy', 'Easier for English speakers'], ['mid', 'Moderate'], ['hard', 'Long road']] as const).map(([id, label]) => <button key={id} role="tab" aria-selected={band === id} onClick={() => setBand(id)} className={cx('h-9 shrink-0 whitespace-nowrap rounded-full border px-3.5 text-sm font-semibold transition', band === id ? 'border-accent bg-accent/15 text-accent-strong' : 'border-line-strong bg-surface text-muted hover:bg-surface2 hover:text-ink')}>{label}</button>)}</div>
+                </div>
+                <div className="grid gap-2.5 sm:grid-cols-2">{shown.map((l) => { const on = langs.includes(l.code); const g = HELLO[l.code] ?? l.endonym.slice(0, 2); return (
+                  <Choice key={l.code} on={on} onClick={() => setLangs((x) => (on ? x.filter((c) => c !== l.code) : [...x, l.code]))} className="relative flex items-start gap-3 p-3.5">
+                    <span className={cx('grid h-12 w-12 shrink-0 place-items-center rounded-xl font-extrabold leading-none', on ? 'bg-accent text-accent-ink' : 'bg-surface2', g.length > 5 ? 'text-[0.66rem]' : g.length > 3 ? 'text-[0.8rem]' : 'text-[1.05rem]')}>{g}</span>
+                    <span className="min-w-0 flex-1"><span className="flex items-baseline gap-2"><span className="truncate text-[1.05rem] font-extrabold tracking-tight">{l.endonym}</span><span className="truncate text-sm text-muted">{l.name}</span></span>
+                      <span className="mt-0.5 line-clamp-2 block text-[0.82rem] leading-snug text-muted">{l.blurb}</span>
+                      {l.fsi && <span className="mt-1.5 block"><Chip tone={l.fsi.category <= 1 ? 'good' : l.fsi.category === 2 ? 'accent' : 'warn'}>{['', 'Easier', 'Moderate', 'Hard', 'Hardest'][l.fsi.category]} · ~{l.fsi.hours} h</Chip></span>}</span>
+                    <span className={cx('mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition', on ? 'border-accent bg-accent text-accent-ink' : 'border-line-strong')}>{on && <Icon name="check" size={14} strokeWidth={3} />}</span>
                   </Choice>); })}</div>
+                {!shown.length && <p className="rounded-2xl border border-dashed border-line-strong py-8 text-center text-sm text-muted">No language matches “{q}”.</p>}
                 <p className="mt-4 text-xs text-muted">Difficulty is for English speakers: roughly the class hours to reach professional level.</p>
-                <Footer><Btn variant="ghost" size="lg" onClick={() => setStep(1)}>Back</Btn><Btn size="lg" className="flex-1" disabled={!langs.length} onClick={() => setStep(3)}>{langs.length > 1 ? `Continue with ${langs.length} languages` : 'Continue'}<Icon name="arrow" size={18} /></Btn></Footer></div>
+                <Footer><Btn variant="ghost" size="lg" onClick={() => setStep(1)}>Back</Btn><Btn size="lg" className="flex-1" disabled={!langs.length} onClick={() => setStep(3)}>{langs.length > 1 ? `Continue with ${langs.length} languages` : langs.length === 1 ? `Continue with ${LANGUAGES.find((x) => x.code === langs[0])?.name}` : 'Pick a language'}<Icon name="arrow" size={18} /></Btn></Footer></div>
             )}
             {step === 3 && (
               <div className="rise"><Say>How much time can you give each day? Short and daily beats long and rare, and I'll build every session to fit.</Say>
@@ -102,15 +115,18 @@ export default function Onboarding() {
             )}
             {step === 4 && (() => {
               const code = langs[li]; const l = LANGUAGES.find((x) => x.code === code)!;
-              const next = (res: Record<string, PlacementResult | undefined>) => { setResults(res); setTesting(false); if (li + 1 < langs.length) setLi(li + 1); else void finish(res); };
+              const next = (res: Record<string, PlacementResult | undefined>) => { setResults(res); setTesting(false); setPickLevel(null); if (li + 1 < langs.length) setLi(li + 1); else void finish(res); };
               if (testing) return <PlacementTest code={code} onCancel={() => setTesting(false)} onFinish={(r) => next({ ...results, [code]: r })} />;
               return (
                 <div className="rise"><Say mood="happy">Last question{langs.length > 1 ? ` (${li + 1} of ${langs.length})` : ''}: how much {l.name} do you already know?</Say>
                   <div className="grid gap-3">
-                    <Choice on={false} onClick={() => next({ ...results, [code]: undefined })} className="flex items-center gap-4 p-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-accent/14 text-accent-strong"><Icon name="sparkles" size={22} /></span><span className="flex-1"><b className="block">I'm a complete beginner</b><span className="text-sm text-muted">Start the 30-day programme at day 1. Recommended if unsure.</span></span><Chip tone="accent" className="hidden sm:inline-flex">Best for most</Chip></Choice>
-                    <Choice on={false} onClick={() => setTesting(true)} className="flex items-center gap-4 p-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-surface2 text-muted"><Icon name="target" size={22} /></span><span className="flex-1"><b className="block">I know some {l.name}. Test me</b><span className="text-sm text-muted">An adaptive test of about 15–25 questions. It gets harder while you keep answering correctly, from A1 up to C2.</span></span></Choice>
+                    <Choice on={false} onClick={() => next({ ...results, [code]: undefined })} className="flex items-center gap-4 p-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-accent/14 text-accent-strong"><Icon name="sparkles" size={22} /></span><span className="flex-1"><b className="block">I'm a complete beginner</b><span className="text-sm text-muted">Start the 30-day programme at day 1.</span></span><Chip tone="accent" className="hidden sm:inline-flex">Best for most</Chip></Choice>
+                    <Choice on={false} onClick={() => setTesting(true)} className="flex items-center gap-4 p-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-surface2 text-muted"><Icon name="target" size={22} /></span><span className="flex-1"><b className="block">I know some {l.name}. Test me</b><span className="text-sm text-muted">An adaptive test of about 15–25 questions, A1 up to C2. Your training then starts at the level you place at.</span></span></Choice>
+                    <Choice on={pickLevel !== null} onClick={() => setPickLevel(pickLevel ?? 'B1')} className="flex items-center gap-4 p-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-surface2 text-muted"><Icon name="sliders" size={22} /></span><span className="flex-1"><b className="block">I know my level. Let me choose</b><span className="text-sm text-muted">Fluent or a native speaker? Pick your level and skip the test.</span></span></Choice>
                   </div>
-                  <div className="mt-4"><Note>You can retake placement any time from My Languages.</Note></div>
+                  {pickLevel && <div className="rise mt-4 rounded-2xl border border-line bg-surface p-4"><p className="mb-3 font-bold">Where should your {l.name} training start?</p><LevelList value={pickLevel} onChange={setPickLevel} />
+                    <Btn size="lg" className="mt-4 w-full" disabled={saving} onClick={() => next({ ...results, [code]: pickLevel === 'A1' ? undefined : manualPlacement(pickLevel) })}>{pickLevel === 'A1' ? 'Start at Day 1' : `Start at ${pickLevel} · ${LEVEL_NAME[pickLevel]}`}<Icon name="arrow" size={18} /></Btn></div>}
+                  <div className="mt-4"><Note>You can retake the test or change your level at any time from Home or My Languages. Your progress is saved on this device as you go.</Note></div>
                   <Footer><Btn variant="ghost" size="lg" onClick={() => setStep(3)}>Back</Btn><div className="ml-auto flex items-center gap-2.5"><Avatar cfg={avatar} size={34} /><span className="text-sm font-semibold text-muted">{name}</span></div></Footer></div>
               );
             })()}

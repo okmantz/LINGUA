@@ -1,5 +1,5 @@
 // "What should I do next?" — pure logic behind the guided experience. No UI, fully testable.
-import type { LangState, LanguageContent, Skill } from './types';
+import type { Cefr, LangState, LanguageContent, Skill } from './types';
 import { PROGRAM, PROGRAM_LENGTH } from './program';
 import { resolveProgram, pathwayItems } from './curriculum';
 import type { SessionPlan } from './session';
@@ -13,6 +13,8 @@ export const LIB_KEY: Record<LibKind, (id: string) => string> = {
 };
 export const PASS = 0.8;
 
+/** The level the learner is working at right now: A1 during the beginner programme, otherwise their pathway level (which placement sets). */
+export const currentLevel = (s: LangState): Cefr => (programActive(s) ? 'A1' : s.pathLevel);
 export const programActive = (s: LangState) => s.programDay <= PROGRAM_LENGTH && !s.placement?.skipProgram;
 export const programFinished = (s: LangState) => s.programDay > PROGRAM_LENGTH && !s.placement?.skipProgram;
 
@@ -55,7 +57,7 @@ export function recommendedItem(kind: LibKind, state: LangState, content: Langua
     const pick = today.find((x) => x.id !== exclude && !done(x.id) && !(state.dayProgress[state.programDay] ?? []).includes(LIB_KEY[kind](x.id)));
     if (pick) return pick.id;
   }
-  const lvl = programActive(state) ? 'A1' : state.pathLevel;
+  const lvl = currentLevel(state);
   const atLevel = (pathwayItems(content, lvl)[pathKey[kind]] as { id: string }[]).find((x) => x.id !== exclude && !done(x.id));
   if (atLevel) return atLevel.id;
   return listFor(content, kind).find((x) => x.id !== exclude && !done(x.id))?.id ?? null;

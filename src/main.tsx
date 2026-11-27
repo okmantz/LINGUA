@@ -7,7 +7,10 @@ import './index.css';
 import { registerSW } from 'virtual:pwa-register';
 import { initSpeech } from './core/speech';
 import { SpeechNotice } from './components/SpeechNotice';
+import { markUpdateReady } from './core/update';
+import { flushSaves } from './core/storage';
 
-registerSW({ immediate: true });
+// A new version waits quietly (see core/update.ts); the learner taps "Update" when it suits them. Saves are flushed first.
+const updateSW = registerSW({ immediate: true, onNeedRefresh() { markUpdateReady(() => { void flushSaves().finally(() => void updateSW(true)); }); } });
 initSpeech();
 createRoot(document.getElementById('root')!).render(<StrictMode><HashRouter><StoreProvider><App /><SpeechNotice /></StoreProvider></HashRouter></StrictMode>);

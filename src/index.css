@@ -41,16 +41,18 @@
 }
 
 :root {
-  --bg: #f5f6f9; --surface: #ffffff; --surface2: #eff1f5; --surface3: #e5e8ee;
-  --ink: #0c1322; --muted: #566074; --faint: #8a94a6; --line: #e4e7ee; --line-strong: #d3d8e2;
+  --bg: #f6f7fa; --surface: #ffffff; --surface2: #f0f2f6; --surface3: #e6e9ef;
+  --ink: #0b1220; --muted: #546075; --faint: #8893a6; --line: #e5e8ef; --line-strong: #d2d8e3;
   --accent: #14b8a6; --accent-ink: #06201c;
   --accent-strong: color-mix(in oklab, var(--accent) 62%, #000);
   --good: #15803d; --bad: #dc2626; --warn: #b45309;
   --shadow-xs: 0 1px 2px rgb(12 19 34 / .05);
   --shadow: 0 1px 2px rgb(12 19 34 / .04), 0 6px 20px -10px rgb(12 19 34 / .12);
   --shadow-lg: 0 18px 50px -18px rgb(12 19 34 / .32), 0 2px 6px rgb(12 19 34 / .06);
-  --hero-a: #0a1430; --hero-b: #16296a;
+  /* The hero follows the accent colour, so the whole app feels like one palette whichever accent is chosen. */
+  --hero-a: color-mix(in oklab, var(--accent) 18%, #0a1228); --hero-b: color-mix(in oklab, var(--accent) 38%, #17286a);
   --ring-track: rgb(12 19 34 / .08);
+  --lv-a: #10b981; --lv-b: #6366f1; --lv-c: #f59e0b;
   color-scheme: light;
 }
 :root[data-theme="dark"] {
@@ -61,8 +63,9 @@
   --shadow-xs: 0 1px 2px rgb(0 0 0 / .35);
   --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px -12px rgb(0 0 0 / .55);
   --shadow-lg: 0 22px 60px -20px rgb(0 0 0 / .8), 0 2px 8px rgb(0 0 0 / .4);
-  --hero-a: #0f1a3f; --hero-b: #243f8c;
+  --hero-a: color-mix(in oklab, var(--accent) 16%, #0b1431); --hero-b: color-mix(in oklab, var(--accent) 34%, #223a85);
   --ring-track: rgb(255 255 255 / .09);
+  --lv-a: #34d399; --lv-b: #818cf8; --lv-c: #fbbf24;
   color-scheme: dark;
 }
 :root[data-large="1"] { font-size: 18px; }
@@ -124,7 +127,7 @@ summary { list-style: none; } summary::-webkit-details-marker { display: none; }
 .eyebrow { font-size: .6875rem; font-weight: 650; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
 
 /* ───────────────────────── Components ───────────────────────── */
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: 1.25rem; box-shadow: var(--shadow); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 1.25rem; box-shadow: var(--shadow-xs), 0 8px 24px -16px rgb(12 19 34 / .14); }
 .card-hover { transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
 .card-hover:hover { transform: translateY(-1px); border-color: var(--line-strong); box-shadow: var(--shadow-lg); }
 
@@ -178,6 +181,21 @@ summary { list-style: none; } summary::-webkit-details-marker { display: none; }
 @keyframes celebrate { 0% { transform: scale(.6) rotate(-8deg); opacity: 0 } 60% { transform: scale(1.08) rotate(2deg); opacity: 1 } 100% { transform: scale(1) rotate(0) } }
 .celebrate { animation: celebrate .5s cubic-bezier(.2,.9,.3,1.2) both; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* ───────────────────────── Levels (A = green, B = indigo, C = amber) ───────────────────────── */
+.lv-a { --lv: var(--lv-a); } .lv-b { --lv: var(--lv-b); } .lv-c { --lv: var(--lv-c); }
+.lv-badge { display: inline-grid; place-items: center; font-weight: 800; letter-spacing: -0.01em; font-variant-numeric: tabular-nums;
+  color: color-mix(in oklab, var(--lv) 72%, var(--ink)); background: color-mix(in srgb, var(--lv) 15%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lv) 28%, transparent); }
+.lv-solid { background: var(--lv); color: #fff; box-shadow: 0 6px 16px -8px var(--lv); }
+.lv-dot { background: var(--lv); }
+
+/* ───────────────────────── Dialogs ───────────────────────── */
+@keyframes dialog { 0% { transform: translateY(24px) scale(.98); opacity: 0 } 100% { transform: none; opacity: 1 } }
+.dialog-in { animation: dialog .26s cubic-bezier(.2,.8,.2,1); }
+
+/* Soft section divider with a label */
+.divider-label { display: flex; align-items: center; gap: .75rem; color: var(--faint); font-size: .6875rem; font-weight: 650; letter-spacing: .09em; text-transform: uppercase; }
+.divider-label::before, .divider-label::after { content: ""; height: 1px; flex: 1; background: var(--line); }
 
 /* ASL figures: the pause button freezes the loop. */
 .sign-paused *, .sign-paused { animation-play-state: paused !important; }

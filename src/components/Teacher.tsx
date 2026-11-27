@@ -38,17 +38,14 @@ export function TeacherDock() {
   const unseen = tips.filter((t) => t.id !== 'next' && !seen[t.id]);
   const tip = tips[Math.min(idx, Math.max(0, tips.length - 1))];
 
-  // Navigating never opens the Teacher by itself. She only opens on her own for an `important` tip (the first-run welcome, the
-  // 30-day milestone), once ever; everything else waits behind the widget, which shows a dot when she has something new to say.
+  // The Teacher never pops up over the lesson by herself any more: on a phone a floating bubble covered the very thing you were trying to read.
+  // She waits behind the little avatar (top bar on phones, bottom-right on desktop), which shows a dot when she has something to say.
+  // The first-run welcome is a card on Home instead (see Dashboard); its button opens the tour through the 'lingua:teacher' event below.
+  useEffect(() => { setOpen(false); setTour(0); }, [loc.pathname]);
   useEffect(() => {
-    setOpen(false); setTour(0);
-    if (off || store.focus || autoFor.current === loc.pathname) return;
-    const first = tips.findIndex((t) => t.important && !seen[t.id]);
-    if (first < 0) return;
-    const id = setTimeout(() => { autoFor.current = loc.pathname; setIdx(first); setAuto(tips[first].id !== 'tour-v1'); setOpen(true); }, 1100);
-    return () => clearTimeout(id);
-    // eslint-disable-next-line
-  }, [loc.pathname, off, store.focus]);
+    const h = () => { const first = tips.findIndex((t) => !seen[t.id] && t.id !== 'next'); setIdx(first >= 0 ? first : 0); setAuto(false); setOpen((o) => !o); };
+    window.addEventListener('lingua:teacher', h); return () => window.removeEventListener('lingua:teacher', h);
+  });
   useEffect(() => { if (!open) return; const t = tips[idx]; if (t && t.id !== 'next' && !seen[t.id] && !(t.id === 'tour-v1' && tour < TOUR.length - 1)) store.markTipSeen(t.id); /* eslint-disable-next-line */ }, [open, idx, tour]);
   // A tip that popped up by itself tidies itself away after a while, unless the learner engages with it.
   useEffect(() => { if (!open || !auto) return; const id = setTimeout(() => { const t = tips[idx]; if (t && t.id !== 'next') store.markTipSeen(t.id); setOpen(false); setAuto(false); }, 11000); return () => clearTimeout(id); /* eslint-disable-next-line */ }, [open, auto, idx]);
@@ -59,7 +56,7 @@ export function TeacherDock() {
   const close = () => { if (tip.id !== 'next') store.markTipSeen(tip.id); setOpen(false); };
   const go = (to: string) => { close(); nav(to); };
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(6rem+env(safe-area-inset-bottom))] z-40 flex flex-col items-end gap-2 px-3 lg:bottom-6 lg:right-6 lg:left-auto lg:px-0 lg:pr-0">
+    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(6.25rem+env(safe-area-inset-bottom))] z-40 flex flex-col items-end gap-2 px-3 lg:bottom-6 lg:right-6 lg:left-auto lg:px-0 lg:pr-0">
       {open && (
         <div role="dialog" aria-label={`${TEACHER.name} tip`} onPointerDown={() => setAuto(false)} className="pointer-events-auto pop w-[min(21rem,calc(100vw-1.5rem))] rounded-3xl border border-line bg-surface p-4 shadow-[var(--shadow-lg)]">
           <div className="flex items-start gap-3">
@@ -84,7 +81,7 @@ export function TeacherDock() {
         </div>
       )}
       <button onClick={() => { setOpen((o) => !o); if (!open && unseen[0]) setIdx(tips.indexOf(unseen[0])); }} aria-expanded={open} aria-label={open ? 'Close Teacher' : 'Ask your Teacher'}
-        className="pointer-events-auto relative rounded-full shadow-[var(--shadow-lg)] ring-[3px] ring-surface transition hover:scale-105 active:scale-95">
+        className="pointer-events-auto relative hidden rounded-full shadow-[var(--shadow-lg)] ring-[3px] ring-surface transition hover:scale-105 active:scale-95 lg:block">
         <TeacherAvatar size={52} mood={tip.mood} className={cx('rounded-full', !open && unseen.length > 0 && 'bob')} />
         {!open && unseen.length > 0 && <><span className="ping-soft absolute right-0 top-0 h-3.5 w-3.5 rounded-full bg-accent" /><span className="absolute right-0 top-0 h-3.5 w-3.5 rounded-full border-2 border-surface bg-accent" /></>}
       </button>

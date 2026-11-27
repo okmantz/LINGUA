@@ -1,4 +1,5 @@
 // "Your Path": the whole plan on one screen, so the learner always knows where they are, what's next and why.
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useGuide } from '../state/hooks';
 import { PHASES, PROGRAM, PROGRAM_LENGTH } from '../core/program';
@@ -7,7 +8,8 @@ import { LIB_KEY, PASS, programActive, type LibKind } from '../core/guide';
 import { CEFR_ORDER, type Cefr } from '../core/types';
 import { levelProgress, LEVEL_UP_AT } from '../core/progression';
 import { Icon } from '../components/Icon';
-import { Btn, Card, Chip, H1, IconBadge, Progress, Ring, cx } from '../components/ui';
+import { LevelPicker } from '../components/LevelPicker';
+import { Btn, Card, Chip, H1, IconBadge, LEVEL_CAN, LEVEL_NAME, LevelBadge, LevelLadder, Progress, Ring, cx } from '../components/ui';
 
 export default function Path() {
   const { state, content, cfg, plan } = useGuide();
@@ -59,27 +61,39 @@ export default function Path() {
   );
 }
 
-/** After the programme (or after skipping it): progress by CEFR level, with the next lesson to take. */
+/** After the programme (or after placing above A1): progress by CEFR level, with the next lesson to take. Training always starts at the learner's own level. */
 function PathwayView() {
-  const { state, content, cfg, next, store } = useGuide();
+  const { state, content, cfg, next, store } = useGuide(); const [pick, setPick] = useState(false);
   const lp = levelProgress(state, content, state.pathLevel);
   const KINDS: [LibKind, string, string][] = [['grammar', 'Grammar', '/grammar'], ['conversations', 'Conversations', '/conversations'], ['listening', 'Listening', '/listening'], ['reading', 'Reading', '/reading'], ['writing', 'Writing', '/writing'], ['pronunciation', 'Pronunciation', '/pronunciation']];
   const listOf = (k: LibKind): { id: string; level: Cefr }[] => (k === 'pronunciation' ? content.pronunciation : content[k]);
   const levels = CEFR_ORDER.filter((l) => KINDS.some(([k]) => listOf(k).some((x) => x.level === l)));
+  const ladder = Object.fromEntries(levels.map((l) => [l, levelProgress(state, content, l).ratio])) as Partial<Record<Cefr, number>>;
   return (
     <div>
-      <H1 eyebrow={`${cfg.name} pathway`} sub="Finish what's available at your level, then move up.">Your path</H1>
-      <Card className="mb-6 border-accent/40 bg-gradient-to-br from-accent/[.07] to-surface"><p className="eyebrow">Current level</p><p className="mt-1 text-4xl font-extrabold tracking-tight">{state.pathLevel}</p><p className="mt-2 text-sm text-muted"><b className="text-ink">{next.title}.</b> {next.body}</p><Link to={next.to}><Btn className="mt-4">{next.cta}<Icon name="arrow" size={17} /></Btn></Link>
-        {lp.total > 0 && <><Progress value={lp.ratio} className="mt-4" label="Level progress" /><p className="mt-1 text-xs text-muted">{lp.passed} of {lp.total} {state.pathLevel} lessons passed. At {Math.round(LEVEL_UP_AT * 100)}% you move up to the next level automatically.</p></>}
-        <div className="mt-5 flex flex-wrap items-center gap-1.5 border-t border-line pt-4 text-sm"><span className="mr-1 text-muted">Not the right level?</span>{CEFR_ORDER.map((l) => <button key={l} aria-pressed={l === state.pathLevel} onClick={() => store.patchLang(state.code, (s) => ({ ...s, pathLevel: l }))} className={cx('tabular h-8 min-w-10 rounded-full border px-3 text-[0.82rem] font-bold transition', l === state.pathLevel ? 'border-accent bg-accent/15 text-accent-strong' : 'border-line-strong text-muted hover:bg-surface2 hover:text-ink')}>{l}</button>)}</div></Card>
-      <div className="space-y-4">{levels.map((lvl) => (
-        <Card key={lvl}><div className="mb-4 flex items-center gap-2"><h2 className="text-xl font-extrabold tracking-tight">{lvl}</h2>{lvl === state.pathLevel && <Chip tone="accent">You are here</Chip>}</div>
-          <div className="space-y-2.5">{KINDS.map(([k, label, to]) => {
-            const list = listOf(k).filter((x) => x.level === lvl); if (!list.length) return null;
-            const passed = list.filter((x) => (state.lessons[LIB_KEY[k](x.id)]?.best ?? 0) >= PASS).length;
-            return <Link key={k} to={to} className="block rounded-xl px-2 py-1.5 transition hover:bg-surface2/70"><div className="flex items-center justify-between text-sm"><span className="font-medium">{label}</span><span className="tabular text-xs font-semibold text-muted">{passed}/{list.length}</span></div><Progress value={passed / list.length} className="mt-1.5" label={label} /></Link>;
-          })}</div></Card>
-      ))}</div>
+      <H1 eyebrow={`${cfg.name} pathway`} sub="Your lessons start at your level. Finish most of them and the next level opens up.">Your path</H1>
+      <Card className="mb-6 overflow-hidden !p-0">
+        <div className={cx(state.pathLevel[0] === 'A' ? 'lv-a' : state.pathLevel[0] === 'B' ? 'lv-b' : 'lv-c', 'bg-[linear-gradient(135deg,color-mix(in_srgb,var(--lv)_14%,transparent),transparent_65%)] p-5 sm:p-6')}>
+          <div className="flex items-start gap-4"><LevelBadge level={state.pathLevel} size="lg" solid className="!h-14 !min-w-16 !text-2xl" /><div className="min-w-0 flex-1"><p className="eyebrow">You are training at</p><p className="text-2xl font-extrabold leading-tight tracking-tight">{LEVEL_NAME[state.pathLevel]}</p><p className="mt-1 text-sm text-muted">{LEVEL_CAN[state.pathLevel]}</p></div><Btn size="sm" variant="ghost" onClick={() => setPick(true)}>Change level</Btn></div>
+          <p className="mt-4 text-sm text-muted"><b className="text-ink">{next.title}.</b> {next.body}</p><Link to={next.to}><Btn className="mt-4">{next.cta}<Icon name="arrow" size={17} /></Btn></Link>
+          {lp.total > 0 && <><Progress value={lp.ratio} className="mt-5" label="Level progress" /><p className="mt-1.5 text-xs text-muted">{lp.passed} of {lp.total} {state.pathLevel} lessons passed. At {Math.round(LEVEL_UP_AT * 100)}% you move up to the next level automatically.</p></>}
+        </div>
+        <div className="border-t border-line px-5 py-4 sm:px-6"><LevelLadder level={state.pathLevel} done={ladder} compact /></div>
+      </Card>
+      <LevelPicker open={pick} onClose={() => setPick(false)} current={state.pathLevel} language={cfg.name} onChoose={(l) => store.chooseLevel(state.code, l)} />
+      <div className="space-y-4">{levels.map((lvl) => {
+        const here = lvl === state.pathLevel;
+        const body = KINDS.map(([k, label, to]) => {
+          const list = listOf(k).filter((x) => x.level === lvl); if (!list.length) return null;
+          const passed = list.filter((x) => (state.lessons[LIB_KEY[k](x.id)]?.best ?? 0) >= PASS).length;
+          return <Link key={k} to={to} className="block rounded-xl px-2 py-1.5 transition hover:bg-surface2/70"><div className="flex items-center justify-between text-sm"><span className="font-medium">{label}</span><span className="tabular text-xs font-semibold text-muted">{passed}/{list.length}</span></div><Progress value={passed / list.length} className="mt-1.5" label={label} /></Link>;
+        });
+        return here ? (
+          <Card key={lvl}><div className="mb-4 flex items-center gap-2.5"><LevelBadge level={lvl} solid /><h2 className="text-lg font-extrabold tracking-tight">{LEVEL_NAME[lvl]}</h2><Chip tone="accent">You are here</Chip></div><div className="space-y-2.5">{body}</div></Card>
+        ) : (
+          <details key={lvl} className="group card !p-0"><summary className="flex min-h-14 cursor-pointer items-center gap-3 px-4 py-3 sm:px-5"><LevelBadge level={lvl} /><span className="font-bold tracking-tight">{LEVEL_NAME[lvl]}</span>{(ladder[lvl] ?? 0) >= 1 && <Chip tone="good"><Icon name="check" size={12} strokeWidth={3} />Done</Chip>}<Icon name="down" size={16} className="ml-auto text-faint transition-transform group-open:rotate-180" /></summary><div className="space-y-2.5 border-t border-line p-4 sm:px-5">{body}<button onClick={() => store.chooseLevel(state.code, lvl)} className="mt-2 text-sm font-bold text-accent-strong hover:underline">Train at {lvl}</button></div></details>
+        );
+      })}</div>
     </div>
   );
 }

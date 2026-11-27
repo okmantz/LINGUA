@@ -57,7 +57,15 @@ export function NewVocabBlock({ ids, onDone }: { ids: string[]; onDone: (score: 
   const words = useMemo(() => ids.map((id) => content.vocab.find((v) => v.id === id)!).filter(Boolean), [ids, content]);
   const [phase, setPhase] = useState<'learn' | 'test'>('learn'); const [i, setI] = useState(0);
   const [tests, setTests] = useState<CardExercise[]>([]); const [first, setFirst] = useState<Record<string, boolean>>({}); const [t, setT] = useState(0);
-  const begin = () => { setTests(words.map((w) => makeExercise(w, 'recog', content.vocab, rnd))); setPhase('test'); };
+  // "I already know this": for learners placed above beginner many new words are familiar. Marking one counts as an easy recall and skips its quiz.
+  const [known, setKnown] = useState<string[]>([]);
+  const begin = (k: string[] = known) => { setTests(words.filter((w) => !k.includes(w.id)).map((w) => makeExercise(w, 'recog', content.vocab, rnd))); setPhase('test'); };
+  const knowIt = (all: boolean) => {
+    const ids = all ? words.map((x) => x.id) : [words[i].id];
+    ids.forEach((id) => store.reviewCard(id, { grade: 4, correct: true, mode: 'recog', ms: 0 }));
+    const k = [...new Set([...known, ...ids])]; setKnown(k);
+    if (all || i + 1 >= words.length) begin(k); else setI(i + 1);
+  };
   if (phase === 'learn') {
     const w = words[i];
     return (
@@ -65,7 +73,8 @@ export function NewVocabBlock({ ids, onDone }: { ids: string[]; onDone: (score: 
         <div className="mx-auto mb-2 max-w-2xl"><div className="flex items-center gap-3"><Progress value={i / words.length} className="flex-1" label="Words introduced" /><span className="tabular text-xs font-bold text-muted">{i + 1}/{words.length}</span></div>
           <p className="mb-4 mt-3 text-sm text-muted">New word {i + 1} of {words.length}. Say it aloud, then continue. You'll be tested on it straight away.</p></div>
         <div className="mx-auto max-w-2xl"><WordCard e={w} rate={rate} showRoman={!flags.hideRoman && (store.profile?.settings.showRomanization ?? true)} />
-        <div className="mt-4 flex gap-2.5">{i > 0 && <Btn variant="ghost" size="lg" onClick={() => setI(i - 1)}>Back</Btn>}<Btn size="lg" className="flex-1" onClick={() => (i + 1 < words.length ? setI(i + 1) : begin())}>{i + 1 < words.length ? 'Next word' : 'Start the quick test'}<Icon name="arrow" size={18} /></Btn></div></div>
+        <div className="mt-4 flex gap-2.5">{i > 0 && <Btn variant="ghost" size="lg" onClick={() => setI(i - 1)}>Back</Btn>}<Btn size="lg" className="flex-1" onClick={() => (i + 1 < words.length ? setI(i + 1) : begin())}>{i + 1 < words.length ? 'Next word' : 'Start the quick test'}<Icon name="arrow" size={18} /></Btn></div>
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-1"><button onClick={() => knowIt(false)} className="min-h-10 text-sm font-semibold text-muted underline-offset-2 hover:text-ink hover:underline">I already know this word</button>{words.length - known.length > 1 && <button onClick={() => knowIt(true)} className="min-h-10 text-sm font-semibold text-muted underline-offset-2 hover:text-ink hover:underline">I know all of these</button>}</div></div>
       </div>
     );
   }

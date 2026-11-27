@@ -1,13 +1,15 @@
 // App state: profile + cards + events held in memory, persisted to IndexedDB on every change.
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import type { Card, Cefr, EventRec, Grade, LangCode, LangState, LanguageContent, Mode, PlacementResult, Profile, Settings, Skill, AvatarConfig } from '../core/types';
-import { addEvent, exportBackup, importBackup, loadCards, loadEvents, loadProfile, requestPersistence, saveCard, saveProfile, wipeAll, SCHEMA_VERSION } from '../core/storage';
+import { addEvent, blockSaves, exportBackup, flushSaves, getSaveStatus, importBackup, loadCards, loadEvents, loadProfileRobust, requestPersistence, saveCard, saveProfile, subscribeSaveStatus, wipeAll, SCHEMA_VERSION, type SaveStatus } from '../core/storage';
+import { clearDraftsWith } from '../core/drafts';
 import { dayKey, newCard, review } from '../core/fsrs';
 import { loadContent, getLang } from '../content/registry';
 import { computeStats, tierFor, type Stats } from '../core/analytics';
 import { ACHIEVEMENTS, newlyEarned, type Ach } from '../core/achievements';
 import { applyCompletion } from '../core/progression';
 import { PROGRAM_LENGTH } from '../core/program';
+import { cefrIndex } from '../core/types';
 
 export const DEFAULT_SETTINGS: Settings = { mode: 'system', accent: 'teal', ttsRate: 0.9, reminders: false, reminderTime: '19:00', showRomanization: true, reducedMotion: false, largeText: false };
 export const DEFAULT_AVATAR: AvatarConfig = { char: 'alex' };
@@ -31,6 +33,10 @@ export interface Store {
   ready: boolean; profile: Profile | null; lang: LangCode | null; state: LangState | null;
   content: LanguageContent | null; contents: Record<string, LanguageContent>;
   cards: Card[]; cardMap: Map<string, Card>; events: EventRec[]; stats: Stats | null; toasts: Toast[]; persisted: boolean;
+  /** Set when saved data exists but could not be read; the app must not start a blank profile over it. */
+  loadError: string | null; retryLoad: () => void; startFresh: () => void; saveStatus: SaveStatus;
+  /** Apply a placement result (test or manual choice) to a language: the pathway then starts at that level. */
+  applyPlacement: (code: LangCode, r: PlacementResult, level?: Cefr) => void; chooseLevel: (code: LangCode, level: Cefr) => void;
   createProfile: (p: { username: string; avatar: AvatarConfig; langs: { code: LangCode; minutes: number; placement?: PlacementResult }[] }) => Promise<void>;
   addLanguage: (code: LangCode, minutes: number, placement?: PlacementResult) => Promise<void>;
   setActiveLang: (c: LangCode) => void;
@@ -62,28 +68,42 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [persisted, setPersisted] = useState(false);
   const [focus, setFocus] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null); const [loadTry, setLoadTry] = useState(0);
+  const saveStatus = useSyncExternalStore(subscribeSaveStatus, getSaveStatus, getSaveStatus);
   const profRef = useRef<Profile | null>(null); profRef.current = profile;
   const cardsRef = useRef<Card[]>([]); cardsRef.current = cards;
   const eventsRef = useRef<EventRec[]>([]); eventsRef.current = events;
   const contentsRef = useRef<Record<string, LanguageContent>>({}); contentsRef.current = contents;
-  const toastId = useRef(1);
+  const toastId = useRef(1); const evaluateRef = useRef<() => void>(() => undefined);
 
   const toast = useCallback((title: string, body?: string) => {
     const id = toastId.current++; setToasts((t) => [...t, { id, title, body }]);
     setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 5200);
   }, []);
 
-  const setProfile = useCallback((p: Profile) => { profRef.current = p; setProfileS(p); void saveProfile(p); }, []);
+  const setProfile = useCallback((p: Profile) => { const stamped = { ...p, updatedAt: Date.now() }; profRef.current = stamped; setProfileS(stamped); void saveProfile(stamped); }, []);
 
-  // initial load
+  // initial load: never mistake "could not read" for "nothing saved" (that would send a returning learner back to onboarding and overwrite their data)
   useEffect(() => { (async () => {
     try {
-      const p = await loadProfile(); const cs = await loadCards(); const ev = await loadEvents();
-      setCards(cs); setEvents(ev); if (p) { setProfileS(p); profRef.current = p; }
+      const r = await loadProfileRobust();
+      if (r.error && !r.profile) { blockSaves(true); setLoadError(r.error); setReady(true); return; }
+      blockSaves(false); setLoadError(null);
+      let cs: Card[] = []; let ev: EventRec[] = [];
+      try { cs = await loadCards(); ev = await loadEvents(); } catch (e) { console.error(e); }
+      setCards(cs); setEvents(ev); if (r.profile) { setProfileS(r.profile); profRef.current = r.profile; }
       setPersisted(await requestPersistence());
-    } catch (e) { console.error(e); }
+    } catch (e) { console.error(e); blockSaves(true); setLoadError(String((e as Error)?.message ?? e)); }
     setReady(true);
-  })(); }, []);
+  })(); }, [loadTry]);
+
+  // Save the moment the page is hidden or closed (switching apps, locking the phone, closing the tab), and again when it comes back.
+  useEffect(() => {
+    const flush = () => { const p = profRef.current; if (p) void saveProfile(p); void flushSaves(); };
+    const vis = () => { if (document.visibilityState === 'hidden') flush(); else { requestPersistence().then(setPersisted).catch(() => undefined); } };
+    document.addEventListener('visibilitychange', vis); window.addEventListener('pagehide', flush); window.addEventListener('freeze', flush);
+    return () => { document.removeEventListener('visibilitychange', vis); window.removeEventListener('pagehide', flush); window.removeEventListener('freeze', flush); };
+  }, []);
 
   // load content for every language the user has started
   const codes = profile ? Object.keys(profile.languages).join(',') : '';
@@ -117,12 +137,27 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const createProfile: Store['createProfile'] = useCallback(async ({ username, avatar, langs }) => {
     const languages: Record<string, LangState> = {}; langs.forEach((l) => { languages[l.code] = newLangState(l.code, l.minutes, l.placement); });
     const p: Profile = { schema: SCHEMA_VERSION, id: crypto.randomUUID?.() ?? String(Date.now()), username, avatar, createdAt: Date.now(), activeLang: langs[0]?.code ?? null, languages, achievements: {}, settings: DEFAULT_SETTINGS, unlockedCosmetics: [] };
-    setProfile(p);
+    setProfile(p); clearDraftsWith('onboarding'); clearDraftsWith('placement.'); void requestPersistence().then(setPersisted);
   }, [setProfile]);
   const addLanguage: Store['addLanguage'] = useCallback(async (code, minutes, placement) => {
     patchProfile((p) => ({ ...p, activeLang: code, languages: { ...p.languages, [code]: p.languages[code] ?? newLangState(code, minutes, placement) } }));
   }, [patchProfile]);
   const setActiveLang = useCallback((c: LangCode) => patchProfile((p) => (p.languages[c] ? { ...p, activeLang: c } : p)), [patchProfile]);
+  const applyPlacement: Store['applyPlacement'] = useCallback((code, r, level) => {
+    patchLang(code, (s) => {
+      const lvl = level ?? r.overall; const skip = cefrIndex(lvl) >= 1;
+      // Back to A1: resume the beginner programme where the learner left off. Above A1: leave it and work at that level.
+      let next = 1; while (next <= PROGRAM_LENGTH && s.programDone[next]) next++;
+      return {
+        ...s, placement: { ...r, overall: lvl, skipProgram: skip, startDay: skip ? PROGRAM_LENGTH + 1 : 1 },
+        programDay: skip ? PROGRAM_LENGTH + 1 : next, pathLevel: skip ? lvl : next > PROGRAM_LENGTH ? 'A2' : 'A1',
+      };
+    });
+    setTimeout(() => evaluateRef.current(), 50);
+  }, [patchLang]);
+  const chooseLevel: Store['chooseLevel'] = useCallback((code, level) => {
+    applyPlacement(code, { takenAt: Date.now(), overall: level, bySkill: {}, weaknesses: [], startDay: 1, skipProgram: false, answered: 0, correct: 0, confidence: 'low', manual: true }, level);
+  }, [applyPlacement]);
   const updateSettings = useCallback((s: Partial<Settings>) => patchProfile((p) => ({ ...p, settings: { ...p.settings, ...s } })), [patchProfile]);
 
   const logEvent: Store['logEvent'] = useCallback((e) => {
@@ -177,6 +212,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     if (next !== p) setProfile(next);
   }, [setProfile, toast]);
 
+  evaluateRef.current = evaluate;
   const completeBlock: Store['completeBlock'] = useCallback((key, score, programDay) => {
     const l = profRef.current?.activeLang; const c = l ? contentsRef.current[l] : null; if (!l || !c) return;
     let completed: number | null = null;
@@ -203,7 +239,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const doWipe = useCallback(async () => { await wipeAll(); setProfileS(null); profRef.current = null; setCards([]); setEvents([]); }, []);
 
   const value: Store = {
-    ready, profile, lang, state, content, contents, cards: langCards, cardMap, events: langEvents, stats, toasts, persisted,
+    ready, profile, lang, state, content, contents, cards: langCards, cardMap, events: langEvents, stats, toasts, persisted, loadError, saveStatus,
+    retryLoad: () => { setReady(false); setLoadTry((n) => n + 1); }, startFresh: () => { blockSaves(false); setLoadError(null); }, applyPlacement, chooseLevel,
     createProfile, addLanguage, setActiveLang, patchLang, patchProfile, updateSettings, reviewCard, logEvent, recordStudy, completeBlock, evaluate, dismissToast,
     doExport, doImport, doWipe, refreshAchievementsFor: evaluate, markTipSeen, setTeacherOff, resetTips, focus, setFocus,
   };

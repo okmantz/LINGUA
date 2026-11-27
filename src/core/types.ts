@@ -130,6 +130,8 @@ export interface PlacementResult {
   startDay: number; skipProgram: boolean; answered: number; correct: number;
   /** Ability estimate on the CEFR scale (A1 = 0 … C2 = 5), its standard error and how much to trust it. */
   theta?: number; sd?: number; confidence?: 'low' | 'medium' | 'high'; range?: [Cefr, Cefr]; skipped?: number;
+  /** True when the learner chose their level themselves instead of taking the test. */
+  manual?: boolean;
 }
 export interface DayRecord { completedAt: number; score: number; }
 export interface LangState {
@@ -157,6 +159,8 @@ export interface Profile {
   achievements: Record<string, number>; settings: Settings; unlockedCosmetics: string[];
   lastBackup?: number;
   teacher?: TeacherPrefs;
+  /** Set on every save; when IndexedDB and the localStorage mirror disagree, the newer one wins. */
+  updatedAt?: number;
 }
 
 // ── Cards (spaced repetition) ──

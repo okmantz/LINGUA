@@ -170,3 +170,63 @@ export function Sheet({ open, onClose, title, children }: { open: boolean; onClo
     </div>
   );
 }
+
+
+/* ───────────── Levels ───────────── */
+import type { Cefr } from '../core/types';
+import { CEFR_ORDER } from '../core/types';
+export const LEVEL_NAME: Record<Cefr, string> = { A1: 'Beginner', A2: 'Elementary', B1: 'Intermediate', B2: 'Upper intermediate', C1: 'Advanced', C2: 'Mastery' };
+/** What the learner can typically do at each level, in plain words. */
+export const LEVEL_CAN: Record<Cefr, string> = {
+  A1: 'Greetings, introductions and the most basic everyday phrases.',
+  A2: 'Simple conversations about routine things: shopping, family, work, directions.',
+  B1: 'Handle most travel situations; describe experiences, plans and opinions.',
+  B2: 'Follow complex texts and talk with native speakers fluently and spontaneously.',
+  C1: 'Use the language flexibly for work and study, with nuance and implied meaning.',
+  C2: 'Near-native precision: subtle shades of meaning, idiom, register and style.',
+};
+export const levelBand = (l: Cefr) => (l[0] === 'A' ? 'lv-a' : l[0] === 'B' ? 'lv-b' : 'lv-c');
+export function LevelBadge({ level, solid, size = 'md', className }: { level: Cefr; solid?: boolean; size?: 'sm' | 'md' | 'lg'; className?: string }) {
+  const sz = { sm: 'h-5 min-w-8 rounded-md px-1.5 text-[11px]', md: 'h-7 min-w-10 rounded-lg px-2 text-xs', lg: 'h-12 min-w-14 rounded-2xl px-3 text-xl' }[size];
+  return <span className={cx(levelBand(level), 'lv-badge', solid && 'lv-solid', sz, className)}>{level}</span>;
+}
+/** The six CEFR levels as a ladder. With `onPick` it becomes a level chooser. */
+export function LevelLadder({ level, onPick, done, compact, className }: { level: Cefr; onPick?: (l: Cefr) => void; done?: Partial<Record<Cefr, number>>; compact?: boolean; className?: string }) {
+  const idx = CEFR_ORDER.indexOf(level);
+  return (
+    <ol className={cx('grid grid-cols-6 gap-1.5', className)} aria-label="Language level">
+      {CEFR_ORDER.map((l, i) => {
+        const here = l === level; const past = i < idx; const Tag: any = onPick ? 'button' : 'div';
+        return (
+          <li key={l} className="min-w-0">
+            <Tag {...(onPick ? { type: 'button', onClick: () => onPick(l), 'aria-pressed': here } : {})} className={cx(levelBand(l), 'relative flex w-full flex-col items-center rounded-xl border text-center transition', compact ? 'gap-1 px-1 py-2' : 'gap-1.5 px-1 py-3', here ? 'border-[color:var(--lv)] bg-[color-mix(in_srgb,var(--lv)_12%,var(--surface))] shadow-[0_0_0_3px_color-mix(in_srgb,var(--lv)_18%,transparent)]' : 'border-line bg-surface', onPick && !here && 'hover:border-line-strong hover:bg-surface2')}>
+              <span className={cx('lv-badge h-7 min-w-9 rounded-lg px-1.5 text-xs', here && 'lv-solid', past && !here && 'opacity-60')}>{l}</span>
+              {!compact && <span className="line-clamp-1 w-full px-0.5 text-[10px] font-semibold leading-tight text-muted">{LEVEL_NAME[l]}</span>}
+              {done?.[l] !== undefined && <span className="h-1 w-3/4 overflow-hidden rounded-full bg-surface3"><span className="lv-dot block h-full rounded-full" style={{ width: `${Math.round((done[l] ?? 0) * 100)}%` }} /></span>}
+            </Tag>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+/** Centered dialog on desktop, bottom sheet on phones. */
+export function Modal({ open, onClose, title, children, wide }: { open: boolean; onClose: () => void; title: string; children: ReactNode; wide?: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return; const h = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); }; window.addEventListener('keydown', h);
+    const prev = document.body.style.overflow; document.body.style.overflow = 'hidden'; ref.current?.focus();
+    return () => { window.removeEventListener('keydown', h); document.body.style.overflow = prev; };
+  }, [open, onClose]);
+  if (!open) return null;
+  return (
+    <div className="fixed inset-0 z-[80] grid items-end sm:place-items-center" role="dialog" aria-modal="true" aria-label={title}>
+      <div className="fade-in absolute inset-0 bg-[#060a14]/55 backdrop-blur-[3px]" onClick={onClose} />
+      <div ref={ref} tabIndex={-1} className={cx('dialog-in relative max-h-[90dvh] w-full overflow-y-auto overscroll-contain rounded-t-[1.75rem] border border-line bg-surface p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-[var(--shadow-lg)] outline-none sm:rounded-[1.75rem] sm:p-6', wide ? 'sm:max-w-2xl' : 'sm:max-w-md')}>
+        <div className="mb-4 flex items-center justify-between gap-3"><h2 className="text-xl font-extrabold tracking-tight">{title}</h2><button onClick={onClose} aria-label="Close" className="grid h-9 w-9 place-items-center rounded-full bg-surface2 text-muted transition hover:bg-surface3 hover:text-ink"><Icon name="x" size={18} /></button></div>
+        {children}
+      </div>
+    </div>
+  );
+}
