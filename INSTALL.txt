@@ -1,9 +1,13 @@
-LINGUA update: audio fix, mobile fit, ASL animation, deeper content
+LINGUA update: redesign, level-aware training, reliable saving, more German content
 
 1. In your repo, DELETE the old contents of docs/ (keep docs/ADDING_CONTENT.md).
-2. Unzip this over the repo root, allowing overwrite. It contains src/, docs/ and index.html.
+2. Unzip this over the repo root, allowing overwrite. It contains src/, docs/, index.html and vite.config.ts.
 3. Commit and push EVERYTHING, including every file in docs/assets/.
-4. On your phone, hard-refresh once (or clear site data) so the old service worker is replaced.
+4. Open the app once, then close and reopen it. A banner "A new version is ready" appears when future updates ship; tap Update.
 
-No sound? Check media volume, then Profile -> Learning -> "Test voice". If it says no voice,
-install a voice for that language (Android: Settings -> Language -> Text-to-speech) or switch on "Online voice backup".
+What changed
+- Placement now sets your training level. B2 means B2 words, grammar, reading and listening first. You can also pick a level yourself.
+- Progress saves with retry, a second copy in local storage, and a save on tab close. The service worker no longer reloads the page by itself.
+- Onboarding and placement-test drafts survive a refresh.
+- New design: level badges and ladder, Home level card, cleaner language switcher, quieter Teacher.
+- More German vocabulary at every level.

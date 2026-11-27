@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
         ? [viteSingleFile()]
         : [
             VitePWA({
-              registerType: 'autoUpdate',
+              registerType: 'prompt',   // a new version waits until the learner taps "Update": no surprise reload mid-lesson
               manifest: {
                 name: 'LINGUA — Language Acquisition',
                 short_name: 'LINGUA',
@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => {
                   { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
                 ],
               },
-              workbox: { globPatterns: ['**/*.{js,css,html,svg,png,webp,json,woff2}'], navigateFallback: 'index.html', skipWaiting: true, clientsClaim: true, cleanupOutdatedCaches: true },
+              workbox: { globPatterns: ['**/*.{js,css,html,svg,png,webp,json,woff2}'], navigateFallback: 'index.html', cleanupOutdatedCaches: true },
             }),
           ]),
     ],
